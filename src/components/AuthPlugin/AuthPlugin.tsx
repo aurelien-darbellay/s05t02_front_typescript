@@ -1,5 +1,4 @@
-import { useState } from "react";
-import './AuthPlugin.css';
+import { useState, type FormEventHandler } from "react";
 import axios from "../../axiosConfig"
 
 const AuthPlugin = ({right,left,top}) => {
@@ -10,11 +9,26 @@ const AuthPlugin = ({right,left,top}) => {
   const [password2,setPassword2] = useState("");
   const [error, setError] = useState(null);
 
-  const handleAuth = async (e) => {
+  
+  
+  const handleAuth: FormEventHandler<HTMLFormElement> = async (e) => {
+    
+    function determineBody(isRegistration:boolean){
+      const params = new URLSearchParams();
+      params.append("username",username)
+      params.append("password",password);
+      return isRegistration ?   {username : username, password : password} : params;
+    }
+
     e.preventDefault();
     setError(null);
-    const url = isRegister ? "http://localhost:5173/register" : "http://localhost:5173/login";
-  
+    const url : string = isRegister ? "register" : "login";
+    const body = determineBody(isRegister);
+    const contentType = isRegister ? "application/json" : "application/x-www-form-urlencoded";
+    const options = {headers: { 'Content-Type': contentType}}
+
+    axios.post(url,body,options)
+    .then(response=>console.log(response.data));
   };
 
   return (
@@ -37,12 +51,12 @@ const AuthPlugin = ({right,left,top}) => {
         <div className="relative p-6 bg-white shadow-lg font-poppins rounded-lg w-96">
           {/* Close Button */}
           <button
-            className="absolute top-4 right-4 text-pink-cool font-sigmar text-2xl hover:text-purple-cool cursor-pointer"
+            className="absolute top-4 right-4 text-pink-cool font-special text-2xl hover:text-purple-cool cursor-pointer"
             onClick={() => setIsVisible(false)}
           >
             ✖
           </button>
-          <h2 className="text-2xl font-semibold font-sigmar uppercase text-center">
+          <h2 className="text-2xl font-semibold font-special uppercase text-center">
             {isRegister ? "Register" : "Login"}
           </h2>
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -74,12 +88,12 @@ const AuthPlugin = ({right,left,top}) => {
                 /> :
                  "" 
             }
-            <span
+            <button
               type="submit"
               className="cursor-pointer bg-pink-cool text-center pl-4 pr-4 pt-2 pb-2 rounded-lg hover:bg-purple-cool hover:text-white"
             >
               {isRegister ? "Register" : "Login"}
-            </span>
+            </button>
           </form>
           <div
             onClick={() => setIsRegister(!isRegister)}
