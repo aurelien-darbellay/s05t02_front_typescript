@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sigmar+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sigmar&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: Poppins, sans-serif;
+  --font-sigmar: Sigmar, sans-serif;
+  --shadow-lg: 6px 6px 10px  rgba(0,0,0,0.8);
+  --color-pink-cool: rgb(241, 6, 175);
+  --color-purple-cool: rgb(102, 51, 153);
+}
