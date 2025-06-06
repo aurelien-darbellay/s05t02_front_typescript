@@ -163,8 +163,7 @@ const technicalSkillInstance = new TechnicalSkill(
 
 // -------- ListEntries instance --------
 const listEntriesInstance = new ListEntries(
-  /* typeOfEntry */ "ContactList",
-  /* entries */ [contactInstance],
+  /* entries */ [educationInstance],
   /* projected */ true,
   /* highlighted */ false,
   /* position */ { xCord: 100, yCord: 200 },

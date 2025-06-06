@@ -7,6 +7,7 @@ import {
 
 export class Identity implements ContainerEntry {
   // From Entry (via ContainerEntry)
+  public type: string = "identity";
   public projected: boolean;
   public highlighted: boolean;
 

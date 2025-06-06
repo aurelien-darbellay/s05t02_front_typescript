@@ -7,6 +7,7 @@ import {
 
 export class Summary implements ContainerEntry {
   // From Entry (via ContainerEntry)
+  public type: string = "summary";
   public projected: boolean;
   public highlighted: boolean;
 

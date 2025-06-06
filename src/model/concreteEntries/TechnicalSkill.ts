@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class TechnicalSkill implements ContainedEntry {
   // From Entry (via ContainedEntry)
+  public type: string = "technical skills";
   public projected: boolean;
   public highlighted: boolean;
 

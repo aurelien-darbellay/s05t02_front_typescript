@@ -7,6 +7,7 @@ import {
 
 export class Profession implements ContainerEntry {
   // From Entry (via ContainerEntry)
+  public type: string = "profession";
   public projected: boolean;
   public highlighted: boolean;
 

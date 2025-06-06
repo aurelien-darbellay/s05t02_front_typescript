@@ -15,8 +15,9 @@ export enum Shape {
 
 export class ProfilePicture implements ContainerEntry {
   // From Entry (via ContainerEntry)
+  public type: string = "profile picture";
   public projected: boolean;
-  public highlighted: boolean;
+  public highlighted: boolean; 
 
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;

@@ -7,6 +7,7 @@ import {
 
 export class Contact implements ContainerEntry {
   // ContainerEntry (and Entry) properties
+  public type: string = "contact";
   public projected: boolean;
   public highlighted: boolean;
   public position: Position;

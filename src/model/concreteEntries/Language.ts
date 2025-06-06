@@ -11,6 +11,7 @@ export enum Level {
 
 export class Language implements ContainedEntry {
   // From Entry (via ContainedEntry)
+  public type: string = "language";
   public projected: boolean;
   public highlighted: boolean;
 

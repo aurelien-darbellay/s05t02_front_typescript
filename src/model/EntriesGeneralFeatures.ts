@@ -1,6 +1,7 @@
 export interface Entry {
   projected: boolean;
   highlighted: boolean;
+  type:string;
 }
 export interface Position {
   xCord: number;
@@ -31,10 +32,11 @@ export interface ContainedEntry extends Entry {
 export const EMPTY_ENTRY: Entry = {
   projected: false,
   highlighted: false,
+  type: "empty"
 };
 
 export class ListEntries implements ContainerEntry {
-  public typeOfEntry: string;
+  public type: string;
   public entries: Entry[];
   public projected: boolean;
   public highlighted: boolean;
@@ -45,7 +47,6 @@ export class ListEntries implements ContainerEntry {
   public nextEntry: Entry;
 
   constructor(
-    typeOfEntry: string,
     entries: Entry[],
     projected:boolean,
     highlighted:boolean,
@@ -55,7 +56,7 @@ export class ListEntries implements ContainerEntry {
     previous?: Entry,
     next?: Entry
   ) {
-    this.typeOfEntry = typeOfEntry;
+    this.type = entries[0].type;
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;

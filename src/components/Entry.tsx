@@ -1,4 +1,3 @@
-// Entry.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { ContainerEntry, Position } from '../model/EntriesGeneralFeatures';
 
@@ -10,9 +9,12 @@ interface EntryProps {
 
 export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange }) => {
   const [dragging, setDragging] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const originMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
 
+  // Recursively walk `nodes` until we find the first ReactElement.
+  const displayLabel = entry.type; 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     originMouse.current = { x: e.clientX, y: e.clientY };
@@ -51,6 +53,8 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange 
   return (
     <div
       onMouseDown={handleMouseDown}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         position: 'absolute',
         left: entry.position.xCord,
@@ -58,7 +62,12 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange 
         cursor: 'grab',
       }}
     >
-      {children}
+      {hovered
+        ? children
+        : displayLabel
+        ? <span>{displayLabel}</span>
+        : null}
     </div>
   );
 };
+

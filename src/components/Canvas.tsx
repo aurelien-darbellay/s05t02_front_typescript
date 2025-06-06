@@ -28,7 +28,7 @@ import {
   listEntriesInstance,
 } from '../model/instancesForTesting/InstancesForTesting';
 
-import { ListEntriesComponent } from './entriesComponents/EntriesListComponent';
+import { ListEntriesComponent } from './entriesComponents/ListEntriesComponent';
 import { ListEntries } from '../model/EntriesGeneralFeatures';
 import { Contact } from '../model/concreteEntries/Contact';
 import { Identity } from '../model/concreteEntries/Identity';
@@ -39,8 +39,10 @@ import { Summary } from '../model/concreteEntries/Summary';
 export const Canvas: React.FC = () => {
   // Initialize with some ContainerEntry instances
   const [entries, setEntries] = useState<ContainerEntry[]>([
-    professionInstance,
-    summaryInstance
+    identityInstance,
+    summaryInstance,
+    listEntriesInstance
+    
   ]);
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
