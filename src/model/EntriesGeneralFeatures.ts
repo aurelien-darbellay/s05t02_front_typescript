@@ -33,9 +33,9 @@ export const EMPTY_ENTRY: Entry = {
   highlighted: false,
 };
 
-export class ListEntries<T extends Entry> implements ContainerEntry {
- 
-  public entries: T[];
+export class ListEntries implements ContainerEntry {
+  public typeOfEntry: string;
+  public entries: Entry[];
   public projected: boolean;
   public highlighted: boolean;
   public position: Position;
@@ -45,7 +45,8 @@ export class ListEntries<T extends Entry> implements ContainerEntry {
   public nextEntry: Entry;
 
   constructor(
-    entries: T[],
+    typeOfEntry: string,
+    entries: Entry[],
     projected:boolean,
     highlighted:boolean,
     position: Position,
@@ -54,6 +55,7 @@ export class ListEntries<T extends Entry> implements ContainerEntry {
     previous?: Entry,
     next?: Entry
   ) {
+    this.typeOfEntry = typeOfEntry;
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;
