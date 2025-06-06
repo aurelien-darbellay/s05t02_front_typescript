@@ -37,6 +37,7 @@ const AuthPlugin = ({right,left,top}) => {
         top: top ? `${top}px` : "auto",
         right: right ? `${right}px` : "auto",
         left: left ? `${left}px` : "auto",
+        zIndex: 10,
       }}
     
     className={`fixed flex flex-col items-center justify-center`}>

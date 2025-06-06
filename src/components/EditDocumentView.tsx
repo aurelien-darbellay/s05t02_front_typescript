@@ -1,5 +1,11 @@
+
+
+import { Canvas } from "./Canvas";
+
 const EditDocumentView = () => {
-  return <div>DocumentView</div>;
+  return (<>
+    <Canvas/>
+  </>);
 };
 
 export default EditDocumentView;
