@@ -9,7 +9,6 @@ interface LanguageComponentProps {
 export const LanguageComponent: React.FC<LanguageComponentProps> = ({ language }) => {
   return (
     <div>
-      <h2>Language</h2>
       <p><strong>Name:</strong> {language.name}</p>
       <p><strong>Level:</strong> {Level[language.level]}</p>
       <p><strong>Cloud Document Name:</strong> {language.cloudDocumentName}</p>

@@ -9,7 +9,6 @@ interface ProfilePictureComponentProps {
 export const ProfilePictureComponent: React.FC<ProfilePictureComponentProps> = ({ profilePicture }) => {
   return (
     <div>
-      <h2>Profile Picture</h2>
       <img src={profilePicture.urlPicture} alt="Profile" style={{ maxWidth: '200px' }} />
       <p><strong>Shape:</strong> {Shape[profilePicture.shape]}</p>
 

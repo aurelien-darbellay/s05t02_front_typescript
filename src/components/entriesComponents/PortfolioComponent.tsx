@@ -9,7 +9,6 @@ interface PortfolioComponentProps {
 export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({ portfolio }) => {
   return (
     <div>
-      <h2>Portfolio</h2>
       <p><strong>Project Name:</strong> {portfolio.projectName}</p>
       <p>
         <strong>Project URL:</strong>{' '}

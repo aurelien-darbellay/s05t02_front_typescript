@@ -9,7 +9,6 @@ interface ProfessionComponentProps {
 export const ProfessionComponent: React.FC<ProfessionComponentProps> = ({ profession }) => {
   return (
     <div>
-      <h2>Profession</h2>
       <p><strong>General Title:</strong> {profession.generalTitle}</p>
       <p><strong>Specific Title:</strong> {profession.specificTitle}</p>
 

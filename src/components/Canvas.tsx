@@ -1,7 +1,7 @@
 // Canvas.tsx
 import React, { useState } from 'react';
 import { ContainerEntry, Position} from '../model/EntriesGeneralFeatures';
-import { Entry } from './Entry';
+import { Entry } from './Entry.tsx';
 import { ContactComponent } from './entriesComponents/ContactComponent';
 import { EducationComponent } from './entriesComponents/EducationComponent';
 import { ExperienceComponent } from './entriesComponents/ExperienceComponent';

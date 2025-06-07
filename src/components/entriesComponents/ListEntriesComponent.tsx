@@ -11,9 +11,6 @@ export const ListEntriesComponent: React.FC<ListEntriesComponentProps> = ({
   listEntries}) =>{
   return (
     <div>
-      <h2>ListEntries</h2>
-
-      <h3>ContainerEntry Fields</h3>
       <p>
         <strong>Projected:</strong> {listEntries.projected ? 'Yes' : 'No'}
       </p>

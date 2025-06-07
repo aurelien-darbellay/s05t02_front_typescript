@@ -9,7 +9,6 @@ interface SummaryComponentProps {
 export const SummaryComponent: React.FC<SummaryComponentProps> = ({ summary }) => {
   return (
     <div>
-      <h2>Summary</h2>
       <p><strong>Title:</strong> {summary.title}</p>
       <p><strong>Text:</strong> {summary.text}</p>
 

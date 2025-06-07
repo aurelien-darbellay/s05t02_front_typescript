@@ -9,7 +9,6 @@ interface EducationComponentProps {
 export const EducationComponent: React.FC<EducationComponentProps> = ({ education }) => {
   return (
     <div>
-      <h2>Education</h2>
       <p><strong>Title:</strong> {education.title}</p>
       <p><strong>Training Center:</strong> {education.trainingCenter}</p>
       <p><strong>Graduation Year:</strong> {education.graduationYear}</p>

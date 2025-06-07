@@ -9,7 +9,6 @@ interface ExperienceComponentProps {
 export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({ experience }) => {
   return (
     <div>
-      <h2>Experience</h2>
       <p><strong>Position:</strong> {experience.position}</p>
       <p><strong>Company Name:</strong> {experience.nameCompany}</p>
       <p>

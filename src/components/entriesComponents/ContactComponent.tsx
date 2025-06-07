@@ -9,7 +9,6 @@ interface ContactComponentProps {
 export const ContactComponent: React.FC<ContactComponentProps> = ({ contact }) => {
   return (
     <div>
-      <h2>Contact</h2>
       <p><strong>Phone Number:</strong> {contact.phoneNumber}</p>
       <p><strong>Email:</strong> {contact.email}</p>
       <p><strong>LinkedIn:</strong> {contact.linkedInAccount}</p>

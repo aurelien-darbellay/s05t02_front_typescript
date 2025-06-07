@@ -9,7 +9,6 @@ interface IdentityComponentProps {
 export const IdentityComponent: React.FC<IdentityComponentProps> = ({ identity }) => {
   return (
     <div>
-      <h2>Identity</h2>
       <p><strong>Names:</strong> {identity.names.join(' ')}</p>
       <p><strong>Last Names:</strong> {identity.lastNames.join(' ')}</p>
 
