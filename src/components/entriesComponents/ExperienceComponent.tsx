@@ -21,15 +21,7 @@ export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({ experi
       <p><strong>Keywords:</strong> {experience.keywords.join(', ')}</p>
       <p><strong>Link Name:</strong> {experience.nameLink}</p>
       <p><strong>Link URL:</strong> <a href={experience.linkUrl}>{experience.linkUrl}</a></p>
-      <p><strong>Cloud Document Name:</strong> {experience.cloudDocumentName}</p>
-      <p>
-        <strong>Cloud Metadata:</strong> {JSON.stringify(experience.documentCloudMetadata)}
-      </p>
-
-      <h3>ContainedEntry Fields</h3>
-      <p><strong>ID:</strong> {experience.id}</p>
-      <p><strong>Projected:</strong> {experience.projected ? 'Yes' : 'No'}</p>
-      <p><strong>Highlighted:</strong> {experience.highlighted ? 'Yes' : 'No'}</p>
+      <p>Certificate {experience.cloudDocumentName}</p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { TypesConfigContext } from './TypesConfigProvider';
+import { TypesConfigContext } from './TypesConfigContext';
 
 export const useTypesConfig = () => {
   const cfg = useContext(TypesConfigContext);

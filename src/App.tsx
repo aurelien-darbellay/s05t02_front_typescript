@@ -7,21 +7,30 @@ import PublicDocumentView from "./components/PublicDocumentView.tsx";
 import UserDashboard from "./components/UserDashboard.tsx";
 import UserDetails from "./components/UserDetails.tsx";
 import AuthPlugin from "./components/AuthPlugin/AuthPlugin.tsx";
+import { useEffect } from "react";
+import { getTypesConfig } from "./helpers/GeneralFetchers.ts";
 
 function App() {
+  useEffect(() => {
+    const fetchData = async () => {
+    await getTypesConfig();
+  };
+  fetchData();
+  }, []);
   return (
+    
     <Router>
       <AuthPlugin top={50} right ={50}/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/edit" element={<EditDocumentView />} />
-        <Route path="/public" element={<PublicDocumentView />} />
-        <Route path="/user" element={<UserDashboard />} />
-        <Route path="/user/details" element={<UserDetails />} />
-        {/* Fallback to Home for unmatched routes */}
-        <Route path="*" element={<Home />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/edit" element={<EditDocumentView />} />
+          <Route path="/public" element={<PublicDocumentView />} />
+          <Route path="/user" element={<UserDashboard />} />
+          <Route path="/user/details" element={<UserDetails />} />
+          {/* Fallback to Home for unmatched routes */}
+          <Route path="*" element={<Home />} />
+        </Routes>
     </Router>
   );
 }

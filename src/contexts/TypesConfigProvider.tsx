@@ -2,14 +2,14 @@
 
 // @refresh reset
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { getTypesConfig } from '../helpers/GeneralFetchers'
 import { TypesConfig } from '../model/TypesConfig';
-const TypesConfigContext = createContext<TypesConfig | null>(null);
+import { TypesConfigContext } from './TypesConfigContext';
 
-export const TypesConfigProvider: React.FC = ({ children }) => {
+export const TypesConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [config, setConfig] = useState<TypesConfig | null>(null);
-
+  console.log("Mounting TypesConfigProvider");
   useEffect(() => {
     (async () => {
       const cfg = await getTypesConfig();
@@ -17,28 +17,15 @@ export const TypesConfigProvider: React.FC = ({ children }) => {
     })();
   }, []);
 
-  // Optional: sync back to localStorage if you ever update it in-app
-  useEffect(() => {
-    if (config) {
-      try {
-        localStorage.setItem('typesconfig', JSON.stringify(config));
-      } catch {}
-    }
-  }, [config]);
+  if (config === null) {
+    return <div>Loading...</div>; // or a spinner, or any loading indicator
+  }
 
   return (
     <TypesConfigContext.Provider value={config}>
       {children}
     </TypesConfigContext.Provider>
   );
-};
-
-export const useTypesConfig = () => {
-  const cfg = useContext(TypesConfigContext);
-  if (cfg === null) {
-    throw new Error('useTypesConfig must be used within TypesConfigProvider');
-  }
-  return cfg;
 };
 
 
