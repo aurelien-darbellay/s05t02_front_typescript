@@ -1,5 +1,5 @@
-import { useState, type FormEventHandler } from "react";
-import axios from "../../axiosConfig"
+import { useState} from "react";
+import { createHandleAuth } from "./handleAuth";
 
 const AuthPlugin = ({right,left,top}) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -7,29 +7,16 @@ const AuthPlugin = ({right,left,top}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2,setPassword2] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string|null>(null);
 
-  
-  
-  const handleAuth: FormEventHandler<HTMLFormElement> = async (e) => {
-    
-    function determineBody(isRegistration:boolean){
-      const params = new URLSearchParams();
-      params.append("username",username)
-      params.append("password",password);
-      return isRegistration ?   {username : username, password : password} : params;
-    }
+  const handleAuth = createHandleAuth({
+    username,
+    password,
+    password2,
+    isRegister,
+    setError,
+  });
 
-    e.preventDefault();
-    setError(null);
-    const url : string = isRegister ? "register" : "login";
-    const body = determineBody(isRegister);
-    const contentType = isRegister ? "application/json" : "application/x-www-form-urlencoded";
-    const options = {headers: { 'Content-Type': contentType}}
-
-    axios.post(url,body,options)
-    .then(response=>console.log(response.data));
-  };
 
   return (
     <div 
@@ -68,7 +55,6 @@ const AuthPlugin = ({right,left,top}) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="p-2 border rounded-lg w-full"
-              required
             />
             <input
               type="password"
@@ -76,7 +62,6 @@ const AuthPlugin = ({right,left,top}) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="p-2 border rounded-lg w-full"
-              required
             />
             {isRegister ?
                     <input
@@ -85,7 +70,6 @@ const AuthPlugin = ({right,left,top}) => {
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
                     className="p-2 border rounded-lg w-full"
-                    required
                 /> :
                  "" 
             }
