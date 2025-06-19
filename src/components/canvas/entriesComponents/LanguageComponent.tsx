@@ -1,6 +1,6 @@
 // LanguageComponent.tsx
 import React from 'react';
-import { Language, Level } from '../../model/concreteEntries/Language';
+import { Language, Level } from '../../../model/concreteEntries/Language';
 
 interface LanguageComponentProps {
   language: Language;

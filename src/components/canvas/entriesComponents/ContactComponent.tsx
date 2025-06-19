@@ -1,6 +1,6 @@
 // ContactComponent.tsx
 import React from 'react';
-import { Contact } from '../../model/concreteEntries/Contact';
+import { Contact } from '../../../model/concreteEntries/Contact';
 
 interface ContactComponentProps {
   contact: Contact;

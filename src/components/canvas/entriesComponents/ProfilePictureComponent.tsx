@@ -1,6 +1,6 @@
 // ProfilePictureComponent.tsx
 import React from 'react';
-import { ProfilePicture, Shape } from '../../model/concreteEntries/ProfilePicture';
+import { ProfilePicture, Shape } from '../../../model/concreteEntries/ProfilePicture';
 
 interface ProfilePictureComponentProps {
   profilePicture: ProfilePicture;

@@ -1,6 +1,6 @@
 // EducationComponent.tsx
 import React from 'react';
-import { Education } from '../../model/concreteEntries/Education';
+import { Education } from '../../../model/concreteEntries/Education';
 
 interface EducationComponentProps {
   education: Education;

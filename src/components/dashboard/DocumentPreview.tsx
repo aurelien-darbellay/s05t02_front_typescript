@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Document {
   docTitle: string;
@@ -10,8 +11,15 @@ interface DocumentPreviewProps {
 }
 
 const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/edit?id=${document.docId}`);
+  };
+
   return (
     <div
+      onClick={handleClick}
       style={{
         border: "1px solid #ccc",
         borderRadius: "8px",
@@ -29,4 +37,5 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ document }) => {
 };
 
 export default DocumentPreview;
+
 

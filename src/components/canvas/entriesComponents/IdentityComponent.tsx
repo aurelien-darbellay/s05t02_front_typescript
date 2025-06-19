@@ -1,6 +1,6 @@
 // IdentityComponent.tsx
 import React from 'react';
-import { Identity } from '../../model/concreteEntries/Identity';
+import { Identity } from '../../../model/concreteEntries/Identity';
 
 interface IdentityComponentProps {
   identity: Identity;

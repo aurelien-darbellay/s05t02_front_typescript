@@ -1,6 +1,6 @@
 // TechnicalSkillComponent.tsx
 import React from 'react';
-import { TechnicalSkill } from '../../model/concreteEntries/TechnicalSkill';
+import { TechnicalSkill } from '../../../model/concreteEntries/TechnicalSkill';
 
 interface TechnicalSkillComponentProps {
   technicalSkill: TechnicalSkill;

@@ -1,6 +1,6 @@
 // ProfessionComponent.tsx
 import React from 'react';
-import { Profession } from '../../model/concreteEntries/Profession';
+import { Profession } from '../../../model/concreteEntries/Profession';
 
 interface ProfessionComponentProps {
   profession: Profession;

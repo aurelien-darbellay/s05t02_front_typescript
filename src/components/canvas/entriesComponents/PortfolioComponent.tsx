@@ -1,6 +1,6 @@
 // PortfolioComponent.tsx
 import React from 'react';
-import { Portfolio } from '../../model/concreteEntries/Portfolio';
+import { Portfolio } from '../../../model/concreteEntries/Portfolio';
 
 interface PortfolioComponentProps {
   portfolio: Portfolio;

@@ -1,6 +1,6 @@
 // SoftSkillComponent.tsx
 import React from 'react';
-import { SoftSkill } from '../../model/concreteEntries/SoftSkill';
+import { SoftSkill } from '../../../model/concreteEntries/SoftSkill';
 
 interface SoftSkillComponentProps {
   softSkill: SoftSkill;

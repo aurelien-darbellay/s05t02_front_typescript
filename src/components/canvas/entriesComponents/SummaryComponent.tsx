@@ -1,6 +1,6 @@
 // SummaryComponent.tsx
 import React from 'react';
-import { Summary } from '../../model/concreteEntries/Summary';
+import { Summary } from '../../../model/concreteEntries/Summary';
 
 interface SummaryComponentProps {
   summary: Summary;

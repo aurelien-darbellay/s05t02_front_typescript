@@ -1,6 +1,6 @@
 // ExperienceComponent.tsx
 import React from 'react';
-import { Experience } from '../../model/concreteEntries/Experience';
+import { Experience } from '../../../model/concreteEntries/Experience';
 
 interface ExperienceComponentProps {
   experience: Experience;

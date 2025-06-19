@@ -1,13 +1,13 @@
 // ListEntriesComponent.tsx
 import React from 'react';
-import {ListEntries } from '../../model/EntriesGeneralFeatures';
-import { Entry } from '../../model/EntriesGeneralFeatures';
-import { Language } from '../../model/concreteEntries/Language';
-import { Experience } from '../../model/concreteEntries/Experience';
-import { Education } from '../../model/concreteEntries/Education';
-import { Portfolio } from '../../model/concreteEntries/Portfolio';
-import { TechnicalSkill } from '../../model/concreteEntries/TechnicalSkill';
-import { SoftSkill } from '../../model/concreteEntries/SoftSkill';
+import {ListEntries } from '../../../model/EntriesGeneralFeatures';
+import { Entry } from '../../../model/EntriesGeneralFeatures';
+import { Language } from '../../../model/concreteEntries/Language';
+import { Experience } from '../../../model/concreteEntries/Experience';
+import { Education } from '../../../model/concreteEntries/Education';
+import { Portfolio } from '../../../model/concreteEntries/Portfolio';
+import { TechnicalSkill } from '../../../model/concreteEntries/TechnicalSkill';
+import { SoftSkill } from '../../../model/concreteEntries/SoftSkill';
 import { LanguageComponent } from './LanguageComponent';
 import { ExperienceComponent } from './ExperienceComponent'; 
 import { EducationComponent } from './EducationComponent';
