@@ -6,6 +6,7 @@ interface AuthHandlerParams {
   password: string;
   password2?: string;
   isRegister: boolean;
+  setIsAuthenticated: (value: boolean) => void;
   setError: (msg: string | null) => void;
 }
 
@@ -15,6 +16,7 @@ export const createHandleAuth = ({
   password2,
   isRegister,
   setError,
+  setIsAuthenticated,
 }: AuthHandlerParams): FormEventHandler<HTMLFormElement> => {
   return async (e) => {
     e.preventDefault();
@@ -55,6 +57,7 @@ export const createHandleAuth = ({
     try {
       const response = await axios.post(url, body, options);
       if (response.status === 200) {
+        setIsAuthenticated(true);
         window.location.href = "/user";
       }
     } catch (error: any) {
