@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "../axiosConfig";
 import Dashboard from "./dashboard/Dashboard";
 
@@ -10,8 +10,7 @@ const UserDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
       try {
         const response = await axios.get(USER_DASHBOARD_URL, { withCredentials: true });
         setDashboardData(response.data);
@@ -22,10 +21,11 @@ const UserDashboard = () => {
       } finally {
         setLoading(false);
       }
-    };
+    },[])
 
+  useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [fetchDashboardData]);
 
   if (loading) return <p>Loading dashboard...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -55,7 +55,8 @@ const UserDashboard = () => {
           User Details
         </button>
       </div>
-      <Dashboard documents={documents} />
+      <Dashboard documents={documents} onRefresh={fetchDashboardData} />
+      
     </div>
   );
 };

@@ -1,11 +1,15 @@
-import React from "react";
 import DocumentPreview from "./DocumentPreview"
+import { useState } from "react";
+import CreateDocumentDialog from "./CreateDocumentDialog";
 
 interface DashboardProps {
-  documents: { docTitle: string, docId: string }[];
+  documents: { docTitle: string, docId: string, docType: string }[];
+  onRefresh: ()=>void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ documents }) => {
+const Dashboard: React.FC<DashboardProps> = ({ documents, onRefresh }) => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div
       style={{
@@ -35,10 +39,12 @@ const Dashboard: React.FC<DashboardProps> = ({ documents }) => {
             width: "100px",
             height: "100px",
           }}
+          onClick={()=>setOpen(true)}
         >
           +
         </div>
       </div>
+      <CreateDocumentDialog open = {open} onClose={()=>{setOpen(false); onRefresh();}}/>
     </div>
   );
 };

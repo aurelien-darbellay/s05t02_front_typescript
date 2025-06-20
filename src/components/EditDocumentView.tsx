@@ -56,7 +56,7 @@ const EditDocumentView: React.FC = () => {
         }}
       >
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/user")}
           style={{
             padding: "0.5rem 1.2rem",
             backgroundColor: "#007bff",
