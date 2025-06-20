@@ -7,16 +7,9 @@ import PublicDocumentView from "./components/PublicDocumentView.tsx";
 import UserDashboard from "./components/UserDashboard.tsx";
 import UserDetails from "./components/UserDetails.tsx";
 import AuthPlugin from "./components/AuthPlugin/AuthPlugin.tsx";
-import { useEffect } from "react";
-import { getTypesConfig } from "./helpers/GeneralFetchers.ts";
 
 function App() {
-  useEffect(() => {
-    const fetchData = async () => {
-    await getTypesConfig();
-  };
-  fetchData();
-  }, []);
+  
   return (
     
     <Router>

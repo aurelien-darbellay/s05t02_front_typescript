@@ -1,3 +1,4 @@
+import { ApiPaths } from "../../apiPaths";
 import axios from "../../axiosConfig";
 
 const Logout = ({authStateSetters, pluginCfg}) => {
@@ -5,7 +6,7 @@ const Logout = ({authStateSetters, pluginCfg}) => {
     const {right, left, top} = pluginCfg;
     const handleLogout = async () => {
     try {
-      await axios.post("/logout"); // Adjust endpoint as needed
+      await axios.post(ApiPaths.LOGOUT_PATH); // Adjust endpoint as needed
       setIsAuthenticated(false);
       setIsVisible(false);
       setUsername("");

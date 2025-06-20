@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "../../axiosConfig"; // Make sure this is the custom config
 import Logout from "./Logout";
 import LoginRegister from "./LoginRegister";
+import { ApiPaths } from "../../apiPaths";
 
 const AuthPlugin = ({ right, left, top }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,7 +27,7 @@ const AuthPlugin = ({ right, left, top }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("/protected/me");
+        const res = await axios.get(ApiPaths.AUTHENTICATION_CHECK_PATH);
         if (res.status === 200) {
           console.log("User is authenticated");
           setIsAuthenticated(true);

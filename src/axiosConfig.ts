@@ -1,15 +1,15 @@
-
+import { ApiPaths } from './apiPaths';
 // axiosConfig.js
 import axios from 'axios';
 
 // ─── 1) Standard defaults ───────────────────────────────────────────────────
 axios.defaults.withCredentials    = true;
-axios.defaults.baseURL            = 'http://localhost:5173/api';
+axios.defaults.baseURL            = ApiPaths.FRONT_ORIGIN;
 axios.defaults.xsrfCookieName     = 'XSRF-TOKEN';
 axios.defaults.xsrfHeaderName     = 'X-XSRF-TOKEN';
 axios.defaults.timeout            = 10000; // optional
 
-const CSRF_ENDPOINT = '/csrf';
+const CSRF_ENDPOINT = ApiPaths.CSRF_TOKEN_PATH;
 
 function getCookieValue(name:string|undefined) {
   const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]+)'));

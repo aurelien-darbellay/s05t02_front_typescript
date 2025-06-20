@@ -1,5 +1,6 @@
 import { TypesConfig } from "../model/TypesConfig";
 import axios from "../axiosConfig"
+import { ApiPaths } from "../apiPaths";
 
 export async function getTypesConfig(): Promise<TypesConfig> {
   // 1) Check localStorage
@@ -13,7 +14,7 @@ export async function getTypesConfig(): Promise<TypesConfig> {
   }
 
   // 2) Fetch from backend
-  const response = await axios.get<TypesConfig>('/config');
+  const response = await axios.get<TypesConfig>(ApiPaths.TYPES_CONFIG_PATH);
   const config = response.data;
 
   // 3) Save into localStorage

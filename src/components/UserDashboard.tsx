@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "../axiosConfig";
 import Dashboard from "./dashboard/Dashboard";
+import { ApiPaths } from "../apiPaths";
 
-const USER_DASHBOARD_URL = "protected/users/dashboard";
+const USER_DASHBOARD_URL = ApiPaths.USER_DASHBOARD_PATH;
 
 const UserDashboard = () => {
   const [dashboardData, setDashboardData] = useState<any>(null);

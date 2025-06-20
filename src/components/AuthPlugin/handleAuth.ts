@@ -1,4 +1,5 @@
-import axios from "axios";
+import { ApiPaths } from "../../apiPaths";
+import axios from "../../axiosConfig";
 import { FormEventHandler } from "react";
 
 interface AuthHandlerParams {
@@ -47,7 +48,7 @@ export const createHandleAuth = ({
 
     if (!validateSubmission()) return;
 
-    const url = isRegister ? "register" : "login";
+    const url = isRegister ? ApiPaths.REGISTER_PATH : ApiPaths.LOGIN_PATH;
     const body = determineBody();
     const contentType = isRegister
       ? "application/json"

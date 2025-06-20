@@ -86,7 +86,7 @@ const EditDocumentView: React.FC = () => {
         </button>
       </div>
 
-      <Canvas docData={docData} />
+      <Canvas docData={docData} cfg ={config}/>
     </>
   );
 };
