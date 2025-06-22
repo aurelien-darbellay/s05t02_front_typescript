@@ -1,9 +1,9 @@
-
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useTypesConfig } from "../contexts/TypesConfigHook";
 import { Canvas } from "./canvas/Canvas";
 import axios from "../axiosConfig";
+import { ApiPaths } from "../apiPaths";
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +17,9 @@ const EditDocumentView: React.FC = () => {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const response = await axios.get(`/protected/users/doc/${id}`, { withCredentials: true });
+        const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id || "");
+        const response = await axios.get(url, { withCredentials: true });
+        console.log("Document data fetched:", response.data);
         setDocData(response.data);
       } catch (err: any) {
         const message = err.response?.data?.message || err.message || "Unknown error";
@@ -43,18 +45,9 @@ const EditDocumentView: React.FC = () => {
   if (!docData) return <p>Loading document...</p>;
 
   return (
-    <>
-      <div
-        style={{
-          backgroundColor: "#fff",
-          marginTop: "5rem",
-          padding: "1.5rem 1rem 1rem",
-          borderBottom: "1px solid #ddd",
-          marginBottom: "1rem",
-          display: "flex",
-          gap: "1rem",
-        }}
-      >
+    <div className="relative w-full min-h-screen bg-gray-100">
+      {/* Header stays scrollable with content */}
+      <div className="relative bg-white border-b border-gray-300 flex p-6 gap-4">
         <button
           onClick={() => navigate("/user")}
           style={{
@@ -86,9 +79,13 @@ const EditDocumentView: React.FC = () => {
         </button>
       </div>
 
-      <Canvas docData={docData} cfg ={config}/>
-    </>
+      {/* Canvas grows with content and scrolls normally */}
+      <div className="w-full">
+        <Canvas docData={docData} cfg={config} />
+      </div>
+    </div>
   );
 };
 
 export default EditDocumentView;
+

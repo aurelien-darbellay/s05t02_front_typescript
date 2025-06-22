@@ -135,7 +135,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
     const listEntry = mapListEntries(block.data, block.klass);
     if (listEntry) entries.push(listEntry);
   }
-  entries.forEach(entry=>{
+  entries.forEach((entry,index)=>{
     entry.position = entry.position || { xCord: 0, yCord: 0 };
   });
 

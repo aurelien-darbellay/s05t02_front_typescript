@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures.ts';
 import { Entry } from '../Entry.tsx';
 import { ContactComponent } from './entriesComponents/ContactComponent.tsx';
@@ -18,24 +17,25 @@ import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
 import { mapDocDataToEntries } from './mapDocDataToEntries.ts';
 import EntryCreateDialog from './EntryCreateDialog.tsx';
 import { TypesConfig } from "../../model/TypesConfig";
+import { AddButtonGrid } from './AddButtonGrid.tsx';
 
 interface CanvasProps {
   docData: any;
-    cfg: TypesConfig;
+  cfg: TypesConfig;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({ docData, cfg }) => {
   const listEntries = mapDocDataToEntries(docData);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [canvasHeight, setCanvasHeight] = useState(1000); // default canvas height
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
-    entry.position = newPos;
-    setEntries((prev) => [...prev]);
+      const updated = Object.assign(Object.create(Object.getPrototypeOf(entry)), entry, {position: newPos});
+      setEntries((prevEntries) => prevEntries.map((e) => e.type === entry.type ? updated : e));
   };
 
   const handleAddEntry = (entryData: any) => {
-    // placeholder: you should create an instance based on entryData.type
     const newEntry: ContainerEntry = {
       type: entryData.type,
       projected: false,
@@ -59,35 +59,41 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg }) => {
     return null;
   };
 
+  // Dynamically set canvas height based on entry positions
+  useEffect(() => {
+    const buffer = 200;
+    let maxY = 0;
+    entries.forEach((entry) => {
+      const bottom = entry.position.yCord + 150; // approx. entry height
+      if (bottom > maxY) maxY = bottom;
+    });
+    setCanvasHeight(maxY + buffer);
+  }, [entries]);
+
   return (
-    <div className="relative w-full h-[100vh] bg-gray-100 overflow-hidden">
-      {/* Grid of invisible + buttons */}
-      <div className="absolute inset-0 grid grid-cols-6 grid-rows-6 gap-4 p-4 z-10">
-        {Array.from({ length: 36 }).map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setDialogOpen(true)}
-            className="opacity-0 hover:opacity-100 transition-opacity duration-300 bg-white text-gray-600 border-2 border-dashed border-gray-400 rounded-md flex items-center justify-center text-2xl"
-          >
-            +
-          </button>
-        ))}
-      </div>
+        <div className="w-full" style={{ height: `${canvasHeight}px`, position: "relative" }}>
+          <AddButtonGrid
+            entries={entries}
+            gridLines={Math.floor(canvasHeight / 100)}
+            onAddClick={() => setDialogOpen(true)}
+          />
+          {entries.map((entry, idx) => (
+            <Entry key={idx} entry={entry} onPositionChange={updatePosition}>
+              {renderConcrete(entry)}
+            </Entry>
+          ))}
 
-      {/* Render entries */}
-      {entries.map((entry, idx) => (
-        <Entry key={idx} entry={entry} onPositionChange={updatePosition}>
-          {renderConcrete(entry)}
-        </Entry>
-      ))}
-
-      {/* Dialog */}
-      <EntryCreateDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        cfg={cfg}
-        onSave={handleAddEntry}
-      />
+          <EntryCreateDialog
+            open={dialogOpen}
+            onClose={() => setDialogOpen(false)}
+            cfg={cfg}
+            onSave={handleAddEntry}
+          />
     </div>
   );
 };
+
+
+
+
+
