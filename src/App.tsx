@@ -13,7 +13,7 @@ function App() {
   return (
     
     <Router>
-      <AuthPlugin top={50} right ={50}/>
+      <AuthPlugin top={50} right ={35}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminDashboard />} />

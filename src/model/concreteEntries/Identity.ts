@@ -7,7 +7,9 @@ import {
 
 export class Identity implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "identity";
+  public type: string = "IDENTITY";
+  public displayedType: string = "Identity";
+  public keyNameInDB: string = "identity";
   public projected: boolean;
   public highlighted: boolean;
 

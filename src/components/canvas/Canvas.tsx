@@ -18,13 +18,18 @@ import { mapDocDataToEntries } from './mapDocDataToEntries.ts';
 import EntryCreateDialog from './EntryCreateDialog.tsx';
 import { TypesConfig } from "../../model/TypesConfig";
 import { AddButtonGrid } from './AddButtonGrid.tsx';
+import { mapSingleEntryDataToInstance } from './mapSingleEntryDataToInstance.ts';
+import axios from "../../axiosConfig.ts";
+import { ApiPaths } from '../../apiPaths.ts';
+import { updateDocDataFromEntries } from './updateDocDataFromEntries.ts';
 
 interface CanvasProps {
   docData: any;
   cfg: TypesConfig;
+  setDocData: (updatedDoc: any) => void;
 }
 
-export const Canvas: React.FC<CanvasProps> = ({ docData, cfg }) => {
+export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
   const listEntries = mapDocDataToEntries(docData);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -35,18 +40,14 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg }) => {
       setEntries((prevEntries) => prevEntries.map((e) => e.type === entry.type ? updated : e));
   };
 
-  const handleAddEntry = (entryData: any) => {
-    const newEntry: ContainerEntry = {
-      type: entryData.type,
-      projected: false,
-      highlighted: false,
-      position: { xCord: 0, yCord: 0 },
-      color: "gray",
-      size: 1,
-      previousEntry: { projected: false, highlighted: false, type: "empty" },
-      nextEntry: { projected: false, highlighted: false, type: "empty" }
-    };
-    setEntries((prev) => [...prev, newEntry]);
+  const handleAddEntry = async (entryData: any) => {
+    console.log("Adding new entry with data:", entryData);
+    const newEntry: ContainerEntry | null = mapSingleEntryDataToInstance(entryData);
+    if (newEntry) setEntries((prev) => [...prev, newEntry]);
+    const url = ApiPaths.ENTRY_BASE_PATH.replace("{docId}", docData.id) + ApiPaths.ENTRY_ADD_REL;
+    entryData = {...entryData,type: entryData.type.toUpperCase()}; // normalize type
+    const response = await axios.post(url, entryData,{withCredentials: true});
+    console.log("New entry added:", response.data);
   };
 
   const renderConcrete = (entry: ContainerEntry) => {
@@ -70,11 +71,15 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg }) => {
     setCanvasHeight(maxY + buffer);
   }, [entries]);
 
+  useEffect(() => {
+    updateDocDataFromEntries(entries,setDocData);
+  }, [entries]);
+
   return (
-        <div className="w-full" style={{ height: `${canvasHeight}px`, position: "relative" }}>
+        <div className="w-full" style={{ position: "relative" }}>
           <AddButtonGrid
             entries={entries}
-            gridLines={Math.floor(canvasHeight / 100)}
+            gridLines={Math.ceil(canvasHeight / 100)}
             onAddClick={() => setDialogOpen(true)}
           />
           {entries.map((entry, idx) => (

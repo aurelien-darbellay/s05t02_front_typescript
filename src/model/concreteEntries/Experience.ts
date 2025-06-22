@@ -3,7 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Experience implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "experience";
+  public type: string = "EXPERIENCE";
+  public displayedType: string = "Experience";
+  public keyNameInDB: string = "experience";
   public projected: boolean;
   public highlighted: boolean;
 

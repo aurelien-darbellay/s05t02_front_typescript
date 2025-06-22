@@ -1,5 +1,5 @@
 export const EntryFieldConfig: Record<string, string[]> = {
-  CONTACT: [
+  contact: [
     "phoneNumber",
     "email",
     "linkedInAccount",
@@ -9,7 +9,7 @@ export const EntryFieldConfig: Record<string, string[]> = {
     "cityOfResidence",
     "zipCode"
   ],
-  EDUCATION: [
+  education: [
     "title",
     "trainingCenter",
     "graduationYear",
@@ -17,7 +17,7 @@ export const EntryFieldConfig: Record<string, string[]> = {
     "cloudDocumentName",
     "documentCloudMetadata"
   ],
-  EXPERIENCE: [
+  experience: [
     "position",
     "nameCompany",
     "startDate",
@@ -29,36 +29,36 @@ export const EntryFieldConfig: Record<string, string[]> = {
     "cloudDocumentName",
     "documentCloudMetadata"
   ],
-  IDENTITY: [
+  identity: [
     "names",
     "lastNames"
   ],
-  LANGUAGE: [
+  language: [
     "name",
     "level",
     "cloudDocumentName",
     "documentCloudMetadata"
   ],
-  PORTFOLIO: [
+  portfolio: [
     "projectName",
     "projectUrl"
   ],
-  PROFESSION: [
+  profession: [
     "generalTitle",
     "specificTitle"
   ],
-  PROFILE_PICTURE: [
+  profilepicture: [
     "urlPicture",
     "shape"
   ],
-  SOFT_SKILL: [
+  softskill: [
     "keyWords"
   ],
-  SUMMARY: [
+  summary: [
     "title",
     "text"
   ],
-  TECH_SKILL: [
+  technicalskill: [
     "keyWords"
   ]
 };

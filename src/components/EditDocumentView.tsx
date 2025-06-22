@@ -34,7 +34,10 @@ const EditDocumentView: React.FC = () => {
     if (!docData || !id) return;
 
     try {
-      await axios.post(`/protected/users/doc/${id}`, docData, { withCredentials: true });
+      const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id);
+      console.log("Saving document data:", docData);
+      // Ensure docData is in the correct format expected by the backend
+      await axios.post(url, docData, { withCredentials: true });
       console.log("Document saved successfully.");
     } catch (err: any) {
       console.error("Failed to save document:", err.response?.data?.message || err.message);
@@ -81,7 +84,7 @@ const EditDocumentView: React.FC = () => {
 
       {/* Canvas grows with content and scrolls normally */}
       <div className="w-full">
-        <Canvas docData={docData} cfg={config} />
+        <Canvas docData={docData} cfg={config} setDocData={setDocData} />
       </div>
     </div>
   );

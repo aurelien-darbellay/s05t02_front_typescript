@@ -19,10 +19,15 @@ export default function EntryCreateDialog({
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
 
+  const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, "");
+  const selector = normalizeType(selectedType);
+  const fields = EntryFieldConfig[selector] || [];
+
   const handleTypeChange = (type: string) => {
-    setSelectedType(type);
+    setSelectedType(() => type);
+    const newSelector = normalizeType(type);
     const initialValues = Object.fromEntries(
-      (EntryFieldConfig[type.replace(/\s/g,"")] || []).map((field) => [field, ""])
+      (EntryFieldConfig[newSelector] || []).map((field) => [field, ""])
     );
     setEntryValues(initialValues);
     setError(null);
@@ -43,24 +48,24 @@ export default function EntryCreateDialog({
       ...entryValues,
     };
 
+    console.log("Saving entry data:", entryData);
+
     try {
       onSave(entryData);
       onClose();
       setSelectedType("");
       setEntryValues({});
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Failed to save entry.");
     }
   };
 
   if (!open) return null;
-  const tempType = selectedType;
-  const fields = EntryFieldConfig[tempType.replace(/\s/g,"")] || [];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-screen overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Create New Entry</h2>
 
         {/* Entry Type Dropdown */}
@@ -119,3 +124,4 @@ export default function EntryCreateDialog({
     </div>
   );
 }
+

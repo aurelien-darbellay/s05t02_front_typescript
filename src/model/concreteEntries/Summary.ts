@@ -7,7 +7,9 @@ import {
 
 export class Summary implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "summary";
+  public type: string = "SUMMARY";
+  public displayedType: string = "Summary";
+  public keyNameInDB: string = "summary";
   public projected: boolean;
   public highlighted: boolean;
 

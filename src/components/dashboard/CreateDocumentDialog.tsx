@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTypesConfig } from "../../contexts/TypesConfigHook"; // Adjust path
 import axios from "../../axiosConfig"; // Adjust path
+import { ApiPaths } from "../../apiPaths";
 
 interface Props {
   open: boolean;
@@ -19,7 +20,8 @@ export default function CreateDocumentDialog({ open, onClose }: Props) {
     setError(null);
 
     try {
-      await axios.post("/protected/users/doc", {
+      const url = ApiPaths.DOC_PATH; // Adjust path if necessary
+      await axios.post(url, {
         type: selectedType,
         title: title,
       });

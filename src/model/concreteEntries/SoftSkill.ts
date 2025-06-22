@@ -3,7 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class SoftSkill implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "soft skills";
+  public type: string = "SOFT_SKILL";
+  public displayedType: string = "Soft Skill";
+  public keyNameInDB: string = "softSkill";
   public projected: boolean;
   public highlighted: boolean;
 
