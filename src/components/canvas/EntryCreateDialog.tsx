@@ -25,7 +25,7 @@ export default function EntryCreateDialog({
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
 
-  console.log(entries);
+  //console.log(entries);
   const restrictedTypes = [
     'Contact',
     'Identity',

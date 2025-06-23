@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
+import { getEntryStyle } from './entryStyle';
+import {
+  createHandleMouseDown,
+  createHandleMouseMove,
+} from './entryInteractionHandlers';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -32,38 +37,29 @@ export const Entry: React.FC<EntryProps> = ({
 
   const displayLabel = entry.type;
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains('resize-handle')) {
-      originMouse.current = { x: e.clientX, y: e.clientY };
-      originScale.current = scaleFactor;
-      setResizing(true);
-    } else {
-      //if (!resizing) setHovered(false);
-      e.preventDefault();
-      originMouse.current = { x: e.clientX, y: e.clientY };
-      originPos.current = { ...entry.position };
-      setDragging(true);
-    }
-  };
+  const handleMouseDown = createHandleMouseDown(
+    entry,
+    setDragging,
+    setResizing,
+    originMouse,
+    originPos,
+    originScale,
+    scaleFactor
+  );
 
-  const handleMouseMove = (e: MouseEvent) => {
-    e.preventDefault();
-    setHovered(true);
-    if (dragging) {
-      //console.log('Dragging');
-      const deltaX = e.clientX / width - originMouse.current.x / width;
-      const deltaY = e.clientY - originMouse.current.y;
-      const newPos: Position = {
-        xCord: originPos.current.xCord + deltaX,
-        yCord: originPos.current.yCord + deltaY,
-      };
-      onPositionChange(entry, newPos);
-    } else if (resizing) {
-      const delta = e.clientX - originMouse.current.x;
-      const newScale = Math.max(0.5, originScale.current + delta / 250);
-      setScaleFactor(newScale);
-    }
-  };
+  const handleMouseMove = createHandleMouseMove(
+    entry,
+    setHovered,
+    setExistOpenEntry,
+    dragging,
+    resizing,
+    onPositionChange,
+    width,
+    originMouse,
+    originPos,
+    originScale,
+    setScaleFactor
+  );
 
   const handleMouseUp = () => {
     if (dragging) setDragging(false);
@@ -102,39 +98,14 @@ export const Entry: React.FC<EntryProps> = ({
           setExistOpenEntry(false);
         }
       }}
-      style={{
-        position: 'absolute',
-        left: entry.position.xCord * width,
-        top: entry.position.yCord,
-        zIndex: hovered ? 999 : 'auto',
-
-        // Borders (always present, color changes)
-        borderTopStyle: 'solid',
-        borderTopWidth: '6px',
-        borderTopColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
-
-        borderRightStyle: 'solid',
-        borderRightWidth: '6px',
-        borderRightColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
-
-        borderBottomStyle: 'solid',
-        borderBottomWidth: '6px',
-        borderBottomColor: entry.color ?? '#ccc', // always visible
-
-        borderLeftStyle: 'solid',
-        borderLeftWidth: '6px',
-        borderLeftColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
-
-        // Padding (always consistent)
-        padding: hovered ? `${8 * scaleFactor}px` : 0,
-
-        background: hovered ? '#fff' : 'transparent',
-        pointerEvents: dragging || resizing ? 'none' : 'auto',
-        boxSizing: 'border-box',
-        display: 'inline-block',
-        transform: `scale(${scaleFactor})`,
-        transformOrigin: 'top left',
-      }}
+      style={getEntryStyle(
+        entry,
+        hovered,
+        dragging,
+        resizing,
+        scaleFactor,
+        width
+      )}
     >
       <div
         style={{

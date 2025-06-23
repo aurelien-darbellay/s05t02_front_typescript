@@ -63,7 +63,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
           <button
             key={idx}
             onClick={(e) => {
-              if (!isOverlapped) handleClick(e);
+              if (!isOverlapped && !existOpenEntry) handleClick(e);
             }}
             className={`${
               isOverlapped
