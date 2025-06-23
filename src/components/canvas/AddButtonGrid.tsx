@@ -40,7 +40,6 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
   });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('hola');
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
     const centerX = (e.clientX - rect.left) / rect.width;

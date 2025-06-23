@@ -128,6 +128,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         cfg={cfg}
         onSave={handleAddEntry}
         position={entrySpawnPosition}
+        entries={entries}
       />
       <UserUpdateDialog
         open={updateUser}

@@ -1,7 +1,8 @@
 export interface Entry {
   projected: boolean;
   highlighted: boolean;
-  type:string;
+  type: string;
+  displayedType: string;
 }
 export interface Position {
   xCord: number;
@@ -13,7 +14,7 @@ export interface CloudMetaData {
   id: string;
 }
 interface Positioned {
-  position:Position;
+  position: Position;
 }
 interface Colored {
   color: string;
@@ -22,29 +23,29 @@ interface Sized {
   size: number;
 }
 export interface ContainerEntry extends Entry, Positioned, Colored, Sized {
-  previousEntry: Entry|null;
-  nextEntry: Entry|null;
+  previousEntry: Entry | null;
+  nextEntry: Entry | null;
 }
 export interface ContainedEntry extends Entry {
   id: string;
 }
 
-
 export class ListEntries implements ContainerEntry {
   public type: string;
+  public displayedType: string;
   public entries: Entry[];
   public projected: boolean;
   public highlighted: boolean;
   public position: Position;
   public color: string;
   public size: number;
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   constructor(
     entries: Entry[],
-    projected:boolean,
-    highlighted:boolean,
+    projected: boolean,
+    highlighted: boolean,
     position: Position,
     color: string,
     size: number,
@@ -52,6 +53,7 @@ export class ListEntries implements ContainerEntry {
     next?: Entry
   ) {
     this.type = entries[0].type;
+    this.displayedType = entries[0].displayedType;
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;

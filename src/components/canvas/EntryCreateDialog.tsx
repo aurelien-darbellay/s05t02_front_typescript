@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { EntryFieldConfig } from '../../model/EntryFieldConfig';
 import { TypesConfig } from '../../model/TypesConfig';
+import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
 
 interface EntryCreateDialogProps {
   open: boolean;
@@ -8,6 +9,7 @@ interface EntryCreateDialogProps {
   cfg: TypesConfig;
   onSave: (entryData: any) => void;
   position: { xCord: number; yCord: number } | null;
+  entries: ContainerEntry[];
 }
 
 export default function EntryCreateDialog({
@@ -16,18 +18,32 @@ export default function EntryCreateDialog({
   cfg,
   onSave,
   position,
+  entries,
 }: EntryCreateDialogProps) {
   const [selectedType, setSelectedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
 
+  console.log(entries);
+  const restrictedTypes = [
+    'Contact',
+    'Identity',
+    'Profession',
+    'Profile Picture',
+    'Summary',
+  ];
   const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, '');
   const selector = normalizeType(selectedType);
   const fields = EntryFieldConfig[selector] || [];
 
+  const hasDuplicateRestrictedType =
+    selectedType &&
+    restrictedTypes.includes(selectedType) &&
+    entries.some((entry) => entry.displayedType === selectedType);
+
   const handleTypeChange = (type: string) => {
-    setSelectedType(() => type);
+    setSelectedType(type);
     const newSelector = normalizeType(type);
     const initialValues = Object.fromEntries(
       (EntryFieldConfig[newSelector] || []).map((field) => [field, ''])
@@ -45,7 +61,11 @@ export default function EntryCreateDialog({
       setError('Please select an entry type.');
       return;
     }
-    console.log('Position:', position);
+    if (hasDuplicateRestrictedType) {
+      setError(`You already have an entry of type "${selectedType}"`);
+      return;
+    }
+
     const entryData = {
       type: selectedType,
       color,
@@ -87,6 +107,12 @@ export default function EntryCreateDialog({
               </option>
             ))}
           </select>
+          {hasDuplicateRestrictedType && (
+            <p className="text-red-600 text-sm mt-1">
+              Can't have more than one entry of type{' '}
+              <strong>{selectedType}</strong> in your document.
+            </p>
+          )}
         </div>
 
         {/* Color Picker */}
@@ -116,7 +142,7 @@ export default function EntryCreateDialog({
           </div>
         ))}
 
-        {/* Error Message */}
+        {/* General Error Message */}
         {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
 
         {/* Footer Buttons */}
@@ -129,8 +155,8 @@ export default function EntryCreateDialog({
           </button>
           <button
             onClick={handleSave}
-            disabled={!selectedType}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            disabled={!selectedType || hasDuplicateRestrictedType}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           >
             Save
           </button>

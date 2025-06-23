@@ -25,7 +25,7 @@ export const createHandleAddEntry = (
   return async (entryData: any) => {
     try {
       const url =
-        ApiPaths.ENTRY_BASE_PATH.replace('{docId}', doc) +
+        ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
         ApiPaths.ENTRY_ADD_REL;
       const payload = { ...entryData, type: entryData.type.toUpperCase() }; // normalize type
       await axios.post(url, payload, { withCredentials: true });
