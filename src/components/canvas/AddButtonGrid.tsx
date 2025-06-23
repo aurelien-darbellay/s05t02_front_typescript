@@ -20,9 +20,9 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
   const overlappedGridIndices = new Set<number>();
 
   const getFraction = (value: number, radix: number): number => {
-    if (value < 0 || value > 1) {
+    /* if (value < 0 || value > 1) {
       throw new Error('Value must be between 0 and 1.');
-    }
+    } */
     return Math.min(6, Math.floor(value * radix) + 1);
   };
 
@@ -48,14 +48,13 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
     onAddClick(centerX, centerY);
   };
 
-  if (existOpenEntry) return null;
-
   return (
     <div
       className="grid gap-4 p-4 z-0 pointer-events-none"
       style={{
         gridTemplateColumns: `repeat(6, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${gridLines}, 100px)`,
+        opacity: existOpenEntry ? 0 : 1,
       }}
     >
       {Array.from({ length: totalCells }).map((_, idx) => {

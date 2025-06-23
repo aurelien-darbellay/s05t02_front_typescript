@@ -18,7 +18,7 @@
 }
 
 body {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background-color: white;
   color: black;
@@ -27,8 +27,11 @@ body {
   align-items: center;
   background-image: url('./assets/1.jpg');
   background-size: cover;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 #root {
   min-width: 600px;
   width: 80%;
+  overflow: hidden;
 }

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
 
@@ -6,12 +5,22 @@ interface EntryProps {
   entry: ContainerEntry;
   children: React.ReactNode;
   onPositionChange: (entry: ContainerEntry, newPos: Position) => void;
-  onSizeChange?: (entry: ContainerEntry, newSize: { width: number; height: number }) => void;
+  onSizeChange?: (
+    entry: ContainerEntry,
+    newSize: { width: number; height: number }
+  ) => void;
   canvasSize: { width: number; height: number };
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasSize, setExistOpenEntry }) => {
+export const Entry: React.FC<EntryProps> = ({
+  entry,
+  children,
+  onPositionChange,
+  onSizeChange,
+  canvasSize,
+  setExistOpenEntry,
+}) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -20,7 +29,7 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
-  const {width,height}  = canvasSize
+  const { width, height } = canvasSize;
 
   const displayLabel = entry.type;
 
@@ -39,10 +48,11 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
   };
 
   const handleMouseMove = (e: MouseEvent) => {
+    e.preventDefault();
     if (dragging) {
       //console.log('Dragging');
-      const deltaX = e.clientX/width - originMouse.current.x/width;
-      const deltaY = e.clientY/height - originMouse.current.y/height;
+      const deltaX = e.clientX / width - originMouse.current.x / width;
+      const deltaY = e.clientY / height - originMouse.current.y / height;
       const newPos: Position = {
         xCord: originPos.current.xCord + deltaX,
         yCord: originPos.current.yCord + deltaY,
@@ -82,24 +92,42 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
     <div
       ref={entryRef}
       onMouseDown={handleMouseDown}
-      onMouseEnter={() => {setHovered(true); setExistOpenEntry(true);}}
+      onMouseEnter={() => {
+        setHovered(true);
+        setExistOpenEntry(true);
+      }}
       onMouseLeave={() => {
-        if (!resizing){
+        if (!resizing) {
           setHovered(false);
           setExistOpenEntry(false);
         }
       }}
       style={{
         position: 'absolute',
-        left: entry.position.xCord*width,
-        top: entry.position.yCord*height, 
+        left: entry.position.xCord * width,
+        top: entry.position.yCord * height,
         zIndex: hovered ? 999 : 'auto',
-        borderTop: hovered ? `6px solid ${entry.color ? entry.color : '#ccc'}` : 'none',
-        borderRight: hovered ? `6px solid ${entry.color ? entry.color : '#ccc'}` : 'none',
-        borderBottom: `6px solid ${entry.color ? entry.color : '#ccc'}`,
-        borderLeft: hovered ? `6px solid ${entry.color ? entry.color : '#ccc'}` : 'none',
-        padding: hovered ? `${8 * scaleFactor}px` : '0px',
-        //transition: 'border-color 0.2s ease-in-out, background-color 0.2s ease-in-out',
+
+        // Borders (always present, color changes)
+        borderTopStyle: 'solid',
+        borderTopWidth: '6px',
+        borderTopColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+
+        borderRightStyle: 'solid',
+        borderRightWidth: '6px',
+        borderRightColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+
+        borderBottomStyle: 'solid',
+        borderBottomWidth: '6px',
+        borderBottomColor: entry.color ?? '#ccc', // always visible
+
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '6px',
+        borderLeftColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+
+        // Padding (always consistent)
+        padding: `${8 * scaleFactor}px`,
+
         background: hovered ? '#fff' : 'transparent',
         pointerEvents: dragging || resizing ? 'none' : 'auto',
         boxSizing: 'border-box',
@@ -139,14 +167,3 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
