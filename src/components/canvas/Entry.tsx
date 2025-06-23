@@ -29,7 +29,7 @@ export const Entry: React.FC<EntryProps> = ({
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
-  const { width, height } = canvasSize;
+  const { width } = canvasSize;
 
   const displayLabel = entry.type;
 
@@ -49,10 +49,11 @@ export const Entry: React.FC<EntryProps> = ({
 
   const handleMouseMove = (e: MouseEvent) => {
     e.preventDefault();
+    setHovered(true);
     if (dragging) {
       //console.log('Dragging');
       const deltaX = e.clientX / width - originMouse.current.x / width;
-      const deltaY = e.clientY / height - originMouse.current.y / height;
+      const deltaY = e.clientY - originMouse.current.y;
       const newPos: Position = {
         xCord: originPos.current.xCord + deltaX,
         yCord: originPos.current.yCord + deltaY,
@@ -105,7 +106,7 @@ export const Entry: React.FC<EntryProps> = ({
       style={{
         position: 'absolute',
         left: entry.position.xCord * width,
-        top: entry.position.yCord * height,
+        top: entry.position.yCord,
         zIndex: hovered ? 999 : 'auto',
 
         // Borders (always present, color changes)

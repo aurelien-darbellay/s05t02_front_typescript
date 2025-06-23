@@ -71,7 +71,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     const buffer = 200;
     let maxY = 0;
     entries.forEach((entry) => {
-      const bottom = entry.position.yCord * canvasHeight + 150; // approx. entry height
+      const bottom = entry.position.yCord + 150; // approx. entry height
       if (bottom > maxY) maxY = bottom;
     });
     setCanvasHeight(maxY + buffer);
