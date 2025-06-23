@@ -21,7 +21,7 @@ export async function getTypesConfig(): Promise<TypesConfig> {
   try {
     localStorage.setItem('typesconfig', JSON.stringify(config));
   } catch (e) {
-    console.warn('Could not persist typesconfig to localStorage', e);
+    //console.warn('Could not persist typesconfig to localStorage', e);
   }
 
   return config;

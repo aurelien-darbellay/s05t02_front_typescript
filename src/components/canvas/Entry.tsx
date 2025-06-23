@@ -7,10 +7,10 @@ interface EntryProps {
   children: React.ReactNode;
   onPositionChange: (entry: ContainerEntry, newPos: Position) => void;
   onSizeChange?: (entry: ContainerEntry, newSize: { width: number; height: number }) => void;
-  canvasRef: React.RefObject<HTMLDivElement> | null;
+  canvasSize: { width: number; height: number };
 }
 
-export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasRef }) => {
+export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasSize }) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -19,8 +19,7 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
-  const canvas = canvasRef.current;
-  const {width,height}  = canvas ? canvas.getBoundingClientRect() : {width: 1000, height: 1000};
+  const {width,height}  = canvasSize
 
   const displayLabel = entry.type;
 
@@ -40,7 +39,7 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
 
   const handleMouseMove = (e: MouseEvent) => {
     if (dragging) {
-      console.log('Dragging');
+      //console.log('Dragging');
       const deltaX = e.clientX/width - originMouse.current.x/width;
       const deltaY = e.clientY/height - originMouse.current.y/height;
       const newPos: Position = {

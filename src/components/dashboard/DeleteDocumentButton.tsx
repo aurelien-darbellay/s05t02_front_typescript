@@ -7,7 +7,7 @@ const DeleteDocumentButton: React.FC<{ docId: string, onDelete: () => void }> = 
       await axios.post(url, {}, { withCredentials: true });
       onDelete();
     } catch (err) {
-      console.error("Failed to delete document", err);
+      //console.error("Failed to delete document", err);
     }
   };
 

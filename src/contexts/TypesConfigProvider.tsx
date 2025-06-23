@@ -9,7 +9,7 @@ import { TypesConfigContext } from './TypesConfigContext';
 
 export const TypesConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const [config, setConfig] = useState<TypesConfig | null>(null);
-  console.log("Mounting TypesConfigProvider");
+  //console.log("Mounting TypesConfigProvider");
   useEffect(() => {
     (async () => {
       const cfg = await getTypesConfig();

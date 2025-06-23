@@ -13,6 +13,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines
   // Calculate overlapped grid indices (assuming entry.position in grid units)
   const overlappedGridIndices = new Set<number>();
   entries.forEach((entry) => {
+    if (!entry.position) return; // Skip entries without a position
     const { xCord, yCord } = entry.position;
     if (xCord >= 0 && xCord < gridLines && yCord >= 0 && yCord < gridLines) {
       const index = yCord * gridLines + xCord;

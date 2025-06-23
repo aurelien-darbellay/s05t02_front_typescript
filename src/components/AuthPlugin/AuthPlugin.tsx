@@ -29,7 +29,7 @@ const AuthPlugin = ({ right, left, top }) => {
       try {
         const res = await axios.get(ApiPaths.AUTHENTICATION_CHECK_PATH);
         if (res.status === 200) {
-          console.log("User is authenticated");
+          //console.log("User is authenticated");
           setIsAuthenticated(true);
         }
         else {

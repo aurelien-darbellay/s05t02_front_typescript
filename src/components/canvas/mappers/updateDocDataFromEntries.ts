@@ -8,9 +8,9 @@ export function updateDocDataFromEntries(
   docData: any,
   entries: ContainerEntry[]
 ) {
-  console.log("Updating document data from entries:", entries);
+  //console.log("Updating document data from entries:", entries);
   const newDocData = {...docData};
-  console.log("Initial document data:", newDocData);
+  //console.log("Initial document data:", newDocData);
   for (const entry of entries) {
     if (entry instanceof Contact) {
       newDocData.contact = {
@@ -29,7 +29,7 @@ export function updateDocDataFromEntries(
         },
       };
     } else if (entry instanceof Profession) {
-      console.log("Updating profession in:", newDocData);
+      //console.log("Updating profession in:", newDocData);
       newDocData.profession = {
         ...entry,
         position: {
@@ -70,6 +70,6 @@ export function updateDocDataFromEntries(
     }
   }
   
-  console.log("Updated document:", newDocData);
+  //console.log("Updated document:", newDocData);
   return newDocData;
 }

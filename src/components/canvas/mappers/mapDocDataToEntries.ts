@@ -15,7 +15,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
   const entries: ContainerEntry[] = [];
 
   function normalizePosition(position: any) { 
-    if (!position) return null;
+    if (!position) return {xCord: 0, yCord: 0}; // default position if none provided
     return {
       xCord: position.xcord ?? 0,
       yCord: position.ycord ?? 0,

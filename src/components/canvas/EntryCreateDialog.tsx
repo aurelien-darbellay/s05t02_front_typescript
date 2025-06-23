@@ -6,7 +6,7 @@ interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any) => void;
+  onSave: (entryData: any,setEntries:()=>void,docData:any) => void;
 }
 
 export default function EntryCreateDialog({
@@ -48,7 +48,7 @@ export default function EntryCreateDialog({
       ...entryValues,
     };
 
-    console.log("Saving entry data:", entryData);
+    //console.log("Saving entry data:", entryData);
 
     try {
       onSave(entryData);

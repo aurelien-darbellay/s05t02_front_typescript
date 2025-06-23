@@ -20,7 +20,7 @@ const EditDocumentView: React.FC = () => {
       try {
         const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id || "");
         const response = await axios.get(url, { withCredentials: true });
-        console.log("Document data fetched:", response.data);
+        //console.log("Document data fetched:", response.data);
         setInitialDocData(response.data);
         setUpdatedDocData(response.data); // Initialize updatedDocData with fetched data
       } catch (err: any) {
@@ -32,7 +32,7 @@ const EditDocumentView: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-  console.log('docData actually changed:', initialDocData);
+  //console.log('docData actually changed:', initialDocData);
 }, [initialDocData]);
 
   const handleSave = async () => {
@@ -40,12 +40,12 @@ const EditDocumentView: React.FC = () => {
 
     try {
       const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id);
-      console.log("Saving document data:", updatedDocData);
+      //console.log("Saving document data:", updatedDocData);
       // Ensure docData is in the correct format expected by the backend
       await axios.post(url, updatedDocData, { withCredentials: true });
-      console.log("Document saved successfully.");
+      //console.log("Document saved successfully.");
     } catch (err: any) {
-      console.error("Failed to save document:", err.response?.data?.message || err.message);
+      //console.error("Failed to save document:", err.response?.data?.message || err.message);
     }
   };
 
