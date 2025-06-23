@@ -9,7 +9,7 @@ interface EntryProps {
     entry: ContainerEntry,
     newSize: { width: number; height: number }
   ) => void;
-  canvasSize: { width: number; height: number };
+  width: number;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -18,7 +18,7 @@ export const Entry: React.FC<EntryProps> = ({
   children,
   onPositionChange,
   onSizeChange,
-  canvasSize,
+  width,
   setExistOpenEntry,
 }) => {
   const [dragging, setDragging] = useState(false);
@@ -29,7 +29,6 @@ export const Entry: React.FC<EntryProps> = ({
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
-  const { width } = canvasSize;
 
   const displayLabel = entry.type;
 
@@ -127,7 +126,7 @@ export const Entry: React.FC<EntryProps> = ({
         borderLeftColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
 
         // Padding (always consistent)
-        padding: `${8 * scaleFactor}px`,
+        padding: hovered ? `${8 * scaleFactor}px` : 0,
 
         background: hovered ? '#fff' : 'transparent',
         pointerEvents: dragging || resizing ? 'none' : 'auto',
@@ -146,6 +145,7 @@ export const Entry: React.FC<EntryProps> = ({
           fontWeight: 'bold',
           userSelect: 'none',
           textAlign: 'center',
+          marginBottom: hovered ? 0 : '-5px',
         }}
       >
         {displayLabel}

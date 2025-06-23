@@ -59,7 +59,7 @@ export const renderConcrete = (entry: ContainerEntry) => {
 export const useCanvasSize = (
   canvasRef: React.RefObject<HTMLElement | null>
 ) => {
-  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useState({ canvasWidth: 0, height: 0 });
   const [canvasReady, setCanvasReady] = useState(false);
 
   useLayoutEffect(() => {
@@ -70,7 +70,7 @@ export const useCanvasSize = (
     const updateSize = () => {
       const { width, height } = canvas.getBoundingClientRect();
       if (width > 0 && height > 0) {
-        setCanvasSize({ width, height });
+        setCanvasSize({ canvasWidth: width, height });
         setCanvasReady(true);
       }
     };

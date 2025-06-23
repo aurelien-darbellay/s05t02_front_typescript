@@ -35,7 +35,10 @@ export const Canvas: React.FC<CanvasProps> = ({
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [canvasHeight, setCanvasHeight] = useState(1000);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { canvasReady, canvasSize } = useCanvasSize(canvasRef);
+  const {
+    canvasReady,
+    canvasSize: { canvasWidth },
+  } = useCanvasSize(canvasRef);
   const [updateUser, setUpdateUser] = useState(false);
   const [updateUserMessage, setUpdateUserMessage] = useState('');
   const [existOpenEntry, setExistOpenEntry] = useState(false);
@@ -67,7 +70,6 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   // Dynamically set canvas height based on entry positions
   useEffect(() => {
-    if (!canvasSize.height) return;
     const buffer = 100;
     let maxY = 0;
     entries.forEach((entry) => {
@@ -109,7 +111,7 @@ export const Canvas: React.FC<CanvasProps> = ({
             key={idx}
             entry={entry}
             onPositionChange={updatePosition}
-            canvasSize={canvasSize}
+            width={canvasWidth}
             setExistOpenEntry={setExistOpenEntry}
           >
             {renderConcrete(entry)}
