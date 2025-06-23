@@ -1,4 +1,5 @@
 import DocumentPreview from "./DocumentPreview"
+import DeleteDocumentButton from "./DeleteDocumentButton";
 import { useState } from "react";
 import CreateDocumentDialog from "./CreateDocumentDialog";
 
@@ -25,7 +26,10 @@ const Dashboard: React.FC<DashboardProps> = ({ documents, onRefresh }) => {
     >
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {documents.map((doc, index) => (
-          <DocumentPreview key={index} document={doc} />
+          <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <DocumentPreview document={doc} />
+            <DeleteDocumentButton docId={doc.docId} onDelete={onRefresh} />
+          </div>
         ))}
         <div
           style={{

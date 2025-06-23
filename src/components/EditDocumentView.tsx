@@ -11,7 +11,8 @@ const EditDocumentView: React.FC = () => {
   const navigate = useNavigate();
   const initialConfig = useTypesConfig();
   const [config, setConfig] = useState(initialConfig);
-  const [docData, setDocData] = useState<any>(null);
+  const [initialDocData, setInitialDocData] = useState<any>(null);
+  const [updatedDocData, setUpdatedDocData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -20,24 +21,28 @@ const EditDocumentView: React.FC = () => {
         const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id || "");
         const response = await axios.get(url, { withCredentials: true });
         console.log("Document data fetched:", response.data);
-        setDocData(response.data);
+        setInitialDocData(response.data);
+        setUpdatedDocData(response.data); // Initialize updatedDocData with fetched data
       } catch (err: any) {
         const message = err.response?.data?.message || err.message || "Unknown error";
         setError("Failed to load document: " + message);
       }
     };
-
     fetchDocument();
   }, [id]);
 
+  useEffect(() => {
+  console.log('docData actually changed:', initialDocData);
+}, [initialDocData]);
+
   const handleSave = async () => {
-    if (!docData || !id) return;
+    if (!initialDocData || !id) return;
 
     try {
       const url = ApiPaths.DOC_ID_PATH.replace("{docId}", id);
-      console.log("Saving document data:", docData);
+      console.log("Saving document data:", updatedDocData);
       // Ensure docData is in the correct format expected by the backend
-      await axios.post(url, docData, { withCredentials: true });
+      await axios.post(url, updatedDocData, { withCredentials: true });
       console.log("Document saved successfully.");
     } catch (err: any) {
       console.error("Failed to save document:", err.response?.data?.message || err.message);
@@ -45,7 +50,7 @@ const EditDocumentView: React.FC = () => {
   };
 
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (!docData) return <p>Loading document...</p>;
+  if (!initialDocData) return <p>Loading document...</p>;
 
   return (
     <div className="relative w-full min-h-screen bg-gray-100">
@@ -84,7 +89,7 @@ const EditDocumentView: React.FC = () => {
 
       {/* Canvas grows with content and scrolls normally */}
       <div className="w-full">
-        <Canvas docData={docData} cfg={config} setDocData={setDocData} />
+        <Canvas docData={initialDocData} cfg={config} setDocData={setUpdatedDocData} />
       </div>
     </div>
   );

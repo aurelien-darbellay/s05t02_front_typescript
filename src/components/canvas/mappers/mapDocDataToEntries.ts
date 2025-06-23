@@ -1,15 +1,15 @@
-import { Profession } from "../../model/concreteEntries/Profession";
-import { TechnicalSkill } from "../../model/concreteEntries/TechnicalSkill";
-import { Identity } from "../../model/concreteEntries/Identity";
-import { Education } from "../../model/concreteEntries/Education";
-import { Experience } from "../../model/concreteEntries/Experience";
-import { Language } from "../../model/concreteEntries/Language";
-import { Contact } from "../../model/concreteEntries/Contact";
-import { SoftSkill } from "../../model/concreteEntries/SoftSkill";
-import { Summary } from "../../model/concreteEntries/Summary";
-import { Portfolio } from "../../model/concreteEntries/Portfolio";
-import { ProfilePicture } from "../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries} from "../../model/EntriesGeneralFeatures"; // assuming this exports the type
+import { Profession } from "../../../model/concreteEntries/Profession";
+import { TechnicalSkill } from "../../../model/concreteEntries/TechnicalSkill";
+import { Identity } from "../../../model/concreteEntries/Identity";
+import { Education } from "../../../model/concreteEntries/Education";
+import { Experience } from "../../../model/concreteEntries/Experience";
+import { Language } from "../../../model/concreteEntries/Language";
+import { Contact } from "../../../model/concreteEntries/Contact";
+import { SoftSkill } from "../../../model/concreteEntries/SoftSkill";
+import { Summary } from "../../../model/concreteEntries/Summary";
+import { Portfolio } from "../../../model/concreteEntries/Portfolio";
+import { ProfilePicture } from "../../../model/concreteEntries/ProfilePicture";
+import { ContainerEntry, ListEntries} from "../../../model/EntriesGeneralFeatures"; // assuming this exports the type
 
 export function mapDocDataToEntries(docData: any): ContainerEntry[] {
   const entries: ContainerEntry[] = [];

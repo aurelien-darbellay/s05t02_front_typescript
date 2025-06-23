@@ -7,9 +7,10 @@ interface EntryProps {
   children: React.ReactNode;
   onPositionChange: (entry: ContainerEntry, newPos: Position) => void;
   onSizeChange?: (entry: ContainerEntry, newSize: { width: number; height: number }) => void;
+  canvasRef: React.RefObject<HTMLDivElement> | null;
 }
 
-export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange }) => {
+export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasRef }) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -18,6 +19,8 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
+  const canvas = canvasRef.current;
+  const {width,height}  = canvas ? canvas.getBoundingClientRect() : {width: 1000, height: 1000};
 
   const displayLabel = entry.type;
 
@@ -37,9 +40,9 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
 
   const handleMouseMove = (e: MouseEvent) => {
     if (dragging) {
-      console.log("Dragging entry:", entry.type);
-      const deltaX = e.clientX - originMouse.current.x;
-      const deltaY = e.clientY - originMouse.current.y;
+      console.log('Dragging');
+      const deltaX = e.clientX/width - originMouse.current.x/width;
+      const deltaY = e.clientY/height - originMouse.current.y/height;
       const newPos: Position = {
         xCord: originPos.current.xCord + deltaX,
         yCord: originPos.current.yCord + deltaY,
@@ -83,8 +86,8 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
       onMouseLeave={() => !resizing && setHovered(false)}
       style={{
         position: 'absolute',
-        left: entry.position.xCord,
-        top: entry.position.yCord, 
+        left: entry.position.xCord*width,
+        top: entry.position.yCord*height, 
         zIndex: hovered ? 999 : 'auto',
         borderTop: hovered ? `6px solid ${entry.color ? entry.color : '#ccc'}` : 'none',
         borderRight: hovered ? `6px solid ${entry.color ? entry.color : '#ccc'}` : 'none',
