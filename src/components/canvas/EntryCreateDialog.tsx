@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { EntryFieldConfig } from "../../model/EntryFieldConfig";
-import { TypesConfig } from "../../model/TypesConfig";
+import { useState } from 'react';
+import { EntryFieldConfig } from '../../model/EntryFieldConfig';
+import { TypesConfig } from '../../model/TypesConfig';
 
 interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
   onSave: (entryData: any) => void;
+  position: { xCord: number; yCord: number } | null;
 }
 
 export default function EntryCreateDialog({
@@ -14,13 +15,14 @@ export default function EntryCreateDialog({
   onClose,
   cfg,
   onSave,
+  position,
 }: EntryCreateDialogProps) {
-  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
-  const [color, setColor] = useState<string>("#000000");
+  const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
 
-  const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, "");
+  const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, '');
   const selector = normalizeType(selectedType);
   const fields = EntryFieldConfig[selector] || [];
 
@@ -28,7 +30,7 @@ export default function EntryCreateDialog({
     setSelectedType(() => type);
     const newSelector = normalizeType(type);
     const initialValues = Object.fromEntries(
-      (EntryFieldConfig[newSelector] || []).map((field) => [field, ""])
+      (EntryFieldConfig[newSelector] || []).map((field) => [field, ''])
     );
     setEntryValues(initialValues);
     setError(null);
@@ -40,25 +42,26 @@ export default function EntryCreateDialog({
 
   const handleSave = () => {
     if (!selectedType) {
-      setError("Please select an entry type.");
+      setError('Please select an entry type.');
       return;
     }
-
+    console.log('Position:', position);
     const entryData = {
       type: selectedType,
       color,
+      position,
       ...entryValues,
     };
 
     try {
       onSave(entryData);
       onClose();
-      setSelectedType("");
+      setSelectedType('');
       setEntryValues({});
-      setColor("#000000");
+      setColor('#000000');
       setError(null);
     } catch {
-      setError("Failed to save entry.");
+      setError('Failed to save entry.');
     }
   };
 
@@ -106,7 +109,7 @@ export default function EntryCreateDialog({
             <input
               type="text"
               className="w-full border border-gray-300 rounded-md p-2"
-              value={entryValues[field] || ""}
+              value={entryValues[field] || ''}
               onChange={(e) => handleInputChange(field, e.target.value)}
               placeholder={field}
             />
@@ -136,5 +139,3 @@ export default function EntryCreateDialog({
     </div>
   );
 }
-
-

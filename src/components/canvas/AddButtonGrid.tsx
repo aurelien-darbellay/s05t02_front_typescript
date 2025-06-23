@@ -4,20 +4,28 @@ import { ContainerEntry } from '../../model/EntriesGeneralFeatures.ts';
 interface AddButtonGridProps {
   entries: ContainerEntry[];
   gridLines: number;
-  onAddClick: () => void;
+  onAddClick: (relativeX, relativeY) => void;
   existOpenEntry: boolean;
+  canvasRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines, onAddClick, existOpenEntry }) => {
-
+export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
+  entries,
+  gridLines,
+  onAddClick,
+  existOpenEntry,
+  canvasRef,
+}) => {
   const totalCells = gridLines * 6;
   const overlappedGridIndices = new Set<number>();
-  const getFraction =(value: number, radix: number):number => {
+
+  const getFraction = (value: number, radix: number): number => {
     if (value < 0 || value > 1) {
-       throw new Error("Value must be between 0 and 1.");
-      }
-      return Math.min(6, Math.floor(value * radix) + 1);
-  }
+      throw new Error('Value must be between 0 and 1.');
+    }
+    return Math.min(6, Math.floor(value * radix) + 1);
+  };
+
   entries.forEach((entry) => {
     if (!entry.position) return; // Skip entries without a position
     const { xCord, yCord } = entry.position;
@@ -30,8 +38,18 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines
       if (gridIndex < totalCells - 1) overlappedGridIndices.add(gridIndex + 1); // Add right neighbor
     }
   });
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('hola');
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const centerX = (e.clientX - rect.left) / rect.width;
+    const centerY = (e.clientY - rect.top) / rect.height;
+    onAddClick(centerX, centerY);
+  };
+
   if (existOpenEntry) return null;
-  
+
   return (
     <div
       className="grid gap-4 p-4 z-0 pointer-events-none"
@@ -45,11 +63,14 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines
         //console.log(`Cell ${idx} is overlapped: ${isOverlapped}`);
         return (
           <button
-          
             key={idx}
-            onClick={() => !isOverlapped && onAddClick()}
+            onClick={(e) => {
+              if (!isOverlapped) handleClick(e);
+            }}
             className={`${
-              isOverlapped ? 'opacity-0' : 'opacity-0 hover:opacity-100 pointer-events-auto'
+              isOverlapped
+                ? 'opacity-0'
+                : 'opacity-0 hover:opacity-100 pointer-events-auto'
             } transition-opacity duration-300 bg-white text-gray-600 border-2 border-dashed border-gray-400 rounded-md flex items-center justify-center text-2xl`}
           >
             +
