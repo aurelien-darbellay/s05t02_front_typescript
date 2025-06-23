@@ -2,7 +2,6 @@ import {
   ContainerEntry,
   Position,
   Entry,
-  EMPTY_ENTRY,
 } from '../EntriesGeneralFeatures';
 
 export class Summary implements ContainerEntry {
@@ -19,8 +18,8 @@ export class Summary implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry;
-  public nextEntry: Entry;
+  public previousEntry: Entry|null;
+  public nextEntry: Entry|null;
 
   // Summary-specific fields
   public title: string;
@@ -58,7 +57,7 @@ export class Summary implements ContainerEntry {
     this.highlighted = highlighted;
 
     // Initialize ContainerEntry links
-    this.previousEntry = previousEntry ?? EMPTY_ENTRY;
-    this.nextEntry = nextEntry ?? EMPTY_ENTRY;
+    this.previousEntry = previousEntry ?? null;
+    this.nextEntry = nextEntry ?? null;
   }
 }

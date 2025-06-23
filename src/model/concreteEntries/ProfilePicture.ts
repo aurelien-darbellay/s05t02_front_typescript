@@ -2,7 +2,6 @@ import {
   ContainerEntry,
   Position,
   Entry,
-  EMPTY_ENTRY,
 } from '../EntriesGeneralFeatures';
 
 export enum Shape {
@@ -27,8 +26,8 @@ export class ProfilePicture implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry;
-  public nextEntry: Entry;
+  public previousEntry: Entry|null;
+  public nextEntry: Entry|null;
 
   // ProfilePicture-specific fields
   public urlPicture: string;
@@ -66,7 +65,7 @@ export class ProfilePicture implements ContainerEntry {
     this.highlighted = highlighted;
 
     // Initialize ContainerEntry links
-    this.previousEntry = previousEntry ?? EMPTY_ENTRY;
-    this.nextEntry = nextEntry ?? EMPTY_ENTRY;
+    this.previousEntry = previousEntry ?? null;
+    this.nextEntry = nextEntry ?? null;
   }
 }

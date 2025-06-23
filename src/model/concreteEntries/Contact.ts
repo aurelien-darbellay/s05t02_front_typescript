@@ -2,7 +2,6 @@ import {
   Entry,
   Position,
   ContainerEntry,
-  EMPTY_ENTRY,
 } from '../EntriesGeneralFeatures'; // adjust the import path as needed
 
 export class Contact implements ContainerEntry {
@@ -15,8 +14,8 @@ export class Contact implements ContainerEntry {
   public position: Position;
   public color: string;
   public size: number;
-  public previousEntry: Entry;
-  public nextEntry: Entry;
+  public previousEntry: Entry|null;
+  public nextEntry: Entry|null;
 
   // Contact‐specific properties
   public phoneNumber: string;
@@ -56,8 +55,8 @@ export class Contact implements ContainerEntry {
     this.position = position;
     this.color = color;
     this.size = size;
-    this.previousEntry = previousEntry ?? EMPTY_ENTRY;
-    this.nextEntry = nextEntry ?? EMPTY_ENTRY;
+    this.previousEntry = previousEntry ?? null;
+    this.nextEntry = nextEntry ?? null;
 
     // Initialize Contact‐specific properties
     this.phoneNumber = phoneNumber;

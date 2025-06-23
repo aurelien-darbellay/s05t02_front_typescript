@@ -22,18 +22,13 @@ interface Sized {
   size: number;
 }
 export interface ContainerEntry extends Entry, Positioned, Colored, Sized {
-  previousEntry: Entry;
-  nextEntry: Entry;
+  previousEntry: Entry|null;
+  nextEntry: Entry|null;
 }
 export interface ContainedEntry extends Entry {
   id: string;
 }
 
-export const EMPTY_ENTRY: Entry = {
-  projected: false,
-  highlighted: false,
-  type: "empty"
-};
 
 export class ListEntries implements ContainerEntry {
   public type: string;
@@ -43,8 +38,8 @@ export class ListEntries implements ContainerEntry {
   public position: Position;
   public color: string;
   public size: number;
-  public previousEntry: Entry;
-  public nextEntry: Entry;
+  public previousEntry: Entry|null;
+  public nextEntry: Entry|null;
 
   constructor(
     entries: Entry[],
@@ -63,7 +58,7 @@ export class ListEntries implements ContainerEntry {
     this.position = position;
     this.color = color;
     this.size = size;
-    this.previousEntry = previous ?? EMPTY_ENTRY;
-    this.nextEntry = next ?? EMPTY_ENTRY;
+    this.previousEntry = previous ?? null;
+    this.nextEntry = next ?? null;
   }
 }

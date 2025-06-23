@@ -3,7 +3,7 @@ import { Identity } from "../../model/concreteEntries/Identity";
 import { Contact } from "../../model/concreteEntries/Contact";
 import { Summary } from "../../model/concreteEntries/Summary";
 import { ProfilePicture } from "../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries, EMPTY_ENTRY } from "../../model/EntriesGeneralFeatures";
+import { ContainerEntry, ListEntries} from "../../model/EntriesGeneralFeatures";
 export function updateDocDataFromEntries(
   entries: ContainerEntry[],
   setDocData: (updatedDoc: any) => void
@@ -22,6 +22,7 @@ export function updateDocDataFromEntries(
     } else if (entry instanceof Profession) {
       newDoc.profession = {
         ...entry,
+        position: {...entry.position}
       };
     } else if (entry instanceof ProfilePicture) {
       newDoc.profilePicture = {
@@ -47,9 +48,9 @@ export function updateDocDataFromEntries(
       };
     }
   }
-
-  setDocData((prev: any) => ({
-    ...prev,
-    ...newDoc,
-  }));
+  
+  console.log("Position in newDoc:", newDoc.profession.position);
+  console.log("Updated document data:", newDoc);
+  setDocData({...newDoc});
+    
 }

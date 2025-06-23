@@ -9,13 +9,23 @@ import { SoftSkill } from "../../model/concreteEntries/SoftSkill";
 import { Summary } from "../../model/concreteEntries/Summary";
 import { Portfolio } from "../../model/concreteEntries/Portfolio";
 import { ProfilePicture } from "../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries, EMPTY_ENTRY } from "../../model/EntriesGeneralFeatures"; // assuming this exports the type
+import { ContainerEntry, ListEntries} from "../../model/EntriesGeneralFeatures"; // assuming this exports the type
 
 export function mapDocDataToEntries(docData: any): ContainerEntry[] {
   const entries: ContainerEntry[] = [];
 
+  function normalizePosition(position: any) { 
+    if (!position) return null;
+    return {
+      xCord: position.xcord ?? 0,
+      yCord: position.ycord ?? 0,
+      }; 
+  } 
+
+
   if (docData.profession) {
     const p = docData.profession;
+    p.position = normalizePosition(p.position);
     entries.push(
       new Profession(
         p.generalTitle,
@@ -33,6 +43,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
 
   if (docData.identity) {
     const i = docData.identity;
+    i.position = normalizePosition(i.position);
     entries.push(
       new Identity(
         i.position,
@@ -48,6 +59,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
 
   if (docData.profilePicture) {
     const pp = docData.profilePicture;
+    pp.position = normalizePosition(pp.position);
     entries.push(
       new ProfilePicture(
         pp.urlPicture,
@@ -65,6 +77,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
 
   if (docData.contact) {
     const c = docData.contact;
+    c.position = normalizePosition(c.position);
     entries.push(
       new Contact(
         c.projected,
@@ -88,6 +101,7 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
 
   if (docData.summary) {
     const s = docData.summary;
+    s.position = normalizePosition(s.position);
     entries.push(
       new Summary(
         s.title,
@@ -132,12 +146,10 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
   ];
 
   for (const block of structuredBlocks) {
+    if (block.data) block.data.position = normalizePosition(block.data.position);
     const listEntry = mapListEntries(block.data, block.klass);
     if (listEntry) entries.push(listEntry);
   }
-  entries.forEach((entry,index)=>{
-    entry.position = entry.position || { xCord: 0, yCord: 0 };
-  });
 
   return entries;
 }

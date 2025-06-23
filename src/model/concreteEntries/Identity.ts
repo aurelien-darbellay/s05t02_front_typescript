@@ -2,7 +2,6 @@ import {
   ContainerEntry,
   Position,
   Entry,
-  EMPTY_ENTRY,
 } from '../EntriesGeneralFeatures';
 
 export class Identity implements ContainerEntry {
@@ -19,8 +18,8 @@ export class Identity implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry;
-  public nextEntry: Entry;
+  public previousEntry: Entry|null;
+  public nextEntry: Entry|null;
 
   // Identity-specific fields
   public names: string[] = [];
@@ -40,8 +39,8 @@ export class Identity implements ContainerEntry {
     this.size = size;
     this.projected = projected;
     this.highlighted = highlighted;
-    this.previousEntry = previousEntry ?? EMPTY_ENTRY;
-    this.nextEntry = nextEntry ?? EMPTY_ENTRY;
+    this.previousEntry = previousEntry ?? null;
+    this.nextEntry = nextEntry ?? null;
     // names and lastNames default to empty arrays
   }
 }

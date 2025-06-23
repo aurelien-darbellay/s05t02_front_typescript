@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import { ContainerEntry, Position } from '../model/EntriesGeneralFeatures';
+import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -37,6 +37,7 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
 
   const handleMouseMove = (e: MouseEvent) => {
     if (dragging) {
+      console.log("Dragging entry:", entry.type);
       const deltaX = e.clientX - originMouse.current.x;
       const deltaY = e.clientY - originMouse.current.y;
       const newPos: Position = {

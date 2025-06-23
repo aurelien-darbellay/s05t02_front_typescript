@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures.ts';
-import { Entry } from '../Entry.tsx';
+import { Entry } from './Entry.tsx';
 import { ContactComponent } from './entriesComponents/ContactComponent.tsx';
 import { IdentityComponent } from './entriesComponents/IdentityComponent.tsx';
 import { ProfessionComponent } from './entriesComponents/ProfessionComponent.tsx';
@@ -73,6 +73,7 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
 
   useEffect(() => {
     updateDocDataFromEntries(entries,setDocData);
+    console.log("Document data updated from entries:", docData);
   }, [entries]);
 
   return (
