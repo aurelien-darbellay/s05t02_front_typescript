@@ -18,19 +18,25 @@ import { ApiPaths } from '../../apiPaths.ts';
 
 export const createHandleAddEntry = (
   docId: string,
-  setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>
+  setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
+  exposeError:React.Dispatch<React.SetStateAction<boolean>>,
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 ) => {
   return async (entryData: any) => {
-    const newEntry = mapSingleEntryDataToInstance(entryData);
-    if (newEntry) {
-      setEntries((prev) => [...prev, newEntry]);
+    try { 
+      const url = ApiPaths.ENTRY_BASE_PATH.replace("{docId}", docId) + ApiPaths.ENTRY_ADD_REL;
+      const payload = { ...entryData, type: entryData.type.toUpperCase() }; // normalize type
+      await axios.post(url, payload, { withCredentials: true });
+      const newEntry = mapSingleEntryDataToInstance(entryData);
+      if (newEntry) {
+        setEntries((prev) => [...prev, newEntry]);
+      }
+    } catch (error) {
+      exposeError(true);
+      setErrorMessage("Failed to add entry: " + (error as Error).message);
     }
-
-    const url = ApiPaths.ENTRY_BASE_PATH.replace("{docId}", docId) + ApiPaths.ENTRY_ADD_REL;
-    const payload = { ...entryData, type: entryData.type.toUpperCase() }; // normalize type
-    await axios.post(url, payload, { withCredentials: true });
   };
-};
+}
 
 export const renderConcrete = (entry: ContainerEntry) => {
     if (entry instanceof Contact) return <ContactComponent contact={entry as Contact} />;
@@ -42,7 +48,7 @@ export const renderConcrete = (entry: ContainerEntry) => {
       return null;
     };
 
-export const useCanvasSize = (canvasRef: React.RefObject<HTMLElement>|null) => {
+export const useCanvasSize = (canvasRef: React.RefObject<HTMLElement|null>) => {
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [canvasReady, setCanvasReady] = useState(false);
 

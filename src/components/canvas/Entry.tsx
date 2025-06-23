@@ -8,9 +8,10 @@ interface EntryProps {
   onPositionChange: (entry: ContainerEntry, newPos: Position) => void;
   onSizeChange?: (entry: ContainerEntry, newSize: { width: number; height: number }) => void;
   canvasSize: { width: number; height: number };
+  setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasSize }) => {
+export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange, onSizeChange, canvasSize, setExistOpenEntry }) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -81,8 +82,13 @@ export const Entry: React.FC<EntryProps> = ({ entry, children, onPositionChange,
     <div
       ref={entryRef}
       onMouseDown={handleMouseDown}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => !resizing && setHovered(false)}
+      onMouseEnter={() => {setHovered(true); setExistOpenEntry(true);}}
+      onMouseLeave={() => {
+        if (!resizing){
+          setHovered(false);
+          setExistOpenEntry(false);
+        }
+      }}
       style={{
         position: 'absolute',
         left: entry.position.xCord*width,

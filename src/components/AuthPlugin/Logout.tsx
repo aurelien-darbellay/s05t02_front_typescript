@@ -15,7 +15,7 @@ const Logout = ({authStateSetters, pluginCfg}) => {
       setError(null);
       window.location.href = "/"; // Redirect after logout
     } catch (err) {
-      console.error("Logout failed", err);
+      //console.error("Logout failed", err);
       setError("Logout failed. Try again.");
     }
   };

@@ -5,22 +5,33 @@ interface AddButtonGridProps {
   entries: ContainerEntry[];
   gridLines: number;
   onAddClick: () => void;
+  existOpenEntry: boolean;
 }
 
-export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines, onAddClick }) => {
-  const totalCells = gridLines * 6;
+export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines, onAddClick, existOpenEntry }) => {
 
-  // Calculate overlapped grid indices (assuming entry.position in grid units)
+  const totalCells = gridLines * 6;
   const overlappedGridIndices = new Set<number>();
+  const getFraction =(value: number, radix: number):number => {
+    if (value < 0 || value > 1) {
+       throw new Error("Value must be between 0 and 1.");
+      }
+      return Math.min(6, Math.floor(value * radix) + 1);
+  }
   entries.forEach((entry) => {
     if (!entry.position) return; // Skip entries without a position
     const { xCord, yCord } = entry.position;
-    if (xCord >= 0 && xCord < gridLines && yCord >= 0 && yCord < gridLines) {
-      const index = yCord * gridLines + xCord;
-      overlappedGridIndices.add(index);
+    const xIndex = getFraction(xCord, 6) - 1; // Convert to grid index (0-5)
+    const yIndex = getFraction(yCord, gridLines) - 1; // Convert
+    const gridIndex = yIndex * 6 + xIndex; // Calculate the grid index
+    if (gridIndex >= 0 && gridIndex < totalCells) {
+      overlappedGridIndices.add(gridIndex);
+      if (gridIndex > 1) overlappedGridIndices.add(gridIndex - 1); // Add left neighbor
+      if (gridIndex < totalCells - 1) overlappedGridIndices.add(gridIndex + 1); // Add right neighbor
     }
   });
-
+  if (existOpenEntry) return null;
+  
   return (
     <div
       className="grid gap-4 p-4 z-0 pointer-events-none"
@@ -31,13 +42,14 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({ entries, gridLines
     >
       {Array.from({ length: totalCells }).map((_, idx) => {
         const isOverlapped = overlappedGridIndices.has(idx);
+        //console.log(`Cell ${idx} is overlapped: ${isOverlapped}`);
         return (
           <button
           
             key={idx}
             onClick={() => !isOverlapped && onAddClick()}
             className={`${
-              isOverlapped ? 'hidden' : 'opacity-0 hover:opacity-100 pointer-events-auto'
+              isOverlapped ? 'opacity-0' : 'opacity-0 hover:opacity-100 pointer-events-auto'
             } transition-opacity duration-300 bg-white text-gray-600 border-2 border-dashed border-gray-400 rounded-md flex items-center justify-center text-2xl`}
           >
             +

@@ -6,7 +6,7 @@ interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any,setEntries:()=>void,docData:any) => void;
+  onSave: (entryData: any) => void;
 }
 
 export default function EntryCreateDialog({
@@ -17,6 +17,7 @@ export default function EntryCreateDialog({
 }: EntryCreateDialogProps) {
   const [selectedType, setSelectedType] = useState<string>("");
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
+  const [color, setColor] = useState<string>("#000000");
   const [error, setError] = useState<string | null>(null);
 
   const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, "");
@@ -45,16 +46,16 @@ export default function EntryCreateDialog({
 
     const entryData = {
       type: selectedType,
+      color,
       ...entryValues,
     };
-
-    //console.log("Saving entry data:", entryData);
 
     try {
       onSave(entryData);
       onClose();
       setSelectedType("");
       setEntryValues({});
+      setColor("#000000");
       setError(null);
     } catch {
       setError("Failed to save entry.");
@@ -83,6 +84,17 @@ export default function EntryCreateDialog({
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Color Picker */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Color</label>
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            className="w-full h-10 border border-gray-300 rounded-md"
+          />
         </div>
 
         {/* Dynamic Input Fields */}
@@ -124,4 +136,5 @@ export default function EntryCreateDialog({
     </div>
   );
 }
+
 

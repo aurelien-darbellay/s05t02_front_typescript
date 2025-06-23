@@ -7,20 +7,25 @@ import { TypesConfig } from "../../model/TypesConfig";
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { updateDocDataFromEntries } from './mappers/updateDocDataFromEntries.ts';
 import { renderConcrete, createHandleAddEntry, useCanvasSize } from './CanvasHelpers.tsx';
+import UserUpdateDialog from '../UserUpdateDialog.tsx';
 
 interface CanvasProps {
   docData: any;
   cfg: TypesConfig;
   setDocData: (updatedDoc: any) => void;
+  dialogOpen: boolean;
+  setDialogOpen: (open: boolean) => void;
 }
 
-export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
+export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData,dialogOpen,setDialogOpen }) => {
   const listEntries = mapDocDataToEntries(docData);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [canvasHeight, setCanvasHeight] = useState(1000); 
   const canvasRef = useRef<HTMLDivElement>(null);
   const {canvasReady,canvasSize} = useCanvasSize(canvasRef);
+  const [updateUser, setUpdateUser] = useState(false);
+  const [updateUserMessage, setUpdateUserMessage] = useState(""); 
+  const [existOpenEntry, setExistOpenEntry] = useState(false);
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
     const canvas  = canvasRef.current;
@@ -29,7 +34,8 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
     setEntries((prevEntries) => prevEntries.map((e) => e.type === entry.type ? updated : e));
   };
 
-  const handleAddEntry = createHandleAddEntry(docData.docId, setEntries);
+  //console.log("Doc Id:", docData.id);
+  const handleAddEntry = createHandleAddEntry(docData.id, setEntries,setUpdateUser,setUpdateUserMessage);
 
   // Dynamically set canvas height based on entry positions
   useEffect(() => {
@@ -55,13 +61,14 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
         entries={entries}
         gridLines={Math.ceil(canvasHeight / 100)}
         onAddClick={() => setDialogOpen(true)}
+        existOpenEntry={existOpenEntry}
       />
 
       {!canvasReady ? (
         <div className="text-center py-10 text-gray-600 text-lg">Adjusting positions...</div>
       ) : (
         entries.map((entry, idx) => (
-          <Entry key={idx} entry={entry} onPositionChange={updatePosition} canvasSize={canvasSize}>
+          <Entry key={idx} entry={entry} onPositionChange={updatePosition} canvasSize={canvasSize} setExistOpenEntry={setExistOpenEntry}>
             {renderConcrete(entry)}
           </Entry>
         ))
@@ -73,6 +80,7 @@ export const Canvas: React.FC<CanvasProps> = ({ docData, cfg, setDocData }) => {
         cfg={cfg}
         onSave={handleAddEntry}
       />
+      <UserUpdateDialog open={updateUser} message={updateUserMessage} onClick={() => setUpdateUser(false)} />
     </div>
   );
 };
