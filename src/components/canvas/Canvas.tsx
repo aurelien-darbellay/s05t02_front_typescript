@@ -46,6 +46,8 @@ export const Canvas: React.FC<CanvasProps> = ({
     xCord: number;
     yCord: number;
   } | null>({ xCord: 0, yCord: 0 });
+  const [entryDataInModif, setEntryDataInModif] =
+    useState<ContainerEntry | null>(null);
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
     const canvas = canvasRef.current;
@@ -60,7 +62,6 @@ export const Canvas: React.FC<CanvasProps> = ({
     );
   };
 
-  //console.log("Doc Id:", docData.id);
   const handleAddEntry = createHandleAddEntry(
     docData.id,
     setEntries,
@@ -68,26 +69,30 @@ export const Canvas: React.FC<CanvasProps> = ({
     setUpdateUserMessage
   );
 
-  // Dynamically set canvas height based on entry positions
   useEffect(() => {
     const buffer = 100;
     let maxY = 0;
     entries.forEach((entry) => {
-      const bottom = entry.position.yCord + 150; // approx. entry height
+      const bottom = entry.position.yCord + 150;
       if (bottom > maxY) maxY = bottom;
     });
     setCanvasHeight(maxY + buffer);
   }, [entries]);
 
   useEffect(() => {
-    //console.log("Entries updated:", entries);
     const newDocData = updateDocDataFromEntries(docData, entries);
     setDocData(newDocData);
-    //console.log("Updated document data:", newDocData);
   }, [entries]);
 
   const onAddClick = (relativeX, relativeY) => {
+    setEntryDataInModif(null);
     setEntrySpawnPosition({ xCord: relativeX, yCord: relativeY });
+    setDialogOpen(true);
+  };
+
+  const handleEditEntry = (entry: ContainerEntry) => {
+    console.log('Editing entry:', entry);
+    setEntryDataInModif(entry);
     setDialogOpen(true);
   };
 
@@ -113,6 +118,7 @@ export const Canvas: React.FC<CanvasProps> = ({
             onPositionChange={updatePosition}
             width={canvasWidth}
             setExistOpenEntry={setExistOpenEntry}
+            onEditEntry={handleEditEntry}
           >
             {renderConcrete(entry)}
           </Entry>
@@ -124,12 +130,15 @@ export const Canvas: React.FC<CanvasProps> = ({
         onClose={() => {
           setDialogOpen(false);
           setEntrySpawnPosition({ xCord: 0, yCord: 0 });
+          setEntryDataInModif(null);
         }}
         cfg={cfg}
         onSave={handleAddEntry}
         position={entrySpawnPosition}
         entries={entries}
+        entryData={entryDataInModif}
       />
+
       <UserUpdateDialog
         open={updateUser}
         message={updateUserMessage}

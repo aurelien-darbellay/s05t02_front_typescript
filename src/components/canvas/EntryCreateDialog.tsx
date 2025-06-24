@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EntryFieldConfig } from '../../model/EntryFieldConfig';
 import { TypesConfig } from '../../model/TypesConfig';
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
@@ -7,9 +7,10 @@ interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any) => void;
+  onSave: (entryData: any, isNew: boolean) => void;
   position: { xCord: number; yCord: number } | null;
   entries: ContainerEntry[];
+  entryData?: ContainerEntry | null;
 }
 
 export default function EntryCreateDialog({
@@ -19,13 +20,14 @@ export default function EntryCreateDialog({
   onSave,
   position,
   entries,
+  entryData,
 }: EntryCreateDialogProps) {
+  const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
 
-  //console.log(entries);
   const restrictedTypes = [
     'Contact',
     'Identity',
@@ -33,14 +35,30 @@ export default function EntryCreateDialog({
     'Profile Picture',
     'Summary',
   ];
+
   const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, '');
   const selector = normalizeType(selectedType);
   const fields = EntryFieldConfig[selector] || [];
 
+  useEffect(() => {
+    if (entryData) {
+      setSelectedType(entryData.displayedType);
+      setColor(entryData.color);
+      const selector = normalizeType(entryData.displayedType);
+      const initValues = Object.fromEntries(
+        (EntryFieldConfig[selector] || []).map((field) => [
+          field,
+          entryData[field] || '',
+        ])
+      );
+      setEntryValues(initValues);
+    }
+  }, [entryData]);
+
   const hasDuplicateRestrictedType =
     selectedType &&
     restrictedTypes.includes(selectedType) &&
-    entries.some((entry) => entry.displayedType === selectedType);
+    entries.some((entry) => entry.displayedType === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
     setSelectedType(type);
@@ -66,15 +84,16 @@ export default function EntryCreateDialog({
       return;
     }
 
-    const entryData = {
+    const entryDataToSave = {
+      ...entryData,
       type: selectedType,
       color,
-      position,
+      position: isEditing ? entryData?.position : position,
       ...entryValues,
     };
 
     try {
-      onSave(entryData);
+      onSave(entryDataToSave, !isEditing);
       onClose();
       setSelectedType('');
       setEntryValues({});
@@ -90,7 +109,9 @@ export default function EntryCreateDialog({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-screen overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Create New Entry</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          {isEditing ? 'Edit Entry' : 'Create New Entry'}
+        </h2>
 
         {/* Entry Type Dropdown */}
         <div className="mb-4">
@@ -99,6 +120,7 @@ export default function EntryCreateDialog({
             className="w-full border border-gray-300 rounded-md p-2"
             value={selectedType}
             onChange={(e) => handleTypeChange(e.target.value)}
+            disabled={!!entryData} // Type is fixed during edit
           >
             <option value="">Select a type</option>
             {cfg.entryTypes.map((type) => (

@@ -1,3 +1,4 @@
+// --- Entry.tsx ---
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
 import { getEntryStyle } from './entryStyle';
@@ -16,6 +17,7 @@ interface EntryProps {
   ) => void;
   width: number;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
+  onEditEntry: (entry: ContainerEntry) => void;
 }
 
 export const Entry: React.FC<EntryProps> = ({
@@ -25,6 +27,7 @@ export const Entry: React.FC<EntryProps> = ({
   onSizeChange,
   width,
   setExistOpenEntry,
+  onEditEntry,
 }) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
@@ -44,7 +47,8 @@ export const Entry: React.FC<EntryProps> = ({
     originMouse,
     originPos,
     originScale,
-    scaleFactor
+    scaleFactor,
+    setHovered
   );
 
   const handleMouseMove = createHandleMouseMove(
@@ -64,6 +68,12 @@ export const Entry: React.FC<EntryProps> = ({
   const handleMouseUp = () => {
     if (dragging) setDragging(false);
     if (resizing) setResizing(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log('Entry clicked:', entry);
+    onEditEntry(entry);
   };
 
   useEffect(() => {
@@ -88,6 +98,8 @@ export const Entry: React.FC<EntryProps> = ({
     <div
       ref={entryRef}
       onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onContextMenu={handleClick}
       onMouseEnter={() => {
         setHovered(true);
         setExistOpenEntry(true);

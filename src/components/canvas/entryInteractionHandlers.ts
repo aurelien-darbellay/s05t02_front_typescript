@@ -9,9 +9,11 @@ export const createHandleMouseDown = (
   originMouse: RefObject<{ x: number; y: number }>,
   originPos: RefObject<Position>,
   originScale: RefObject<number>,
-  scaleFactor: number
+  scaleFactor: number,
+  setHovered: (hovered: boolean) => void
 ) => {
   return (e: React.MouseEvent) => {
+    setHovered(true);
     if ((e.target as HTMLElement).classList.contains('resize-handle')) {
       originMouse.current = { x: e.clientX, y: e.clientY };
       originScale.current = scaleFactor;
@@ -28,7 +30,7 @@ export const createHandleMouseDown = (
 
 export const createHandleMouseMove = (
   entry: ContainerEntry,
-  setHovered: (h: boolean) => void,
+  setHovered: (hovered: boolean) => void,
   setExistOpenEntry: (e: boolean) => void,
   dragging: boolean,
   resizing: boolean,
@@ -40,11 +42,11 @@ export const createHandleMouseMove = (
   setScaleFactor: (scale: number) => void
 ) => {
   return (e: MouseEvent) => {
-    e.preventDefault();
     setHovered(true);
     setExistOpenEntry(true);
     if (dragging) {
       //console.log('Dragging');
+      e.preventDefault();
       const deltaX = e.clientX / width - originMouse.current.x / width;
       const deltaY = e.clientY - originMouse.current.y;
       const newPos: Position = {

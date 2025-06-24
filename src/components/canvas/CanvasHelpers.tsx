@@ -22,17 +22,24 @@ export const createHandleAddEntry = (
   exposeError: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  return async (entryData: any) => {
+  return async (entryData: any, isNew: boolean) => {
     try {
       const url =
         ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
         ApiPaths.ENTRY_ADD_REL;
-      const payload = { ...entryData, type: entryData.type.toUpperCase() }; // normalize type
+      const payload = { ...entryData, type: entryData.type.toUpperCase() };
       await axios.post(url, payload, { withCredentials: true });
+
       const newEntry = mapSingleEntryDataToInstance(entryData);
-      if (newEntry) {
-        setEntries((prev) => [...prev, newEntry]);
-      }
+      if (!newEntry) return;
+
+      setEntries((prev) => {
+        if (isNew) {
+          return [...prev, newEntry];
+        } else {
+          return prev.map((e) => (e.type === newEntry.type ? newEntry : e));
+        }
+      });
     } catch (error) {
       exposeError(true);
       setErrorMessage('Failed to add entry: ' + (error as Error).message);
