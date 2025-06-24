@@ -2,6 +2,7 @@
 import React from 'react';
 import { useGetInputType } from './getInputType';
 import { CloudinaryMetaInput } from './CloudinaryMetaInput';
+import { EntryTypesFormatter } from '../entryTypesFormatter';
 
 interface EntryFieldInputProps {
   field: string;
@@ -19,10 +20,7 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
   const getInputType = useGetInputType();
   const inputType = getInputType(type, field);
 
-  const formatLabel = (str: string) =>
-    str.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase());
-
-  const label = formatLabel(field);
+  const label = EntryTypesFormatter.fromCamelCaseToDisplay(field);
   const commonClasses = 'border border-gray-300 rounded-md p-2';
 
   return (

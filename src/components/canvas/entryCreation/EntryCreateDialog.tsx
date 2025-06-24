@@ -3,8 +3,8 @@ import { EntryFieldConfig } from '../../../model/EntryFieldConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
-import { Entry } from '../Entry';
 import { EntryFieldInput } from './EntryFieldInput';
+import { EntryTypesFormatter } from '../entryTypesFormatter';
 
 interface EntryCreateDialogProps {
   open: boolean;
@@ -32,24 +32,21 @@ export default function EntryCreateDialog({
   const [error, setError] = useState<string | null>(null);
 
   const restrictedTypes = [
-    'Contact',
-    'Identity',
-    'Profession',
-    'Profile Picture',
-    'Summary',
+    'contact',
+    'identity',
+    'profession',
+    'profilePicture',
+    'summary',
   ];
 
-  const normalizeType = (key: string) => key.toLowerCase().replace(/\s/g, '');
-  const selector = normalizeType(selectedType);
-  const fields = EntryFieldConfig[selector] || [];
+  const fields = EntryFieldConfig[selectedType] || [];
 
   useEffect(() => {
     if (entryData) {
-      setSelectedType(entryData.displayedType);
+      setSelectedType(entryData.keyNameInDB);
       setColor(entryData.color);
-      const selector = normalizeType(entryData.displayedType);
       const initValues = Object.fromEntries(
-        (EntryFieldConfig[selector] || []).map((field) => [
+        (EntryFieldConfig[entryData.keyNameInDB] || []).map((field) => [
           field,
           entryData[field] || '',
         ])
@@ -61,11 +58,12 @@ export default function EntryCreateDialog({
   const hasDuplicateRestrictedType =
     selectedType &&
     restrictedTypes.includes(selectedType) &&
-    entries.some((entry) => entry.displayedType === selectedType && !isEditing);
+    entries.some((entry) => entry.keyNameInDB === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
-    setSelectedType(type);
-    const newSelector = normalizeType(type);
+    const formattedType = EntryTypesFormatter.fromDisplayToCamel(type);
+    setSelectedType(formattedType);
+    const newSelector = formattedType;
     const initialValues = Object.fromEntries(
       (EntryFieldConfig[newSelector] || []).map((field) => [field, ''])
     );
@@ -75,6 +73,14 @@ export default function EntryCreateDialog({
 
   const handleInputChange = (key: string, value: string) => {
     setEntryValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleClose = () => {
+    onClose();
+    setSelectedType('');
+    setEntryValues({});
+    setColor('#000000');
+    setError(null);
   };
 
   const handleSave = () => {
@@ -94,9 +100,9 @@ export default function EntryCreateDialog({
       position: isEditing ? entryData?.position : position,
       ...entryValues,
     };
-
+    console.log('Entry data to save:', entryDataToSave);
     try {
-      console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
+      //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onSave(normalizeEntryData(entryDataToSave), !isEditing);
       onClose();
       setSelectedType('');
@@ -170,7 +176,7 @@ export default function EntryCreateDialog({
         {/* Footer Buttons */}
         <div className="flex justify-end space-x-2 mt-4">
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
           >
             Cancel

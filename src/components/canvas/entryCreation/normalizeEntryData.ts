@@ -12,7 +12,7 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
   }
 
   // Add more normalizations here as needed
-  console.log('Normalized entry data:', normalized);
+  //console.log('Normalized entry data:', normalized);
   return normalized;
 };
 

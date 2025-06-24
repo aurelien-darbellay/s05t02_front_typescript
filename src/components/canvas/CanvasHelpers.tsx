@@ -15,6 +15,7 @@ import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
 import { mapSingleEntryDataToInstance } from './mappers/mapSingleEntryDataToInstance.ts';
 import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
+import { EntryTypesFormatter } from './entryTypesFormatter.ts';
 
 export const createHandleAddEntry = (
   docId: string,
@@ -27,7 +28,10 @@ export const createHandleAddEntry = (
       const url =
         ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
         ApiPaths.ENTRY_ADD_REL;
-      const payload = { ...entryData, type: entryData.type.toUpperCase() };
+      const payload = {
+        ...entryData,
+        type: EntryTypesFormatter.fromCamelToConstant(entryData.type),
+      };
       await axios.post(url, payload, { withCredentials: true });
 
       const newEntry = mapSingleEntryDataToInstance(entryData);

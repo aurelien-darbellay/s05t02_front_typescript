@@ -3,6 +3,7 @@ export interface Entry {
   highlighted: boolean;
   type: string;
   displayedType: string;
+  keyNameInDB: string;
 }
 export interface Position {
   xCord: number;

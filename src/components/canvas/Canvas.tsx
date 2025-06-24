@@ -70,10 +70,10 @@ export const Canvas: React.FC<CanvasProps> = ({
   );
 
   useEffect(() => {
-    const buffer = 100;
+    const buffer = 0;
     let maxY = 0;
     entries.forEach((entry) => {
-      const bottom = entry.position.yCord + 150;
+      const bottom = entry.position.yCord + 50;
       if (bottom > maxY) maxY = bottom;
     });
     setCanvasHeight(maxY + buffer);
@@ -91,7 +91,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   };
 
   const handleEditEntry = (entry: ContainerEntry) => {
-    console.log('Editing entry:', entry);
+    //console.log('Editing entry:', entry);
     setEntryDataInModif(entry);
     setDialogOpen(true);
   };
@@ -100,7 +100,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     <div ref={canvasRef} className="w-full" style={{ position: 'relative' }}>
       <AddButtonGrid
         entries={entries}
-        gridLines={Math.ceil(canvasHeight / 100)}
+        gridLines={Math.ceil(canvasHeight / 50)}
         onAddClick={onAddClick}
         existOpenEntry={existOpenEntry}
         canvasRef={canvasRef}

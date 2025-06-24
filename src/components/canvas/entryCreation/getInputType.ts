@@ -27,7 +27,7 @@ export const useGetInputType = () => {
     if (type === 'language' && field === 'level') {
       return { kind: 'select', options: cfg.linguisticLevels };
     }
-    if (type === 'profile picture' && field === 'shape') {
+    if (type === 'profilepicture' && field === 'shape') {
       return { kind: 'select', options: cfg.pictureShapes };
     }
 

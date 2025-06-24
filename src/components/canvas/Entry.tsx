@@ -72,7 +72,7 @@ export const Entry: React.FC<EntryProps> = ({
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log('Entry clicked:', entry);
+    //console.log('Entry clicked:', entry);
     onEditEntry(entry);
   };
 
