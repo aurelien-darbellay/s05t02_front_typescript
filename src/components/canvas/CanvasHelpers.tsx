@@ -35,6 +35,7 @@ export const createHandleAddEntry = (
       await axios.post(url, payload, { withCredentials: true });
 
       const newEntry = mapSingleEntryDataToInstance(entryData);
+      console.log(newEntry);
       if (!newEntry) return;
 
       setEntries((prev) => {

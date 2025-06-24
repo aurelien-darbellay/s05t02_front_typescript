@@ -38,7 +38,7 @@ export const Entry: React.FC<EntryProps> = ({
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
 
-  const displayLabel = entry.type;
+  const displayLabel = entry.displayedType;
 
   const handleMouseDown = createHandleMouseDown(
     entry,
