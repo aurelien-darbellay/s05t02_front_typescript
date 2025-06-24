@@ -52,6 +52,34 @@ export const createHandleAddEntry = (
   };
 };
 
+export const createHandleDeleteEntry = (
+  docId: string,
+  setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
+  exposeError: React.Dispatch<React.SetStateAction<boolean>>,
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+) => {
+  return async (entryData: ContainerEntry) => {
+    try {
+      const url =
+        ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
+        ApiPaths.ENTRY_DELETE_REL;
+      const payload = {
+        ...entryData,
+        type: EntryTypesFormatter.fromCamelToConstant(entryData.type),
+      };
+
+      await axios.post(url, payload, { withCredentials: true });
+
+      setEntries((prev) =>
+        prev.filter((entry) => entry.keyNameInDB !== entryData.keyNameInDB)
+      );
+    } catch (error) {
+      exposeError(true);
+      setErrorMessage('Failed to delete entry: ' + (error as Error).message);
+    }
+  };
+};
+
 export const renderConcrete = (entry: ContainerEntry) => {
   if (entry instanceof Contact)
     return <ContactComponent contact={entry as Contact} />;

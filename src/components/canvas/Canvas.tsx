@@ -13,6 +13,7 @@ import {
   renderConcrete,
   createHandleAddEntry,
   useCanvasSize,
+  createHandleDeleteEntry,
 } from './CanvasHelpers.tsx';
 import UserUpdateDialog from '../UserUpdateDialog.tsx';
 
@@ -63,6 +64,13 @@ export const Canvas: React.FC<CanvasProps> = ({
   };
 
   const handleAddEntry = createHandleAddEntry(
+    docData.id,
+    setEntries,
+    setUpdateUser,
+    setUpdateUserMessage
+  );
+
+  const handleDeleteEntry = createHandleDeleteEntry(
     docData.id,
     setEntries,
     setUpdateUser,
@@ -134,15 +142,13 @@ export const Canvas: React.FC<CanvasProps> = ({
         }}
         cfg={cfg}
         onSave={handleAddEntry}
+        onDelete={handleDeleteEntry}
         position={entrySpawnPosition}
         entries={entries}
         entryData={entryDataInModif}
-      />
-
-      <UserUpdateDialog
-        open={updateUser}
-        message={updateUserMessage}
-        onClick={() => setUpdateUser(false)}
+        openUpdate={updateUser}
+        updateMessage={updateUserMessage}
+        onUpdateOkay={() => setUpdateUser(false)}
       />
     </div>
   );

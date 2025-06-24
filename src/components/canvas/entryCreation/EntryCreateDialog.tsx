@@ -5,15 +5,20 @@ import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
 import { EntryFieldInput } from './EntryFieldInput';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
+import { ActionButton } from '../../ActionButton';
 
 interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
   onSave: (entryData: any, isNew: boolean) => void;
+  onDelete: (entryData: any) => void;
   position: { xCord: number; yCord: number } | null;
   entries: ContainerEntry[];
   entryData?: ContainerEntry | null;
+  openUpdate: boolean;
+  updateMessage: string;
+  onUpdateOkay: () => void;
 }
 
 export default function EntryCreateDialog({
@@ -21,9 +26,13 @@ export default function EntryCreateDialog({
   onClose,
   cfg,
   onSave,
+  onDelete,
   position,
   entries,
   entryData,
+  openUpdate,
+  updateMessage,
+  onUpdateOkay,
 }: EntryCreateDialogProps) {
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
@@ -61,7 +70,9 @@ export default function EntryCreateDialog({
     entries.some((entry) => entry.keyNameInDB === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
+    console.log(type);
     const formattedType = EntryTypesFormatter.fromDisplayToCamel(type);
+    console.log(formattedType);
     setSelectedType(formattedType);
     const newSelector = formattedType;
     const initialValues = Object.fromEntries(
@@ -114,6 +125,30 @@ export default function EntryCreateDialog({
     }
   };
 
+  const handleDelete = () => {
+    if (!isEditing) {
+      setError("You can't delete an entry you haven't created yet");
+      return;
+    }
+    const entryToDelete = {
+      ...entryData,
+      type: selectedType,
+      color,
+      position: isEditing ? entryData?.position : position,
+      ...entryValues,
+    };
+    try {
+      //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
+      onDelete(normalizeEntryData(entryToDelete));
+      onClose();
+      setSelectedType('');
+      setEntryValues({});
+      setColor('#000000');
+      setError(null);
+    } catch {
+      setError('Failed to delete entry.');
+    }
+  };
   if (!open) return null;
 
   return (
@@ -128,7 +163,7 @@ export default function EntryCreateDialog({
           <label className="block text-sm font-medium mb-1">Entry Type</label>
           <select
             className="w-full border border-gray-300 rounded-md p-2"
-            value={selectedType}
+            value={EntryTypesFormatter.fromCamelCaseToDisplay(selectedType)}
             onChange={(e) => handleTypeChange(e.target.value)}
             disabled={!!entryData} // Type is fixed during edit
           >
@@ -142,7 +177,10 @@ export default function EntryCreateDialog({
           {hasDuplicateRestrictedType && (
             <p className="text-red-600 text-sm mt-1">
               Can't have more than one entry of type{' '}
-              <strong>{selectedType}</strong> in your document.
+              <strong>
+                {EntryTypesFormatter.fromCamelCaseToDisplay(selectedType)}
+              </strong>{' '}
+              in your document.
             </p>
           )}
         </div>
@@ -175,19 +213,25 @@ export default function EntryCreateDialog({
 
         {/* Footer Buttons */}
         <div className="flex justify-end space-x-2 mt-4">
-          <button
-            onClick={handleClose}
-            className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
+          <ActionButton
+            onClick={handleDelete}
+            value="Delete"
+            color="red"
+            disabled={!isEditing}
+            open={openUpdate}
+            message={updateMessage}
+            onOkay={onUpdateOkay}
+          />
+          <ActionButton onClick={handleClose} value="Cancel" color="gray" />
+          <ActionButton
             onClick={handleSave}
+            value="Save"
+            color="blue"
             disabled={!selectedType || hasDuplicateRestrictedType}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
-          >
-            Save
-          </button>
+            open={openUpdate}
+            message={updateMessage}
+            onOkay={onUpdateOkay}
+          />
         </div>
       </div>
     </div>
