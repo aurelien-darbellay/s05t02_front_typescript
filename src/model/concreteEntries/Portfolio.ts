@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Portfolio implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "PORTFOLIO";
-  public displayedType: string = "Portfolio";
-  public keyNameInDB: string = "portfolio";
+  public type: string = 'PORTFOLIO';
+  public displayedType: string = 'Portfolio';
+  public keyNameInDB: string = 'portfolio';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -22,7 +22,7 @@ export class Portfolio implements ContainedEntry {
     projectUrl: string,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional ID

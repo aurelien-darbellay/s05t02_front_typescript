@@ -1,21 +1,17 @@
-import {
-  Entry,
-  Position,
-  ContainerEntry,
-} from '../EntriesGeneralFeatures'; // adjust the import path as needed
+import { Entry, Position, ContainerEntry } from '../EntriesGeneralFeatures'; // adjust the import path as needed
 
 export class Contact implements ContainerEntry {
   // ContainerEntry (and Entry) properties
-  public type: string = "CONTACT";
-  public displayedType: string = "Contact";
-  public keyNameInDB: string = "contact";
+  public type: string = 'CONTACT';
+  public displayedType: string = 'Contact';
+  public keyNameInDB: string = 'contact';
   public projected: boolean;
   public highlighted: boolean;
   public position: Position;
   public color: string;
   public size: number;
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   // Contact‐specific properties
   public phoneNumber: string;
@@ -29,8 +25,7 @@ export class Contact implements ContainerEntry {
 
   constructor(
     // Entry / ContainerEntry fields
-    projected: boolean,
-    highlighted: boolean,
+
     position: Position,
     color: string,
     size: number,
@@ -45,6 +40,8 @@ export class Contact implements ContainerEntry {
     cityOfResidence: string,
     zipCode: number,
 
+    projected: boolean = true,
+    highlighted: boolean = false,
     // Optional previous/next entries
     previousEntry?: Entry,
     nextEntry?: Entry

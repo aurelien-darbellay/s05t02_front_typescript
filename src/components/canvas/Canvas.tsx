@@ -15,7 +15,6 @@ import {
   useCanvasSize,
   createHandleDeleteEntry,
 } from './CanvasHelpers.tsx';
-import UserUpdateDialog from '../UserUpdateDialog.tsx';
 
 interface CanvasProps {
   docData: any;
@@ -33,6 +32,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   setDialogOpen,
 }) => {
   const listEntries = mapDocDataToEntries(docData);
+  //console.log('Entries fetched: ', listEntries);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [canvasHeight, setCanvasHeight] = useState(1000);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -79,7 +79,7 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   useEffect(() => {
     const buffer = 0;
-    let maxY = 0;
+    let maxY = window.innerHeight - 250;
     entries.forEach((entry) => {
       const bottom = entry.position.yCord + 50;
       if (bottom > maxY) maxY = bottom;
@@ -108,7 +108,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     <div ref={canvasRef} className="w-full" style={{ position: 'relative' }}>
       <AddButtonGrid
         entries={entries}
-        gridLines={Math.ceil(canvasHeight / 50)}
+        gridLines={Math.ceil(canvasHeight / 100)}
         onAddClick={onAddClick}
         existOpenEntry={existOpenEntry}
         canvasRef={canvasRef}

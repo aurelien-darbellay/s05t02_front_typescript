@@ -3,13 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Education implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "EDUCATION";
-  public displayedType: string = "Education";
-  public keyNameInDB: string = "education";
+  public type: string = 'EDUCATION';
+  public displayedType: string = 'Education';
+  public keyNameInDB: string = 'education';
   public projected: boolean;
   public highlighted: boolean;
-
- 
 
   // Education-specific fields
   public title: string;
@@ -21,7 +19,7 @@ export class Education implements ContainedEntry {
   public cloudDocumentName: string;
   public documentCloudMetadata: CloudMetaData;
 
-   // From ContainedEntry
+  // From ContainedEntry
   public id: string;
 
   constructor(
@@ -34,10 +32,10 @@ export class Education implements ContainedEntry {
     cloudDocumentName: string,
     documentCloudMetadata: CloudMetaData,
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
     //Optional fields
-    id?: string,
+    id?: string
   ) {
     // Initialize ContainedEntry/Entry properties
     this.id = id ?? uuidv4();

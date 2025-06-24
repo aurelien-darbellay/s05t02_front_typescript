@@ -1,14 +1,10 @@
-import {
-  ContainerEntry,
-  Position,
-  Entry,
-} from '../EntriesGeneralFeatures';
+import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
 
 export class Profession implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "PROFESSION";
-  public displayedType: string = "Profession";
-  public keyNameInDB: string = "profession";
+  public type: string = 'PROFESSION';
+  public displayedType: string = 'Profession';
+  public keyNameInDB: string = 'profession';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -18,8 +14,8 @@ export class Profession implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   // Profession-specific fields
   public generalTitle: string;
@@ -36,7 +32,7 @@ export class Profession implements ContainerEntry {
     size: number,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional previous/next entries

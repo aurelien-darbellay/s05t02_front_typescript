@@ -34,6 +34,7 @@ export interface ContainedEntry extends Entry {
 export class ListEntries implements ContainerEntry {
   public type: string;
   public displayedType: string;
+  public keyNameInDB: string;
   public entries: Entry[];
   public projected: boolean;
   public highlighted: boolean;
@@ -53,8 +54,9 @@ export class ListEntries implements ContainerEntry {
     previous?: Entry,
     next?: Entry
   ) {
-    this.type = entries[0].type;
+    this.type = 'LIST_' + entries[0].type;
     this.displayedType = entries[0].displayedType;
+    this.keyNameInDB = entries[0].keyNameInDB;
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;

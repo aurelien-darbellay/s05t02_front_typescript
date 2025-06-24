@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class TechnicalSkill implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "TECHNICAL_SKILL";
-  public displayedType: string = "Technical Skill";
-  public keyNameInDB: string = "technicalSkill";
+  public type: string = 'TECHNICAL_SKILL';
+  public displayedType: string = 'Technical Skill';
+  public keyNameInDB: string = 'technicalSkill';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -19,7 +19,7 @@ export class TechnicalSkill implements ContainedEntry {
     keyWords: string,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional ID

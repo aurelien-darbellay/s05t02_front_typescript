@@ -11,9 +11,9 @@ export enum Level {
 
 export class Language implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "LANGUAGE";
-  public displayedType: string = "Language";
-  public keyNameInDB: string = "language";
+  public type: string = 'LANGUAGE';
+  public displayedType: string = 'Language';
+  public keyNameInDB: string = 'language';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -35,7 +35,7 @@ export class Language implements ContainedEntry {
     cloudDocumentName: string,
     documentCloudMetadata: CloudMetaData,
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
     // Optional ID
     id?: string

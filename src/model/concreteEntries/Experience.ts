@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class Experience implements ContainedEntry {
   // From Entry (via ContainedEntry)
-  public type: string = "EXPERIENCE";
-  public displayedType: string = "Experience";
-  public keyNameInDB: string = "experience";
+  public type: string = 'EXPERIENCE';
+  public displayedType: string = 'Experience';
+  public keyNameInDB: string = 'experience';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -42,7 +42,7 @@ export class Experience implements ContainedEntry {
     documentCloudMetadata: CloudMetaData,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional ID

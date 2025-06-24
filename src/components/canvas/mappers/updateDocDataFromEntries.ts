@@ -1,15 +1,18 @@
-import { Profession } from "../../../model/concreteEntries/Profession";
-import { Identity } from "../../../model/concreteEntries/Identity";
-import { Contact } from "../../../model/concreteEntries/Contact";
-import { Summary } from "../../../model/concreteEntries/Summary";
-import { ProfilePicture } from "../../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries} from "../../../model/EntriesGeneralFeatures";
+import { Profession } from '../../../model/concreteEntries/Profession';
+import { Identity } from '../../../model/concreteEntries/Identity';
+import { Contact } from '../../../model/concreteEntries/Contact';
+import { Summary } from '../../../model/concreteEntries/Summary';
+import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
+import {
+  ContainerEntry,
+  ListEntries,
+} from '../../../model/EntriesGeneralFeatures';
 export function updateDocDataFromEntries(
   docData: any,
   entries: ContainerEntry[]
 ) {
   //console.log("Updating document data from entries:", entries);
-  const newDocData = {...docData};
+  const newDocData = { ...docData };
   //console.log("Initial document data:", newDocData);
   for (const entry of entries) {
     if (entry instanceof Contact) {
@@ -17,7 +20,7 @@ export function updateDocDataFromEntries(
         ...entry,
         position: {
           xCord: entry.position.xCord,
-          yCord: entry.position.yCord // Ensure position is included
+          yCord: entry.position.yCord, // Ensure position is included
         },
       };
     } else if (entry instanceof Identity) {
@@ -25,7 +28,7 @@ export function updateDocDataFromEntries(
         ...entry,
         position: {
           xCord: entry.position.xCord,
-          yCord: entry.position.yCord // Ensure position is included
+          yCord: entry.position.yCord, // Ensure position is included
         },
       };
     } else if (entry instanceof Profession) {
@@ -34,7 +37,7 @@ export function updateDocDataFromEntries(
         ...entry,
         position: {
           xCord: entry.position.xCord,
-          yCord: entry.position.yCord // Ensure position is included
+          yCord: entry.position.yCord, // Ensure position is included
         },
       };
     } else if (entry instanceof ProfilePicture) {
@@ -42,7 +45,7 @@ export function updateDocDataFromEntries(
         ...entry,
         position: {
           xCord: entry.position.xCord,
-          yCord: entry.position.yCord // Ensure position is included
+          yCord: entry.position.yCord, // Ensure position is included
         },
       };
     } else if (entry instanceof Summary) {
@@ -50,12 +53,12 @@ export function updateDocDataFromEntries(
         ...entry,
         position: {
           xCord: entry.position.xCord,
-          yCord: entry.position.yCord // Ensure position is included
+          yCord: entry.position.yCord, // Ensure position is included
         },
       };
     } else if (entry instanceof ListEntries) {
-      const extractedType = entry.type;
-
+      const extractedType = entry.entries[0].keyNameInDB;
+      console.log(entry);
       newDocData[extractedType] = {
         entries: entry.entries.map((item: any) => ({ ...item })),
         projected: entry.projected,
@@ -66,10 +69,11 @@ export function updateDocDataFromEntries(
         previousEntry: entry.previousEntry,
         nextEntry: entry.nextEntry,
         keyNameInDB: extractedType,
+        type: entry.type,
       };
     }
   }
-  
-  //console.log("Updated document:", newDocData);
+
+  console.log('Updated document:', newDocData);
   return newDocData;
 }

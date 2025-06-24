@@ -1,14 +1,10 @@
-import {
-  ContainerEntry,
-  Position,
-  Entry,
-} from '../EntriesGeneralFeatures';
+import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
 
 export class Summary implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "SUMMARY";
-  public displayedType: string = "Summary";
-  public keyNameInDB: string = "summary";
+  public type: string = 'SUMMARY';
+  public displayedType: string = 'Summary';
+  public keyNameInDB: string = 'summary';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -18,8 +14,8 @@ export class Summary implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   // Summary-specific fields
   public title: string;
@@ -36,7 +32,7 @@ export class Summary implements ContainerEntry {
     size: number,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional previous/next entries

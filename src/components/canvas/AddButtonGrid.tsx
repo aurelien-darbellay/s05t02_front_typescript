@@ -19,18 +19,21 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
   const totalCells = gridLines * 6;
   const overlappedGridIndices = new Set<number>();
 
-  const getFraction = (value: number, radix: number): number => {
-    /* if (value < 0 || value > 1) {
-      throw new Error('Value must be between 0 and 1.');
-    } */
+  const getHorizontalFraction = (value: number, radix: number): number => {
     return Math.min(6, Math.floor(value * radix) + 1);
+  };
+  const getVerticalFraction = (yCord): number => {
+    const rowHeight = 100;
+    const gap = 4;
+    const totalUnit = rowHeight + gap;
+    return Math.floor(yCord / totalUnit);
   };
 
   entries.forEach((entry) => {
     if (!entry.position) return; // Skip entries without a position
     const { xCord, yCord } = entry.position;
-    const xIndex = getFraction(xCord, 6) - 1; // Convert to grid index (0-5)
-    const yIndex = getFraction(yCord, gridLines) - 1; // Convert
+    const xIndex = getHorizontalFraction(xCord, 6) - 1; // Convert to grid index (0-5)
+    const yIndex = getVerticalFraction(yCord); // Convert
     const gridIndex = yIndex * 6 + xIndex; // Calculate the grid index
     if (gridIndex >= 0 && gridIndex < totalCells) {
       overlappedGridIndices.add(gridIndex);

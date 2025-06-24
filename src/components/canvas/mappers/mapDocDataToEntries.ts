@@ -1,27 +1,21 @@
-import { Profession } from "../../../model/concreteEntries/Profession";
-import { TechnicalSkill } from "../../../model/concreteEntries/TechnicalSkill";
-import { Identity } from "../../../model/concreteEntries/Identity";
-import { Education } from "../../../model/concreteEntries/Education";
-import { Experience } from "../../../model/concreteEntries/Experience";
-import { Language } from "../../../model/concreteEntries/Language";
-import { Contact } from "../../../model/concreteEntries/Contact";
-import { SoftSkill } from "../../../model/concreteEntries/SoftSkill";
-import { Summary } from "../../../model/concreteEntries/Summary";
-import { Portfolio } from "../../../model/concreteEntries/Portfolio";
-import { ProfilePicture } from "../../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries} from "../../../model/EntriesGeneralFeatures"; // assuming this exports the type
+import { Profession } from '../../../model/concreteEntries/Profession';
+import { Identity } from '../../../model/concreteEntries/Identity';
+import { Contact } from '../../../model/concreteEntries/Contact';
+import { Summary } from '../../../model/concreteEntries/Summary';
+import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
+import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
+import { mapListEntries } from './mapListEntries'; // assuming this exports the type
 
 export function mapDocDataToEntries(docData: any): ContainerEntry[] {
   const entries: ContainerEntry[] = [];
 
-  function normalizePosition(position: any) { 
-    if (!position) return {xCord: 0, yCord: 0}; // default position if none provided
+  function normalizePosition(position: any) {
+    if (!position) return { xCord: 0, yCord: 0 }; // default position if none provided
     return {
       xCord: position.xcord ?? 0,
       yCord: position.ycord ?? 0,
-      }; 
-  } 
-
+    };
+  }
 
   if (docData.profession) {
     const p = docData.profession;
@@ -117,36 +111,18 @@ export function mapDocDataToEntries(docData: any): ContainerEntry[] {
     );
   }
 
-  const mapListEntries = (
-    source: any,
-    ItemClass: any
-  ): ListEntries | null => {
-    if (!source?.entries?.length) return null;
-    const list = new ListEntries(
-      source.entries.map((e: any) => new ItemClass(...Object.values(e))),
-      source.projected,
-      source.highlighted,
-      source.position,
-      source.color,
-      source.size,
-      source.previousEntry,
-      source.nextEntry
-    );
-    list.type = source.keyNameInDB; // inferred type
-    return list;
-  };
-
   const structuredBlocks = [
-    { data: docData.education, klass: Education },
-    { data: docData.experience, klass: Experience },
-    { data: docData.language, klass: Language },
-    { data: docData.technicalSkill, klass: TechnicalSkill },
-    { data: docData.softSkill, klass: SoftSkill },
-    { data: docData.portfolio, klass: Portfolio }
+    { data: docData.education, klass: 'education' },
+    { data: docData.experience, klass: 'experience' },
+    { data: docData.language, klass: 'language' },
+    { data: docData.technicalSkill, klass: 'technicalSkill' },
+    { data: docData.softSkill, klass: 'softSkill' },
+    { data: docData.portfolio, klass: 'portfolio' },
   ];
 
   for (const block of structuredBlocks) {
-    if (block.data) block.data.position = normalizePosition(block.data.position);
+    if (block.data)
+      block.data.position = normalizePosition(block.data.position);
     const listEntry = mapListEntries(block.data, block.klass);
     if (listEntry) entries.push(listEntry);
   }

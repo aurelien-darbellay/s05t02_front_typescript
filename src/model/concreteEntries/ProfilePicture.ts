@@ -1,8 +1,4 @@
-import {
-  ContainerEntry,
-  Position,
-  Entry,
-} from '../EntriesGeneralFeatures';
+import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
 
 export enum Shape {
   SQUARE = 'SQUARE',
@@ -14,11 +10,11 @@ export enum Shape {
 
 export class ProfilePicture implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "PROFILE_PICTURE";
-  public displayedType: string = "Profile Picture";
-  public keyNameInDB: string = "profilePicture";
+  public type: string = 'PROFILE_PICTURE';
+  public displayedType: string = 'Profile Picture';
+  public keyNameInDB: string = 'profilePicture';
   public projected: boolean;
-  public highlighted: boolean; 
+  public highlighted: boolean;
 
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;
@@ -26,8 +22,8 @@ export class ProfilePicture implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   // ProfilePicture-specific fields
   public urlPicture: string;
@@ -44,7 +40,7 @@ export class ProfilePicture implements ContainerEntry {
     size: number,
 
     // Entry fields (defaults to false)
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
 
     // Optional previous/next entries
