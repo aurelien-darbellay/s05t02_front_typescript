@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { EntryFieldConfig } from '../../model/EntryFieldConfig';
-import { TypesConfig } from '../../model/TypesConfig';
-import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
+import { EntryFieldConfig } from '../../../model/EntryFieldConfig';
+import { TypesConfig } from '../../../model/TypesConfig';
+import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
+import { normalizeEntryData } from './normalizeEntryData';
+import { Entry } from '../Entry';
+import { EntryFieldInput } from './EntryFieldInput';
 
 interface EntryCreateDialogProps {
   open: boolean;
@@ -93,7 +96,8 @@ export default function EntryCreateDialog({
     };
 
     try {
-      onSave(entryDataToSave, !isEditing);
+      console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
+      onSave(normalizeEntryData(entryDataToSave), !isEditing);
       onClose();
       setSelectedType('');
       setEntryValues({});
@@ -151,15 +155,11 @@ export default function EntryCreateDialog({
         {/* Dynamic Input Fields */}
         {fields.map((field) => (
           <div className="mb-3" key={field}>
-            <label className="block text-sm font-medium mb-1 capitalize">
-              {field}
-            </label>
-            <input
-              type="text"
-              className="w-full border border-gray-300 rounded-md p-2"
+            <EntryFieldInput
+              type={selectedType}
+              field={field}
               value={entryValues[field] || ''}
-              onChange={(e) => handleInputChange(field, e.target.value)}
-              placeholder={field}
+              onChange={(value) => handleInputChange(field, value)}
             />
           </div>
         ))}

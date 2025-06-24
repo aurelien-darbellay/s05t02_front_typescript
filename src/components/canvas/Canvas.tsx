@@ -5,7 +5,7 @@ import {
 } from '../../model/EntriesGeneralFeatures.ts';
 import { Entry } from './Entry.tsx';
 import { mapDocDataToEntries } from './mappers/mapDocDataToEntries.ts';
-import EntryCreateDialog from './EntryCreateDialog.tsx';
+import EntryCreateDialog from './entryCreation/EntryCreateDialog.tsx';
 import { TypesConfig } from '../../model/TypesConfig';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { updateDocDataFromEntries } from './mappers/updateDocDataFromEntries.ts';

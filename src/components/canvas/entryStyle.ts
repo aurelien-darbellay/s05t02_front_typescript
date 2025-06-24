@@ -39,4 +39,6 @@ export const getEntryStyle = (
   display: 'inline-block',
   transform: `scale(${scaleFactor})`,
   transformOrigin: 'top left',
+
+  maxWidth: '20em',
 });
