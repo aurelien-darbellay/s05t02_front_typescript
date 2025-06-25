@@ -58,7 +58,7 @@ export function updateDocDataFromEntries(
       };
     } else if (entry instanceof ListEntries) {
       const extractedType = entry.entries[0].keyNameInDB;
-      console.log(entry);
+      //console.log(entry);
       newDocData[extractedType] = {
         entries: entry.entries.map((item: any) => ({ ...item })),
         projected: entry.projected,
@@ -74,6 +74,6 @@ export function updateDocDataFromEntries(
     }
   }
 
-  console.log('Updated document:', newDocData);
+  //console.log('Updated document:', newDocData);
   return newDocData;
 }

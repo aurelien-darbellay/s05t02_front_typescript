@@ -20,6 +20,7 @@ interface CanvasProps {
   docData: any;
   cfg: TypesConfig;
   setDocData: (updatedDoc: any) => void;
+  resetDocData: (updatedDoc: any) => void;
   dialogOpen: boolean;
   setDialogOpen: (open: boolean) => void;
 }
@@ -28,6 +29,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   docData,
   cfg,
   setDocData,
+  resetDocData,
   dialogOpen,
   setDialogOpen,
 }) => {
@@ -67,7 +69,8 @@ export const Canvas: React.FC<CanvasProps> = ({
     docData.id,
     setEntries,
     setUpdateUser,
-    setUpdateUserMessage
+    setUpdateUserMessage,
+    resetDocData
   );
 
   const handleDeleteEntry = createHandleDeleteEntry(
@@ -91,6 +94,10 @@ export const Canvas: React.FC<CanvasProps> = ({
     const newDocData = updateDocDataFromEntries(docData, entries);
     setDocData(newDocData);
   }, [entries]);
+
+  useEffect(() => {
+    setEntries((prev) => mapDocDataToEntries(docData));
+  }, [docData]);
 
   const onAddClick = (relativeX, relativeY) => {
     setEntryDataInModif(null);

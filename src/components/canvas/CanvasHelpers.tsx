@@ -16,12 +16,14 @@ import { mapSingleEntryDataToInstance } from './mappers/mapSingleEntryDataToInst
 import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
 import { EntryTypesFormatter } from './entryTypesFormatter.ts';
+import { fetchDocData } from '../../helpers/generalFetchers.ts';
 
 export const createHandleAddEntry = (
   docId: string,
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
   exposeError: React.Dispatch<React.SetStateAction<boolean>>,
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+  resetDocData: (docData: any) => void
 ) => {
   return async (entryData: any, isNew: boolean) => {
     try {
@@ -33,9 +35,11 @@ export const createHandleAddEntry = (
         type: EntryTypesFormatter.fromCamelToConstant(entryData.type),
       };
       await axios.post(url, payload, { withCredentials: true });
-
-      const newEntry = mapSingleEntryDataToInstance(entryData);
-      console.log(newEntry);
+      const response = await fetchDocData(docId);
+      console.log('new data:', response.data);
+      resetDocData((prev) => ({ ...response.data }));
+      /* const newEntry = mapSingleEntryDataToInstance(entryData);
+      //console.log(newEntry);
       if (!newEntry) return;
 
       setEntries((prev) => {
@@ -44,7 +48,7 @@ export const createHandleAddEntry = (
         } else {
           return prev.map((e) => (e.type === newEntry.type ? newEntry : e));
         }
-      });
+      }); */
     } catch (error) {
       exposeError(true);
       setErrorMessage('Failed to add entry: ' + (error as Error).message);
