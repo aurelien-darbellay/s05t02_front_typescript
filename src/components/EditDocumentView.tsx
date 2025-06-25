@@ -5,6 +5,7 @@ import { Canvas } from './canvas/Canvas';
 import axios from '../axiosConfig';
 import { ApiPaths } from '../apiPaths';
 import { ActionButton } from './ActionButton';
+import { UserUpdateDialog } from './UserUpdateDialog';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -16,8 +17,8 @@ const EditDocumentView: React.FC = () => {
   const [updatedDocData, setUpdatedDocData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [saveUpdate, setSaveUpdate] = useState(false);
-  const [saveUpdateMessage, setSaveUpdateMessage] = useState('');
+  const [updateUser, setUpdateUser] = useState(false);
+  const [updateUserMessage, setUpdateUserMessage] = useState('');
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -41,13 +42,18 @@ const EditDocumentView: React.FC = () => {
     try {
       const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id);
       await axios.post(url, updatedDocData, { withCredentials: true });
-      setSaveUpdateMessage('Document saved successfully!');
+      setUpdateUserMessage('Document saved successfully!');
     } catch (err: any) {
       const message =
         err.response?.data?.message || err.message || 'Unknown error';
-      setSaveUpdateMessage('Failed to save document: ' + message);
+      setUpdateUserMessage('Failed to save document: ' + message);
     }
-    setSaveUpdate(true);
+    setUpdateUser(true);
+  };
+
+  const closeUserUpdateDialog = () => {
+    setUpdateUser(false);
+    setUpdateUserMessage('');
   };
 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -62,14 +68,7 @@ const EditDocumentView: React.FC = () => {
           value="Back to Dashboard"
           color="#007bff"
         />
-        <ActionButton
-          onClick={handleSave}
-          message={saveUpdateMessage}
-          open={saveUpdate}
-          value="Save"
-          color="#28a745"
-          onOkay={() => setSaveUpdate(false)}
-        />
+        <ActionButton onClick={handleSave} value="Save" color="#28a745" />
         <ActionButton
           onClick={() => setDialogOpen(true)}
           value="Add Entry"
@@ -85,8 +84,15 @@ const EditDocumentView: React.FC = () => {
           setDocData={setUpdatedDocData}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
+          setUpdateUser={setUpdateUser}
+          setUpdateUserMessage={setUpdateUserMessage}
         />
       </div>
+      <UserUpdateDialog
+        open={updateUser}
+        message={updateUserMessage}
+        onClick={closeUserUpdateDialog}
+      />
     </div>
   );
 };

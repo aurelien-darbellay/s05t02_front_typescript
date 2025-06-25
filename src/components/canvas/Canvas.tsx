@@ -21,7 +21,9 @@ interface CanvasProps {
   cfg: TypesConfig;
   setDocData: (updatedDoc: any) => void;
   dialogOpen: boolean;
-  setDialogOpen: (open: boolean) => void;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
@@ -30,6 +32,8 @@ export const Canvas: React.FC<CanvasProps> = ({
   setDocData,
   dialogOpen,
   setDialogOpen,
+  setUpdateUser,
+  setUpdateUserMessage,
 }) => {
   const listEntries = mapDocDataToEntries(docData);
   //console.log('Entries fetched: ', listEntries);
@@ -40,8 +44,6 @@ export const Canvas: React.FC<CanvasProps> = ({
     canvasReady,
     canvasSize: { canvasWidth },
   } = useCanvasSize(canvasRef);
-  const [updateUser, setUpdateUser] = useState(false);
-  const [updateUserMessage, setUpdateUserMessage] = useState('');
   const [existOpenEntry, setExistOpenEntry] = useState(false);
   const [entrySpawnPosition, setEntrySpawnPosition] = useState<{
     xCord: number;
@@ -146,9 +148,6 @@ export const Canvas: React.FC<CanvasProps> = ({
         position={entrySpawnPosition}
         entries={entries}
         entryData={entryDataInModif}
-        openUpdate={updateUser}
-        updateMessage={updateUserMessage}
-        onUpdateOkay={() => setUpdateUser(false)}
       />
     </div>
   );

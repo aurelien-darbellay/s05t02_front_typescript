@@ -16,9 +16,6 @@ interface EntryCreateDialogProps {
   position: { xCord: number; yCord: number } | null;
   entries: ContainerEntry[];
   entryData?: ContainerEntry | null;
-  openUpdate: boolean;
-  updateMessage: string;
-  onUpdateOkay: () => void;
 }
 
 export default function EntryCreateDialog({
@@ -30,9 +27,6 @@ export default function EntryCreateDialog({
   position,
   entries,
   entryData,
-  openUpdate,
-  updateMessage,
-  onUpdateOkay,
 }: EntryCreateDialogProps) {
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
@@ -111,10 +105,15 @@ export default function EntryCreateDialog({
       position: isEditing ? entryData?.position : position,
       ...entryValues,
     };
-    console.log('Entry data to save:', entryDataToSave);
+    //console.log('Entry data to save:', entryDataToSave);
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onSave(normalizeEntryData(entryDataToSave), !isEditing);
+      onClose();
+      setSelectedType('');
+      setEntryValues({});
+      setColor('#000000');
+      setError(null);
       onClose();
       setSelectedType('');
       setEntryValues({});
@@ -218,9 +217,6 @@ export default function EntryCreateDialog({
             value="Delete"
             color="red"
             disabled={!isEditing}
-            open={openUpdate}
-            message={updateMessage}
-            onOkay={onUpdateOkay}
           />
           <ActionButton onClick={handleClose} value="Cancel" color="gray" />
           <ActionButton
@@ -228,9 +224,6 @@ export default function EntryCreateDialog({
             value="Save"
             color="blue"
             disabled={!selectedType || hasDuplicateRestrictedType}
-            open={openUpdate}
-            message={updateMessage}
-            onOkay={onUpdateOkay}
           />
         </div>
       </div>

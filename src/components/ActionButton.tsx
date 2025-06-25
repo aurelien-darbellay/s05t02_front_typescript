@@ -1,25 +1,16 @@
-import UserUpdateDialog from './UserUpdateDialog';
-
 interface ActionButtonProps {
   onClick: () => void;
-  message?: string;
   value: string;
   color: string;
-  open?: boolean;
-  onOkay?: () => void;
   disabled?: boolean;
 }
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
-  message,
   value,
   color,
-  open,
-  onOkay,
   disabled,
 }) => {
-  if (!open) open = false;
   if (!disabled) disabled = false;
   return (
     <div>
@@ -39,8 +30,6 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       >
         {value}
       </button>
-
-      <UserUpdateDialog open={open} message={message} onClick={onOkay} />
     </div>
   );
 };
