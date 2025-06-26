@@ -1,6 +1,6 @@
-import { TypesConfig } from "../model/TypesConfig";
-import axios from "../axiosConfig"
-import { ApiPaths } from "../apiPaths";
+import { TypesConfig } from '../model/TypesConfig';
+import axios from '../axiosConfig';
+import { ApiPaths } from '../apiPaths';
 
 export async function getTypesConfig(): Promise<TypesConfig> {
   // 1) Check localStorage
@@ -25,4 +25,9 @@ export async function getTypesConfig(): Promise<TypesConfig> {
   }
 
   return config;
+}
+
+export async function fetchDocData(id: string): Promise<any> {
+  const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id || '');
+  return axios.get(url, { withCredentials: true });
 }

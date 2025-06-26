@@ -5,6 +5,7 @@ import { Canvas } from './canvas/Canvas';
 import axios from '../axiosConfig';
 import { ApiPaths } from '../apiPaths';
 import { ActionButton } from './ActionButton';
+import { fetchDocData } from '../helpers/generalFetchers';
 import { UserUpdateDialog } from './UserUpdateDialog';
 
 const EditDocumentView: React.FC = () => {
@@ -23,9 +24,9 @@ const EditDocumentView: React.FC = () => {
   useEffect(() => {
     const fetchDocument = async () => {
       try {
-        const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id || '');
-        const response = await axios.get(url, { withCredentials: true });
-        //console.log('Document data fetched:', response.data);
+        if (!id) throw new Error("can't fetch doc data without defined id");
+        const response = await fetchDocData(id);
+        console.log('Document data fetched:', response.data);
         setInitialDocData(response.data);
         setUpdatedDocData(response.data); // Initialize updatedDocData with fetched data
       } catch (err: any) {
@@ -36,6 +37,10 @@ const EditDocumentView: React.FC = () => {
     };
     fetchDocument();
   }, [id]);
+
+  useEffect(() => {
+    console.log('DocData updated: ', initialDocData);
+  }, [initialDocData]);
 
   const handleSave = async () => {
     if (!initialDocData || !id) return;
@@ -82,6 +87,7 @@ const EditDocumentView: React.FC = () => {
           docData={initialDocData}
           cfg={config}
           setDocData={setUpdatedDocData}
+          resetDocData={setInitialDocData}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
           setUpdateUser={setUpdateUser}

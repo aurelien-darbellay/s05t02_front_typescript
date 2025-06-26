@@ -2,12 +2,14 @@
 
 // @refresh reset
 
-import React, {useEffect, useState } from 'react';
-import { getTypesConfig } from '../helpers/GeneralFetchers'
+import React, { useEffect, useState } from 'react';
+import { getTypesConfig } from '../helpers/generalFetchers';
 import { TypesConfig } from '../model/TypesConfig';
 import { TypesConfigContext } from './TypesConfigContext';
 
-export const TypesConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export const TypesConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const [config, setConfig] = useState<TypesConfig | null>(null);
   //console.log("Mounting TypesConfigProvider");
   useEffect(() => {
@@ -27,5 +29,3 @@ export const TypesConfigProvider: React.FC<React.PropsWithChildren<{}>> = ({ chi
     </TypesConfigContext.Provider>
   );
 };
-
-

@@ -64,9 +64,9 @@ export default function EntryCreateDialog({
     entries.some((entry) => entry.keyNameInDB === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
-    console.log(type);
+    //console.log(type);
     const formattedType = EntryTypesFormatter.fromDisplayToCamel(type);
-    console.log(formattedType);
+    //console.log(formattedType);
     setSelectedType(formattedType);
     const newSelector = formattedType;
     const initialValues = Object.fromEntries(
