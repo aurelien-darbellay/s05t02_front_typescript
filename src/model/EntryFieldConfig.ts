@@ -38,3 +38,11 @@ export const EntryFieldConfig: Record<string, string[]> = {
   summary: ['title', 'text'],
   technicalSkill: ['keyWords'],
 };
+
+export const EntryRestrictedTypes = [
+  'contact',
+  'identity',
+  'profession',
+  'profilePicture',
+  'summary',
+];

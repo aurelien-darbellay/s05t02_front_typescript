@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { EntryFieldConfig } from '../../../model/EntryFieldConfig';
+import {
+  EntryFieldConfig,
+  EntryRestrictedTypes,
+} from '../../../model/EntryFieldConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
@@ -34,13 +37,7 @@ export default function EntryCreateDialog({
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
 
-  const restrictedTypes = [
-    'contact',
-    'identity',
-    'profession',
-    'profilePicture',
-    'summary',
-  ];
+  const restrictedTypes = [...EntryRestrictedTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
 
