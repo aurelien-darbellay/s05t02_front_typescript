@@ -31,4 +31,9 @@ export class EntryTypesFormatter {
       )
       .join('');
   }
+  static fromListToItem(type: string): string {
+    const withoutPrefix = type.startsWith('list') ? type.slice(4) : type;
+
+    return withoutPrefix.charAt(0).toLowerCase() + withoutPrefix.slice(1);
+  }
 }

@@ -36,6 +36,7 @@ export default function EntryCreateDialog({
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
   const [isList, setIsList] = useState<boolean>(false);
+  const [isListItem, setIsListItem] = useState<boolean>(false);
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
@@ -44,21 +45,6 @@ export default function EntryCreateDialog({
 
   const fields = EntryFieldConfig[selectedType] || [];
 
-  useEffect(() => {
-    if (entryData) {
-      setSelectedType(entryData.codeName);
-      setDisplayedType(entryData.displayedType);
-      setColor(entryData.color);
-      const initValues = Object.fromEntries(
-        (EntryFieldConfig[entryData.codeName] || []).map((field) => [
-          field,
-          entryData[field] || '',
-        ])
-      );
-      setEntryValues(initValues);
-    }
-  }, [entryData]);
-
   const hasDuplicateRestrictedType =
     selectedType &&
     restrictedTypes.includes(selectedType) &&
@@ -66,12 +52,9 @@ export default function EntryCreateDialog({
 
   const determineIfList = (type: string) => {
     if (
+      !selectedType ||
       EntryContainerTypes.includes(EntryTypesFormatter.fromDisplayToCamel(type))
     ) {
-      setIsList(false);
-      return false;
-    }
-    if (entries.some((entry) => entry.displayedType === type)) {
       setIsList(false);
       return false;
     }
@@ -103,6 +86,7 @@ export default function EntryCreateDialog({
     onClose();
     setSelectedType('');
     setDisplayedType('');
+    setIsList(false);
     setEntryValues({});
     setColor('#000000');
     setError(null);
@@ -155,6 +139,25 @@ export default function EntryCreateDialog({
       setError('Failed to delete entry.');
     }
   };
+
+  useEffect(() => {
+    if (entryData) {
+      setSelectedType(entryData.codeName);
+      setDisplayedType(entryData.displayedType);
+      setColor(entryData.color);
+      const initValues = Object.fromEntries(
+        (EntryFieldConfig[entryData.codeName] || []).map((field) => [
+          field,
+          entryData[field] || '',
+        ])
+      );
+      setEntryValues(initValues);
+    }
+  }, [entryData]);
+
+  useEffect(() => {
+    determineIfList(selectedType);
+  }, [selectedType]);
   if (!open) return null;
 
   return (
@@ -182,8 +185,19 @@ export default function EntryCreateDialog({
           </select>
           {hasDuplicateRestrictedType && (
             <p className="text-red-600 text-sm mt-1">
-              Can't have more than one entry of type{' '}
-              <strong>{displayedType}</strong> in your document.
+              {isList ? (
+                <>
+                  Can't have more than one list of type{' '}
+                  <strong>{displayedType}</strong> in your document. To add a
+                  list item of type <strong>{displayedType}</strong>, choose Add
+                  Item.
+                </>
+              ) : (
+                <>
+                  Can't have more than one entry of type{' '}
+                  <strong>{displayedType}</strong> in your document.
+                </>
+              )}
             </p>
           )}
         </div>
@@ -229,6 +243,17 @@ export default function EntryCreateDialog({
             color="blue"
             disabled={!selectedType || hasDuplicateRestrictedType}
           />
+          {isList && (
+            <ActionButton
+              onClick={() =>
+                setSelectedType((prev) =>
+                  EntryTypesFormatter.fromListToItem(prev)
+                )
+              }
+              value="Add Item"
+              color="black"
+            />
+          )}
         </div>
       </div>
     </div>

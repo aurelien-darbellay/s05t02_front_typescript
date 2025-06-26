@@ -46,6 +46,12 @@ export const EntryRestrictedTypes = [
   'profession',
   'profilePicture',
   'summary',
+  'listEducation',
+  'listExperience',
+  'listSoftSkill',
+  'listTechnicalSkill',
+  'listLanguage',
+  'listPortfolio',
 ];
 export const EntryContainerTypes = [
   'contact',
