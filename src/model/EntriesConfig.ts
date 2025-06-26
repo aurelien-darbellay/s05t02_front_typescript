@@ -47,3 +47,16 @@ export const EntryRestrictedTypes = [
   'profilePicture',
   'summary',
 ];
+export const EntryContainerTypes = [
+  'contact',
+  'identity',
+  'profession',
+  'profilePicture',
+  'summary',
+  'listEducation',
+  'listExperience',
+  'listSoftSkill',
+  'listTechicalSkill',
+  'listLanguage',
+  'listPortfolio',
+];

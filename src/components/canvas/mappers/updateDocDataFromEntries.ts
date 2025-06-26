@@ -57,7 +57,7 @@ export function updateDocDataFromEntries(
         },
       };
     } else if (entry instanceof ListEntries) {
-      const extractedType = entry.entries[0].codeName;
+      const extractedType = entry.codeName;
       //console.log(entry);
       newDocData[extractedType] = {
         entries: entry.entries.map((item: any) => ({ ...item })),

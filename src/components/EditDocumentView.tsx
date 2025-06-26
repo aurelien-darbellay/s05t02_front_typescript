@@ -26,7 +26,7 @@ const EditDocumentView: React.FC = () => {
       try {
         if (!id) throw new Error("can't fetch doc data without defined id");
         const response = await fetchDocData(id);
-        console.log('Document data fetched:', response.data);
+        //console.log('Document data fetched:', response.data);
         setInitialDocData(response.data);
         setUpdatedDocData(response.data); // Initialize updatedDocData with fetched data
       } catch (err: any) {
@@ -39,7 +39,7 @@ const EditDocumentView: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log('DocData updated: ', initialDocData);
+    //console.log('DocData updated: ', initialDocData);
   }, [initialDocData]);
 
   const handleSave = async () => {

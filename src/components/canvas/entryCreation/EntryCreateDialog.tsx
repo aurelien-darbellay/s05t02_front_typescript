@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
+  EntryContainerTypes,
   EntryFieldConfig,
   EntryRestrictedTypes,
-} from '../../../model/EntryFieldConfig';
+} from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
@@ -34,6 +35,7 @@ export default function EntryCreateDialog({
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
+  const [isList, setIsList] = useState<boolean>(false);
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
@@ -62,9 +64,26 @@ export default function EntryCreateDialog({
     restrictedTypes.includes(selectedType) &&
     entries.some((entry) => entry.codeName === selectedType && !isEditing);
 
+  const determineIfList = (type: string) => {
+    if (
+      EntryContainerTypes.includes(EntryTypesFormatter.fromDisplayToCamel(type))
+    ) {
+      setIsList(false);
+      return false;
+    }
+    if (entries.some((entry) => entry.displayedType === type)) {
+      setIsList(false);
+      return false;
+    }
+    setIsList(true);
+    return true;
+  };
+
   const handleTypeChange = (type: string) => {
     //console.log(type);
-    const formattedType = EntryTypesFormatter.fromDisplayToCamel(type);
+    const formattedType = determineIfList(type)
+      ? EntryTypesFormatter.fromDisplayToCamel('List ' + type)
+      : EntryTypesFormatter.fromDisplayToCamel(type);
     //console.log(formattedType);
     setSelectedType(formattedType);
     setDisplayedType(type);
@@ -83,6 +102,7 @@ export default function EntryCreateDialog({
   const handleClose = () => {
     onClose();
     setSelectedType('');
+    setDisplayedType('');
     setEntryValues({});
     setColor('#000000');
     setError(null);
@@ -109,16 +129,7 @@ export default function EntryCreateDialog({
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onSave(normalizeEntryData(entryDataToSave));
-      onClose();
-      setSelectedType('');
-      setEntryValues({});
-      setColor('#000000');
-      setError(null);
-      onClose();
-      setSelectedType('');
-      setEntryValues({});
-      setColor('#000000');
-      setError(null);
+      handleClose();
     } catch {
       setError('Failed to save entry.');
     }
@@ -139,11 +150,7 @@ export default function EntryCreateDialog({
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onDelete(normalizeEntryData(entryToDelete));
-      onClose();
-      setSelectedType('');
-      setEntryValues({});
-      setColor('#000000');
-      setError(null);
+      handleClose();
     } catch {
       setError('Failed to delete entry.');
     }

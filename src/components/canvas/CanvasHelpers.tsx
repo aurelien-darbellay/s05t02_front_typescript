@@ -12,7 +12,6 @@ import { Profession } from '../../model/concreteEntries/Profession.ts';
 import { ProfilePicture } from '../../model/concreteEntries/ProfilePicture.ts';
 import { Summary } from '../../model/concreteEntries/Summary.ts';
 import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
-import { mapSingleEntryDataToInstance } from './mappers/mapSingleEntryDataToInstance.ts';
 import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
 import { EntryTypesFormatter } from './entryTypesFormatter.ts';
@@ -36,7 +35,7 @@ export const createHandleAddEntry = (
       };
       await axios.post(url, payload, { withCredentials: true });
       const response = await fetchDocData(docId);
-      console.log('new data:', response.data);
+      //console.log('new data:', response.data);
       resetDocData((prev) => ({ ...response.data }));
     } catch (error) {
       exposeError(true);

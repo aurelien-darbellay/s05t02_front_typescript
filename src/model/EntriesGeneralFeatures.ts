@@ -1,3 +1,5 @@
+import { EntryTypesFormatter } from '../components/canvas/entryTypesFormatter';
+
 export interface Entry {
   projected: boolean;
   highlighted: boolean;
@@ -51,12 +53,19 @@ export class ListEntries implements ContainerEntry {
     position: Position,
     color: string,
     size: number,
+    type?: string,
     previous?: Entry,
     next?: Entry
   ) {
-    this.type = 'LIST_' + entries[0].type;
-    this.displayedType = entries[0].displayedType;
-    this.codeName = 'list' + capitalizeFirstChar(entries[0].codeName);
+    this.type = type
+      ? 'LIST_' + EntryTypesFormatter.fromCamelToConstant(type)
+      : 'LIST_' + entries[0].type;
+    this.displayedType = type
+      ? EntryTypesFormatter.fromCamelCaseToDisplay(type)
+      : entries[0].displayedType;
+    this.codeName = type
+      ? 'list' + capitalizeFirstChar(type)
+      : 'list' + capitalizeFirstChar(entries[0].codeName);
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;

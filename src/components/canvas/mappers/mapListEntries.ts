@@ -10,8 +10,7 @@ export const mapListEntries = (
   source: any,
   type: string
 ): ListEntries | null => {
-  if (!source?.entries?.length) return null;
-
+  if (!source?.entries) return null;
   const normalizedPosition = source.position ?? { xCord: 0, yCord: 0 };
 
   const mappedEntries = source.entries.map((entry: any) => {
@@ -88,6 +87,7 @@ export const mapListEntries = (
     normalizedPosition,
     source.color,
     source.size,
+    type,
     source.previousEntry,
     source.nextEntry
   );
