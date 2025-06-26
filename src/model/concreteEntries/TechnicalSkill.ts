@@ -5,7 +5,7 @@ export class TechnicalSkill implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'TECHNICAL_SKILL';
   public displayedType: string = 'Technical Skill';
-  public keyNameInDB: string = 'technicalSkill';
+  public codeName: string = 'technicalSkill';
   public projected: boolean;
   public highlighted: boolean;
 

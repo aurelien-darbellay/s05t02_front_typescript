@@ -1,14 +1,10 @@
-import {
-  ContainerEntry,
-  Position,
-  Entry,
-} from '../EntriesGeneralFeatures';
+import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
 
 export class Identity implements ContainerEntry {
   // From Entry (via ContainerEntry)
-  public type: string = "IDENTITY";
-  public displayedType: string = "Identity";
-  public keyNameInDB: string = "identity";
+  public type: string = 'IDENTITY';
+  public displayedType: string = 'Identity';
+  public codeName: string = 'identity';
   public projected: boolean;
   public highlighted: boolean;
 
@@ -18,8 +14,8 @@ export class Identity implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry|null;
-  public nextEntry: Entry|null;
+  public previousEntry: Entry | null;
+  public nextEntry: Entry | null;
 
   // Identity-specific fields
   public names: string[] = [];

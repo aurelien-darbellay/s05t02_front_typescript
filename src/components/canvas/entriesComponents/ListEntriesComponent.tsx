@@ -24,7 +24,7 @@ export const ListEntriesComponent: React.FC<ListEntriesComponentProps> = ({
 }) => {
   const renderEntry = (entry: Entry) => {
     //console.log(entry.keyNameInDB);
-    switch (entry.keyNameInDB) {
+    switch (entry.codeName) {
       case 'language':
         return <LanguageComponent language={entry as Language} />;
       case 'experience':

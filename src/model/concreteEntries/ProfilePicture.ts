@@ -12,7 +12,7 @@ export class ProfilePicture implements ContainerEntry {
   // From Entry (via ContainerEntry)
   public type: string = 'PROFILE_PICTURE';
   public displayedType: string = 'Profile Picture';
-  public keyNameInDB: string = 'profilePicture';
+  public codeName: string = 'profilePicture';
   public projected: boolean;
   public highlighted: boolean;
 

@@ -13,7 +13,7 @@ export class Language implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'LANGUAGE';
   public displayedType: string = 'Language';
-  public keyNameInDB: string = 'language';
+  public codeName: string = 'language';
   public projected: boolean;
   public highlighted: boolean;
 

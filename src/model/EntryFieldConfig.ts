@@ -29,6 +29,7 @@ export const EntryFieldConfig: Record<string, string[]> = {
     'cloudDocumentName',
     'documentCloudMetadata',
   ],
+
   identity: ['names', 'lastNames'],
   language: ['name', 'level', 'cloudDocumentName', 'documentCloudMetadata'],
   portfolio: ['projectName', 'projectUrl'],

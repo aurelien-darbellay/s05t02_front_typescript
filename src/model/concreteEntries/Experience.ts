@@ -5,7 +5,7 @@ export class Experience implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'EXPERIENCE';
   public displayedType: string = 'Experience';
-  public keyNameInDB: string = 'experience';
+  public codeName: string = 'experience';
   public projected: boolean;
   public highlighted: boolean;
 

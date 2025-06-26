@@ -5,7 +5,7 @@ export class SoftSkill implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'SOFT_SKILL';
   public displayedType: string = 'Soft Skill';
-  public keyNameInDB: string = 'softSkill';
+  public codeName: string = 'softSkill';
   public projected: boolean;
   public highlighted: boolean;
 

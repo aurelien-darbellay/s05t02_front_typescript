@@ -25,7 +25,7 @@ export const createHandleAddEntry = (
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
   resetDocData: (docData: any) => void
 ) => {
-  return async (entryData: any, isNew: boolean) => {
+  return async (entryData: any) => {
     try {
       const url =
         ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
@@ -38,17 +38,6 @@ export const createHandleAddEntry = (
       const response = await fetchDocData(docId);
       console.log('new data:', response.data);
       resetDocData((prev) => ({ ...response.data }));
-      /* const newEntry = mapSingleEntryDataToInstance(entryData);
-      //console.log(newEntry);
-      if (!newEntry) return;
-
-      setEntries((prev) => {
-        if (isNew) {
-          return [...prev, newEntry];
-        } else {
-          return prev.map((e) => (e.type === newEntry.type ? newEntry : e));
-        }
-      }); */
     } catch (error) {
       exposeError(true);
       setErrorMessage('Failed to add entry: ' + (error as Error).message);
@@ -75,7 +64,7 @@ export const createHandleDeleteEntry = (
       await axios.post(url, payload, { withCredentials: true });
 
       setEntries((prev) =>
-        prev.filter((entry) => entry.keyNameInDB !== entryData.keyNameInDB)
+        prev.filter((entry) => entry.codeName !== entryData.codeName)
       );
     } catch (error) {
       exposeError(true);

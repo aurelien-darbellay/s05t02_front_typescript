@@ -5,7 +5,7 @@ export class Portfolio implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'PORTFOLIO';
   public displayedType: string = 'Portfolio';
-  public keyNameInDB: string = 'portfolio';
+  public codeName: string = 'portfolio';
   public projected: boolean;
   public highlighted: boolean;
 

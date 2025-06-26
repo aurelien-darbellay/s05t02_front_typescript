@@ -4,7 +4,7 @@ export class Contact implements ContainerEntry {
   // ContainerEntry (and Entry) properties
   public type: string = 'CONTACT';
   public displayedType: string = 'Contact';
-  public keyNameInDB: string = 'contact';
+  public codeName: string = 'contact';
   public projected: boolean;
   public highlighted: boolean;
   public position: Position;

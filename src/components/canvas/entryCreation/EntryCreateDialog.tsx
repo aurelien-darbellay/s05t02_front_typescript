@@ -14,7 +14,7 @@ interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any, isNew: boolean) => void;
+  onSave: (entryData: any) => void;
   onDelete: (entryData: any) => void;
   position: { xCord: number; yCord: number } | null;
   entries: ContainerEntry[];
@@ -33,6 +33,7 @@ export default function EntryCreateDialog({
 }: EntryCreateDialogProps) {
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
+  const [displayedType, setDisplayedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
@@ -43,10 +44,11 @@ export default function EntryCreateDialog({
 
   useEffect(() => {
     if (entryData) {
-      setSelectedType(entryData.keyNameInDB);
+      setSelectedType(entryData.codeName);
+      setDisplayedType(entryData.displayedType);
       setColor(entryData.color);
       const initValues = Object.fromEntries(
-        (EntryFieldConfig[entryData.keyNameInDB] || []).map((field) => [
+        (EntryFieldConfig[entryData.codeName] || []).map((field) => [
           field,
           entryData[field] || '',
         ])
@@ -58,13 +60,14 @@ export default function EntryCreateDialog({
   const hasDuplicateRestrictedType =
     selectedType &&
     restrictedTypes.includes(selectedType) &&
-    entries.some((entry) => entry.keyNameInDB === selectedType && !isEditing);
+    entries.some((entry) => entry.codeName === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
     //console.log(type);
     const formattedType = EntryTypesFormatter.fromDisplayToCamel(type);
     //console.log(formattedType);
     setSelectedType(formattedType);
+    setDisplayedType(type);
     const newSelector = formattedType;
     const initialValues = Object.fromEntries(
       (EntryFieldConfig[newSelector] || []).map((field) => [field, ''])
@@ -105,7 +108,7 @@ export default function EntryCreateDialog({
     //console.log('Entry data to save:', entryDataToSave);
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
-      onSave(normalizeEntryData(entryDataToSave), !isEditing);
+      onSave(normalizeEntryData(entryDataToSave));
       onClose();
       setSelectedType('');
       setEntryValues({});
@@ -159,7 +162,7 @@ export default function EntryCreateDialog({
           <label className="block text-sm font-medium mb-1">Entry Type</label>
           <select
             className="w-full border border-gray-300 rounded-md p-2"
-            value={EntryTypesFormatter.fromCamelCaseToDisplay(selectedType)}
+            value={displayedType}
             onChange={(e) => handleTypeChange(e.target.value)}
             disabled={!!entryData} // Type is fixed during edit
           >
@@ -173,10 +176,7 @@ export default function EntryCreateDialog({
           {hasDuplicateRestrictedType && (
             <p className="text-red-600 text-sm mt-1">
               Can't have more than one entry of type{' '}
-              <strong>
-                {EntryTypesFormatter.fromCamelCaseToDisplay(selectedType)}
-              </strong>{' '}
-              in your document.
+              <strong>{displayedType}</strong> in your document.
             </p>
           )}
         </div>

@@ -4,7 +4,7 @@ export class Profession implements ContainerEntry {
   // From Entry (via ContainerEntry)
   public type: string = 'PROFESSION';
   public displayedType: string = 'Profession';
-  public keyNameInDB: string = 'profession';
+  public codeName: string = 'profession';
   public projected: boolean;
   public highlighted: boolean;
 

@@ -3,7 +3,7 @@ export interface Entry {
   highlighted: boolean;
   type: string;
   displayedType: string;
-  keyNameInDB: string;
+  codeName: string;
 }
 export interface Position {
   xCord: number;
@@ -34,7 +34,7 @@ export interface ContainedEntry extends Entry {
 export class ListEntries implements ContainerEntry {
   public type: string;
   public displayedType: string;
-  public keyNameInDB: string;
+  public codeName: string;
   public entries: Entry[];
   public projected: boolean;
   public highlighted: boolean;
@@ -56,7 +56,7 @@ export class ListEntries implements ContainerEntry {
   ) {
     this.type = 'LIST_' + entries[0].type;
     this.displayedType = entries[0].displayedType;
-    this.keyNameInDB = entries[0].keyNameInDB;
+    this.codeName = 'list' + capitalizeFirstChar(entries[0].codeName);
     this.entries = entries;
     this.projected = projected;
     this.highlighted = highlighted;
@@ -66,4 +66,9 @@ export class ListEntries implements ContainerEntry {
     this.previousEntry = previous ?? null;
     this.nextEntry = next ?? null;
   }
+}
+
+function capitalizeFirstChar(str: string): string {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }

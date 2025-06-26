@@ -4,7 +4,7 @@ export class Summary implements ContainerEntry {
   // From Entry (via ContainerEntry)
   public type: string = 'SUMMARY';
   public displayedType: string = 'Summary';
-  public keyNameInDB: string = 'summary';
+  public codeName: string = 'summary';
   public projected: boolean;
   public highlighted: boolean;
 

@@ -51,8 +51,9 @@ export const Canvas: React.FC<CanvasProps> = ({
     xCord: number;
     yCord: number;
   } | null>({ xCord: 0, yCord: 0 });
-  const [entryDataInModif, setEntryDataInModif] =
-    useState<ContainerEntry | null>(null);
+  const [entryDataInModif, setEntryDataInModif] = useState<typeof Entry | null>(
+    null
+  );
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
     const canvas = canvasRef.current;
@@ -107,7 +108,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     setDialogOpen(true);
   };
 
-  const handleEditEntry = (entry: ContainerEntry) => {
+  const handleEditEntry = (entry: typeof Entry) => {
     //console.log('Editing entry:', entry);
     setEntryDataInModif(entry);
     setDialogOpen(true);

@@ -5,7 +5,7 @@ export class Education implements ContainedEntry {
   // From Entry (via ContainedEntry)
   public type: string = 'EDUCATION';
   public displayedType: string = 'Education';
-  public keyNameInDB: string = 'education';
+  public codeName: string = 'education';
   public projected: boolean;
   public highlighted: boolean;
 
