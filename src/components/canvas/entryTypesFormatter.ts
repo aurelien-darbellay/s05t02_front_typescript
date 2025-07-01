@@ -5,7 +5,7 @@ export class EntryTypesFormatter {
       .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (c) => c.toUpperCase());
   }
-  static fromDisplayToBackendName(type: string): string {
+  static fromDisplayToConstant(type: string): string {
     return type.replace(/\s+/g, '_').toUpperCase();
   }
   static fromCamelToConstant(type: string): string {
@@ -32,8 +32,24 @@ export class EntryTypesFormatter {
       .join('');
   }
   static fromListToItem(type: string): string {
-    const withoutPrefix = type.startsWith('list') ? type.slice(4) : type;
+    return type.startsWith('LIST_') ? type.slice(5) : type;
+  }
+  static fromConstantToCamel(input: string): string {
+    if (!input) return '';
 
-    return withoutPrefix.charAt(0).toLowerCase() + withoutPrefix.slice(1);
+    const parts = input.toLowerCase().split('_');
+
+    return (
+      parts[0] +
+      parts
+        .slice(1)
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('')
+    );
+  }
+
+  static fromConstantToDisplay(input: string): string {
+    if (!input) return '';
+    return this.fromCamelCaseToDisplay(this.fromConstantToCamel(input));
   }
 }

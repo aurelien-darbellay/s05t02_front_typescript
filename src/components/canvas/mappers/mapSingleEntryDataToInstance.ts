@@ -1,23 +1,21 @@
-import { Profession } from "../../../model/concreteEntries/Profession";
-import { TechnicalSkill } from "../../../model/concreteEntries/TechnicalSkill";
-import { Identity } from "../../../model/concreteEntries/Identity";
-import { Education } from "../../../model/concreteEntries/Education";
-import { Experience } from "../../../model/concreteEntries/Experience";
-import { Language } from "../../../model/concreteEntries/Language";
-import { Contact } from "../../../model/concreteEntries/Contact";
-import { SoftSkill } from "../../../model/concreteEntries/SoftSkill";
-import { Summary } from "../../../model/concreteEntries/Summary";
-import { Portfolio } from "../../../model/concreteEntries/Portfolio";
-import { ProfilePicture } from "../../../model/concreteEntries/ProfilePicture";
-import { ContainerEntry, ListEntries, EMPTY_ENTRY } from "../../../model/EntriesGeneralFeatures"; // assuming this exports the type
+import { Profession } from '../../../model/concreteEntries/Profession';
+import { Identity } from '../../../model/concreteEntries/Identity';
+import { Contact } from '../../../model/concreteEntries/Contact';
+import { Summary } from '../../../model/concreteEntries/Summary';
+import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
+import { ContainerEntry } from '../../../model/EntriesGeneralFeatures'; // assuming this exports the type
+import { mapToListEntry } from './mapToListEntry';
 
-export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | null {
+export function mapSingleEntryDataToInstance(
+  entryData: any
+): ContainerEntry | null {
+  //console.log(entryData);
   if (!entryData?.type) return null;
 
-  const type = entryData.type.toLowerCase().replace(/\s/g, "");
-
+  const type = entryData.type;
+  //console.log(entryData.type + ' and ' + type);
   switch (type) {
-    case "profession":
+    case 'PROFESSION':
       return new Profession(
         entryData.generalTitle,
         entryData.specificTitle,
@@ -30,7 +28,7 @@ export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | n
         entryData.nextEntry
       );
 
-    case "identity":
+    case 'IDENTITY':
       return new Identity(
         entryData.position || { xCord: 0, yCord: 0 },
         entryData.color,
@@ -41,7 +39,7 @@ export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | n
         entryData.nextEntry
       );
 
-    case "profilepicture":
+    case 'PROFILE_PICTURE':
       return new ProfilePicture(
         entryData.urlPicture,
         entryData.shape,
@@ -54,7 +52,7 @@ export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | n
         entryData.nextEntry
       );
 
-    case "contact":
+    case 'CONTACT':
       return new Contact(
         entryData.projected,
         entryData.highlighted,
@@ -73,7 +71,7 @@ export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | n
         entryData.nextEntry
       );
 
-    case "summary":
+    case 'SUMMARY':
       return new Summary(
         entryData.title,
         entryData.text,
@@ -86,33 +84,19 @@ export function mapSingleEntryDataToInstance(entryData: any): ContainerEntry | n
         entryData.nextEntry
       );
 
-    case "education":
-    case "experience":
-    case "language":
-    case "technicalskill":
-    case "softskill":
-    case "portfolio": {
-      const typeToClass: Record<string, any> = {
-        education: Education,
-        experience: Experience,
-        language: Language,
-        technicalskill: TechnicalSkill,
-        softskill: SoftSkill,
-        portfolio: Portfolio,
-      };
-      const ItemClass = typeToClass[type];
-      const listEntry = new ListEntries(
-        (entryData.entries || []).map((e: any) => new ItemClass(...Object.values(e))),
-        entryData.projected,
-        entryData.highlighted,
-        entryData.position || { xCord: 0, yCord: 0 },
-        entryData.color,
-        entryData.size,
-        entryData.previousEntry,
-        entryData.nextEntry
-      );
-      listEntry.type = type;
-      return listEntry;
+    case 'EDUCATION':
+    case 'EXPERIENCE':
+    case 'LANGUAGE':
+    case 'TECHNICAL_SKILL':
+    case 'SOFT_SKILL':
+    case 'PORTFOLIO':
+    case 'LIST_EDUCATION':
+    case 'LIST_EXPERIENCE':
+    case 'LIST_LANGUAGE':
+    case 'LIST_TECHNICAL_SKILL':
+    case 'LIST_SOFT_SKILL':
+    case 'LIST_PORTFOLIO': {
+      return mapToListEntry(entryData);
     }
 
     default:

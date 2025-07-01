@@ -10,7 +10,7 @@ export class Experience implements ContainedEntry {
   public highlighted: boolean;
 
   // Experience‐specific fields
-  public position: string;
+  public role: string;
   public nameCompany: string;
   public startDate: Date;
   public endDate: Date;
@@ -28,7 +28,7 @@ export class Experience implements ContainedEntry {
 
   constructor(
     // Experience fields
-    position: string,
+    role: string,
     nameCompany: string,
     startDate: Date,
     endDate: Date,
@@ -54,7 +54,7 @@ export class Experience implements ContainedEntry {
     this.highlighted = highlighted;
 
     // Initialize Experience properties
-    this.position = position;
+    this.role = role;
     this.nameCompany = nameCompany;
     this.startDate = startDate;
     this.endDate = endDate;

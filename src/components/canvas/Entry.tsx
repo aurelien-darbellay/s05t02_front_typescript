@@ -43,7 +43,7 @@ export const Entry: React.FC<EntryProps> = ({
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
   const displayLabel = entry.displayedType;
-
+  const { determineIfList, handleEditEntry } = useContext(EditEntryContext);
   const handleMouseDown = createHandleMouseDown(
     entry,
     setDragging,
@@ -75,12 +75,11 @@ export const Entry: React.FC<EntryProps> = ({
     if (resizing) setResizing(false);
   };
 
-  const { handleEditEntry } = useContext(EditEntryContext);
-
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setHovered(true);
     //console.log('Entry clicked:', entry);
+    determineIfList(entry.displayedType);
     if (handleEditEntry) handleEditEntry(entry);
   };
 

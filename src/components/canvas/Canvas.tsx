@@ -17,12 +17,13 @@ import {
   createHandleDeleteEntry,
 } from './CanvasHelpers.tsx';
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
+import { EntryListItemTypes } from '../../model/EntriesConfig.ts';
+import { EntryTypesFormatter } from './entryTypesFormatter.ts';
 
 interface CanvasProps {
   docData: any;
   cfg: TypesConfig;
   setDocData: (updatedDoc: any) => void;
-  resetDocData: (updatedDoc: any) => void;
   dialogOpen: boolean;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,14 +34,14 @@ export const Canvas: React.FC<CanvasProps> = ({
   docData,
   cfg,
   setDocData,
-  resetDocData,
   dialogOpen,
   setDialogOpen,
   setUpdateUser,
   setUpdateUserMessage,
 }) => {
+  //console.log(docData);
   const listEntries = mapDocDataToEntries(docData);
-  //console.log('Entries fetched: ', listEntries);
+  //console.log(listEntries);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [canvasHeight, setCanvasHeight] = useState(1000);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -56,6 +57,21 @@ export const Canvas: React.FC<CanvasProps> = ({
   const [entryDataInModif, setEntryDataInModif] = useState<EntryType | null>(
     null
   );
+  const [isList, setIsList] = useState<boolean>(false);
+  const [isListItem, setIsListItem] = useState<boolean>(false);
+
+  const determineIfList = (type: string) => {
+    if (
+      EntryListItemTypes.includes(
+        EntryTypesFormatter.fromDisplayToConstant(type)
+      )
+    ) {
+      setIsList(true);
+      return true;
+    }
+    setIsList(false);
+    return false;
+  };
 
   const updatePosition = (entry: ContainerEntry, newPos: Position) => {
     const canvas = canvasRef.current;
@@ -74,8 +90,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     docData.id,
     setEntries,
     setUpdateUser,
-    setUpdateUserMessage,
-    resetDocData
+    setUpdateUserMessage
   );
 
   const handleDeleteEntry = createHandleDeleteEntry(
@@ -104,25 +119,33 @@ export const Canvas: React.FC<CanvasProps> = ({
     setEntries((prev) => mapDocDataToEntries(docData));
   }, [docData]);
 
-  const onAddClick = (relativeX, relativeY) => {
+  const handleButtonGrid = (relativeX, relativeY) => {
     setEntryDataInModif(null);
     setEntrySpawnPosition({ xCord: relativeX, yCord: relativeY });
     setDialogOpen(true);
   };
 
   const handleEditEntry = (entry: EntryType) => {
-    console.log('Editing entry:', entry);
     setEntryDataInModif(entry);
     setDialogOpen(true);
   };
 
   return (
-    <EditEntryContext.Provider value={{ handleEditEntry }}>
+    <EditEntryContext.Provider
+      value={{
+        handleEditEntry,
+        isList,
+        setIsList,
+        isListItem,
+        setIsListItem,
+        determineIfList,
+      }}
+    >
       <div ref={canvasRef} className="w-full" style={{ position: 'relative' }}>
         <AddButtonGrid
           entries={entries}
           gridLines={Math.ceil(canvasHeight / 100)}
-          onAddClick={onAddClick}
+          onAddClick={handleButtonGrid}
           existOpenEntry={existOpenEntry}
           canvasRef={canvasRef}
         />

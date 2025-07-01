@@ -57,14 +57,13 @@ export class ListEntries implements ContainerEntry {
     previous?: Entry,
     next?: Entry
   ) {
-    this.type = type
-      ? 'LIST_' + EntryTypesFormatter.fromCamelToConstant(type)
-      : 'LIST_' + entries[0].type;
+    this.type = type ? 'LIST_' + type : 'LIST_' + entries[0].type;
     this.displayedType = type
-      ? EntryTypesFormatter.fromCamelCaseToDisplay(type)
+      ? EntryTypesFormatter.fromConstantToDisplay(type)
       : entries[0].displayedType;
     this.codeName = type
-      ? 'list' + capitalizeFirstChar(type)
+      ? 'list' +
+        capitalizeFirstChar(EntryTypesFormatter.fromConstantToCamel(type))
       : 'list' + capitalizeFirstChar(entries[0].codeName);
     this.entries = entries;
     this.projected = projected;
@@ -74,6 +73,19 @@ export class ListEntries implements ContainerEntry {
     this.size = size;
     this.previousEntry = previous ?? null;
     this.nextEntry = next ?? null;
+  }
+  static from(entry: ListEntries): ListEntries {
+    return new ListEntries(
+      [...entry.entries],
+      entry.projected,
+      entry.highlighted,
+      { ...entry.position },
+      entry.color,
+      entry.size,
+      EntryTypesFormatter.fromListToItem(entry.type),
+      entry.previousEntry,
+      entry.nextEntry
+    );
   }
 }
 

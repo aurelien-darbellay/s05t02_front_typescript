@@ -1,5 +1,5 @@
 export const EntryFieldConfig: Record<string, string[]> = {
-  contact: [
+  CONTACT: [
     'phoneNumber',
     'email',
     'linkedInAccount',
@@ -9,7 +9,7 @@ export const EntryFieldConfig: Record<string, string[]> = {
     'cityOfResidence',
     'zipCode',
   ],
-  education: [
+  EDUCATION: [
     'title',
     'trainingCenter',
     'graduationYear',
@@ -17,8 +17,8 @@ export const EntryFieldConfig: Record<string, string[]> = {
     'cloudDocumentName',
     'documentCloudMetadata',
   ],
-  experience: [
-    'position',
+  EXPERIENCE: [
+    'role',
     'nameCompany',
     'startDate',
     'endDate',
@@ -30,39 +30,56 @@ export const EntryFieldConfig: Record<string, string[]> = {
     'documentCloudMetadata',
   ],
 
-  identity: ['names', 'lastNames'],
-  language: ['name', 'level', 'cloudDocumentName', 'documentCloudMetadata'],
-  portfolio: ['projectName', 'projectUrl'],
-  profession: ['generalTitle', 'specificTitle'],
-  profilePicture: ['urlPicture', 'shape'],
-  softSkill: ['keyWords'],
-  summary: ['title', 'text'],
-  technicalSkill: ['keyWords'],
+  IDENTITY: ['names', 'lastNames'],
+  LANGUAGE: ['name', 'level', 'cloudDocumentName', 'documentCloudMetadata'],
+  PORTFOLIO: ['projectName', 'projectUrl'],
+  PROFESSION: ['generalTitle', 'specificTitle'],
+  PROFILE_PICTURE: ['urlPicture', 'shape'],
+  SOFT_SKILL: ['keyWords'],
+  SUMMARY: ['title', 'text'],
+  TECHNICAL_SKILL: ['keyWords'],
 };
 
-export const EntryRestrictedTypes = [
-  'contact',
-  'identity',
-  'profession',
-  'profilePicture',
-  'summary',
-  'listEducation',
-  'listExperience',
-  'listSoftSkill',
-  'listTechnicalSkill',
-  'listLanguage',
-  'listPortfolio',
-];
 export const EntryContainerTypes = [
+  'CONTACT',
+  'IDENTITY',
+  'PROFESSION',
+  'PROFILE_PICTURE',
+  'SUMMARY',
+  'LIST_EDUCATION',
+  'LIST_EXPERIENCE',
+  'LIST_SOFTSKILL',
+  'LIST_TECHNICAL_SKILL',
+  'LIST_LANGUAGE',
+  'LIST_PORTFOLIO',
+];
+export const EntryListItemTypes = [
+  'EDUCATION',
+  'EXPERIENCE',
+  'LANGUAGE',
+  'PORTFOLIO',
+  'SOFT_SKILL',
+  'TECHNICAL_SKILL',
+];
+export const EntryListTypes = [
+  'LIST_EDUCATION',
+  'LIST_EXPERIENCE',
+  'LIST_SOFTSKILL',
+  'LIST_TECHNICAL_SKILL',
+  'LIST_LANGUAGE',
+  'LIST_PORTFOLIO',
+];
+
+export const CvEntries = [
   'contact',
   'identity',
   'profession',
   'profilePicture',
   'summary',
-  'listEducation',
-  'listExperience',
-  'listSoftSkill',
-  'listTechicalSkill',
-  'listLanguage',
-  'listPortfolio',
+  'education',
+  'experience',
+  'language',
+  'portfolio',
+  'softSkill',
+  'technicalSkill',
 ];

@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
-  EntryContainerTypes,
   EntryFieldConfig,
-  EntryRestrictedTypes,
+  EntryContainerTypes,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
-import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
+import { Entry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
 import { EntryFieldInput } from './EntryFieldInput';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
 import { ActionButton } from '../../ActionButton';
+import { EditEntryContext } from '../../../contexts/EditEntryContext';
 
 interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any) => void;
+  onSave: (entryData: any, isEditing: boolean) => void;
   onDelete: (entryData: any) => void;
   position: { xCord: number; yCord: number } | null;
-  entries: ContainerEntry[];
-  entryData?: ContainerEntry | null;
+  entries: Entry[];
+  entryData?: Entry | null;
 }
 
 export default function EntryCreateDialog({
@@ -35,38 +35,25 @@ export default function EntryCreateDialog({
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
-  const [isList, setIsList] = useState<boolean>(false);
-  const [isListItem, setIsListItem] = useState<boolean>(false);
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
-
-  const restrictedTypes = [...EntryRestrictedTypes];
+  const { isList, setIsList, isListItem, setIsListItem, determineIfList } =
+    useContext(EditEntryContext);
+  const restrictedTypes = [...EntryContainerTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
 
   const hasDuplicateRestrictedType =
     selectedType &&
     restrictedTypes.includes(selectedType) &&
-    entries.some((entry) => entry.codeName === selectedType && !isEditing);
-
-  const determineIfList = (type: string) => {
-    if (
-      !selectedType ||
-      EntryContainerTypes.includes(EntryTypesFormatter.fromDisplayToCamel(type))
-    ) {
-      setIsList(false);
-      return false;
-    }
-    setIsList(true);
-    return true;
-  };
+    entries.some((entry) => entry.type === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
     //console.log(type);
     const formattedType = determineIfList(type)
-      ? EntryTypesFormatter.fromDisplayToCamel('List ' + type)
-      : EntryTypesFormatter.fromDisplayToCamel(type);
+      ? EntryTypesFormatter.fromDisplayToConstant('List ' + type)
+      : EntryTypesFormatter.fromDisplayToConstant(type);
     //console.log(formattedType);
     setSelectedType(formattedType);
     setDisplayedType(type);
@@ -76,6 +63,7 @@ export default function EntryCreateDialog({
     );
     setEntryValues(initialValues);
     setError(null);
+    setIsListItem(false);
   };
 
   const handleInputChange = (key: string, value: string) => {
@@ -90,6 +78,7 @@ export default function EntryCreateDialog({
     setEntryValues({});
     setColor('#000000');
     setError(null);
+    setIsListItem(false);
   };
 
   const handleSave = () => {
@@ -105,6 +94,7 @@ export default function EntryCreateDialog({
     const entryDataToSave = {
       ...entryData,
       type: selectedType,
+      displayedType: displayedType,
       color,
       position: isEditing ? entryData?.position : position,
       ...entryValues,
@@ -112,7 +102,7 @@ export default function EntryCreateDialog({
     //console.log('Entry data to save:', entryDataToSave);
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
-      onSave(normalizeEntryData(entryDataToSave));
+      onSave(normalizeEntryData(entryDataToSave), isEditing);
       handleClose();
     } catch {
       setError('Failed to save entry.');
@@ -127,12 +117,12 @@ export default function EntryCreateDialog({
     const entryToDelete = {
       ...entryData,
       type: selectedType,
+      displayedType: displayedType,
       color,
       position: isEditing ? entryData?.position : position,
       ...entryValues,
     };
     try {
-      //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onDelete(normalizeEntryData(entryToDelete));
       handleClose();
     } catch {
@@ -142,11 +132,11 @@ export default function EntryCreateDialog({
 
   useEffect(() => {
     if (entryData) {
-      setSelectedType(entryData.codeName);
+      setSelectedType(entryData.type);
       setDisplayedType(entryData.displayedType);
       setColor(entryData.color);
       const initValues = Object.fromEntries(
-        (EntryFieldConfig[entryData.codeName] || []).map((field) => [
+        (EntryFieldConfig[entryData.type] || []).map((field) => [
           field,
           entryData[field] || '',
         ])
@@ -155,9 +145,6 @@ export default function EntryCreateDialog({
     }
   }, [entryData]);
 
-  useEffect(() => {
-    determineIfList(selectedType);
-  }, [selectedType]);
   if (!open) return null;
 
   return (
@@ -203,15 +190,17 @@ export default function EntryCreateDialog({
         </div>
 
         {/* Color Picker */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Color</label>
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            className="w-full h-10 border border-gray-300 rounded-md"
-          />
-        </div>
+        {!isListItem && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Color</label>
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              className="w-full h-10 border border-gray-300 rounded-md"
+            />
+          </div>
+        )}
 
         {/* Dynamic Input Fields */}
         {fields.map((field) => (
@@ -243,13 +232,14 @@ export default function EntryCreateDialog({
             color="blue"
             disabled={!selectedType || hasDuplicateRestrictedType}
           />
-          {isList && (
+          {isList && !isListItem && (
             <ActionButton
-              onClick={() =>
+              onClick={() => {
                 setSelectedType((prev) =>
                   EntryTypesFormatter.fromListToItem(prev)
-                )
-              }
+                );
+                setIsListItem(true);
+              }}
               value="Add Item"
               color="black"
             />

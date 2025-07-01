@@ -39,8 +39,8 @@ const EditDocumentView: React.FC = () => {
   }, [id]);
 
   useEffect(() => {
-    //console.log('DocData updated: ', initialDocData);
-  }, [initialDocData]);
+    //console.log('DocData updated: ', updatedDocData);
+  }, [updatedDocData]);
 
   const handleSave = async () => {
     if (!initialDocData || !id) return;
@@ -87,7 +87,6 @@ const EditDocumentView: React.FC = () => {
           docData={initialDocData}
           cfg={config}
           setDocData={setUpdatedDocData}
-          resetDocData={setInitialDocData}
           dialogOpen={dialogOpen}
           setDialogOpen={setDialogOpen}
           setUpdateUser={setUpdateUser}

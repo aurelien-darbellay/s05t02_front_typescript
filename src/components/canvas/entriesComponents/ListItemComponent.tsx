@@ -21,22 +21,22 @@ interface ListItemComponentProps {
 export const ListItemComponent: React.FC<ListItemComponentProps> = ({
   entry,
 }) => {
-  const { handleEditEntry } = useContext(EditEntryContext);
+  const { handleEditEntry, setIsListItem } = useContext(EditEntryContext);
   const [hasShadow, setHasShadow] = useState(false);
 
   const renderEntry = (entry: Entry) => {
-    switch (entry.codeName) {
-      case 'language':
+    switch (entry.type) {
+      case 'LANGUAGE':
         return <LanguageComponent language={entry as Language} />;
-      case 'experience':
+      case 'EXPERIENCE':
         return <ExperienceComponent experience={entry as Experience} />;
-      case 'education':
+      case 'EDUCATION':
         return <EducationComponent education={entry as Education} />;
-      case 'portfolio':
+      case 'PORTFOLIO':
         return <PortfolioComponent portfolio={entry as Portfolio} />;
-      case 'softSkill':
+      case 'SOFT_SKILL':
         return <SoftSkillComponent softSkill={entry as SoftSkill} />;
-      case 'technicalSkill':
+      case 'TECHNICAL_SKILL':
         return (
           <TechnicalSkillComponent technicalSkill={entry as TechnicalSkill} />
         );
@@ -48,8 +48,9 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('holo');
+    //console.log('holo');
     setHasShadow(false);
+    setIsListItem(true);
     if (handleEditEntry) handleEditEntry(entry);
   };
 

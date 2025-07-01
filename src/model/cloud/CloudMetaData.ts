@@ -14,4 +14,13 @@ export class CloudinaryMetaData implements CloudMetaData {
     this.id = id;
     this.publicUrl = publicUrl;
   }
+  static isCloudinaryMetaData(obj: any): obj is CloudinaryMetaData {
+    return (
+      obj != null &&
+      typeof obj === 'object' &&
+      obj.type === 'CLOUDINARYMETADATA' &&
+      typeof obj.id === 'string' &&
+      typeof obj.publicUrl === 'string'
+    );
+  }
 } // Specific implementation
