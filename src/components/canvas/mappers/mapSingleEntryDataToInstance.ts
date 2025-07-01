@@ -35,6 +35,8 @@ export function mapSingleEntryDataToInstance(
         entryData.size,
         entryData.projected,
         entryData.highlighted,
+        entryData.names,
+        entryData.lastNames,
         entryData.previousEntry,
         entryData.nextEntry
       );

@@ -1,6 +1,6 @@
 // components/EntryFieldInput.tsx
 import React from 'react';
-import { useGetInputType } from './getInputType';
+import { useGetInputType } from '../mappers/getInputType';
 import { CloudinaryMetaInput } from './CloudinaryMetaInput';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
 

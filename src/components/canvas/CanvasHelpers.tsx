@@ -19,12 +19,12 @@ import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
 import { EntryContainerTypes } from '../../model/EntriesConfig.ts';
 import { mapSingleEntryDataToInstance } from './mappers/mapSingleEntryDataToInstance.ts';
-import { mapToListItem } from './mappers/mapToListItem.ts';
 
 const updateEntriesInState = (
   entries: ContainerEntry[],
   updatedEntry: ContainerEntry
 ): ContainerEntry[] => {
+  console.log(updatedEntry);
   let wasModified = false;
   const updatedEntries = entries.map((entry) => {
     if (entry.type == updatedEntry.type) {

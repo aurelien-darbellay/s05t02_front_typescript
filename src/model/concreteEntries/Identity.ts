@@ -18,15 +18,17 @@ export class Identity implements ContainerEntry {
   public nextEntry: Entry | null;
 
   // Identity-specific fields
-  public names: string[] = [];
-  public lastNames: string[] = [];
+  public names: string[];
+  public lastNames: string[];
 
   constructor(
     position: Position,
     color: string,
     size: number,
-    projected: boolean = false,
+    projected: boolean = true,
     highlighted: boolean = false,
+    names?: string[],
+    lastNames?: string[],
     previousEntry?: Entry,
     nextEntry?: Entry
   ) {
@@ -35,6 +37,8 @@ export class Identity implements ContainerEntry {
     this.size = size;
     this.projected = projected;
     this.highlighted = highlighted;
+    this.names = names ? [...names] : [];
+    this.lastNames = lastNames ? [...lastNames] : [];
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
     // names and lastNames default to empty arrays
