@@ -13,6 +13,7 @@ import { EducationComponent } from './EducationComponent';
 import { PortfolioComponent } from './PortfolioComponent';
 import { SoftSkillComponent } from './SoftSkillComponent';
 import { TechnicalSkillComponent } from './TechnicalSkillComponent';
+import ProjectionToggler from '../ProjectionToggler';
 
 interface ListItemComponentProps {
   entry: Entry;
@@ -77,6 +78,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
       }}
     >
       {renderEntry(entry)}
+      <ProjectionToggler entry={entry} />
     </li>
   );
 };

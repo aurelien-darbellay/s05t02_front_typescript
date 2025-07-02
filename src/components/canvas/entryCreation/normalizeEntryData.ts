@@ -1,7 +1,7 @@
 import { CloudinaryMetaData } from '../../../model/cloud/CloudMetaData'; // adjust path as needed
 
 export const normalizeEntryData = (entryData: Record<string, any>) => {
-  console.log(entryData);
+  //console.log(entryData);
   const normalized: Record<string, any> = { ...entryData };
   if (
     entryDataTypes.cloudMetaData in normalized &&

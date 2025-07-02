@@ -24,7 +24,7 @@ const updateEntriesInState = (
   entries: ContainerEntry[],
   updatedEntry: ContainerEntry
 ): ContainerEntry[] => {
-  console.log(updatedEntry);
+  //console.log(updatedEntry);
   let wasModified = false;
   const updatedEntries = entries.map((entry) => {
     if (entry.type == updatedEntry.type) {
@@ -45,6 +45,7 @@ export const createHandleAddEntry = (
 ) => {
   return async (entryData: any, isEditing: boolean) => {
     try {
+      //console.log(entryData);
       const url =
         ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
         (isEditing ? ApiPaths.ENTRY_UPDATE_REL : ApiPaths.ENTRY_ADD_REL);
@@ -55,7 +56,9 @@ export const createHandleAddEntry = (
       const response = await axios.post(url, payload, {
         withCredentials: true,
       });
+      //console.log(response.data);
       const newEntry = mapSingleEntryDataToInstance(response.data);
+      //console.log(newEntry);
       setEntries((prev) => updateEntriesInState(prev, newEntry));
     } catch (error) {
       exposeError(true);

@@ -133,6 +133,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   return (
     <EditEntryContext.Provider
       value={{
+        handleAddEntry,
         handleEditEntry,
         isList,
         setIsList,
@@ -176,7 +177,6 @@ export const Canvas: React.FC<CanvasProps> = ({
             setEntryDataInModif(null);
           }}
           cfg={cfg}
-          onSave={handleAddEntry}
           onDelete={handleDeleteEntry}
           position={entrySpawnPosition}
           entries={entries}

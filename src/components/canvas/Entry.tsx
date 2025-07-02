@@ -13,6 +13,7 @@ import {
   createHandleMouseMove,
 } from './entryInteractionHandlers';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
+import ProjectionToggler from './ProjectionToggler';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -54,6 +55,8 @@ export const Entry: React.FC<EntryProps> = ({
     scaleFactor,
     setHovered
   );
+
+  //console.log(entry);
 
   const handleMouseMove = createHandleMouseMove(
     entry,
@@ -155,6 +158,7 @@ export const Entry: React.FC<EntryProps> = ({
           }}
         />
       )}
+      {hovered && <ProjectionToggler entry={entry} marginTop={5} size={35} />}
     </div>
   );
 };

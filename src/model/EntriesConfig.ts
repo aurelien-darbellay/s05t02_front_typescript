@@ -64,7 +64,7 @@ export const EntryListItemTypes = [
 export const EntryListTypes = [
   'LIST_EDUCATION',
   'LIST_EXPERIENCE',
-  'LIST_SOFTSKILL',
+  'LIST_SOFT_SKILL',
   'LIST_TECHNICAL_SKILL',
   'LIST_LANGUAGE',
   'LIST_PORTFOLIO',

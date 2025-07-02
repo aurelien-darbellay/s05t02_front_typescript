@@ -63,7 +63,7 @@ export const mapToListItem = (
 
     case 'TECHNICAL_SKILL':
       mappedEntry = new TechnicalSkill(
-        entryData.name,
+        entryData.keyWords,
         projected,
         highlighted,
         id

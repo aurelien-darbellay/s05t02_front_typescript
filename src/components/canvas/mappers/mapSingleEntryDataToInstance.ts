@@ -56,8 +56,6 @@ export function mapSingleEntryDataToInstance(
 
     case 'CONTACT':
       return new Contact(
-        entryData.projected,
-        entryData.highlighted,
         entryData.position || { xCord: 0, yCord: 0 },
         entryData.color,
         entryData.size,
@@ -69,6 +67,8 @@ export function mapSingleEntryDataToInstance(
         entryData.facebookAccount,
         entryData.cityOfResidence,
         entryData.zipCode,
+        entryData.projected,
+        entryData.highlighted,
         entryData.previousEntry,
         entryData.nextEntry
       );

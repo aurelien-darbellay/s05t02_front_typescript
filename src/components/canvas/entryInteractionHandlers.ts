@@ -18,7 +18,7 @@ export const createHandleMouseDown = (
       originMouse.current = { x: e.clientX, y: e.clientY };
       originScale.current = scaleFactor;
       setResizing(true);
-    } else {
+    } else if (!(e.target as HTMLElement).classList.contains('toggler')) {
       //if (!resizing) setHovered(false);
       e.preventDefault();
       originMouse.current = { x: e.clientX, y: e.clientY };

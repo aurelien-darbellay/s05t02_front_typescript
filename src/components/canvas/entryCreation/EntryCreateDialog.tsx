@@ -15,7 +15,6 @@ interface EntryCreateDialogProps {
   open: boolean;
   onClose: () => void;
   cfg: TypesConfig;
-  onSave: (entryData: any, isEditing: boolean) => void;
   onDelete: (entryData: any) => void;
   position: { xCord: number; yCord: number } | null;
   entries: Entry[];
@@ -26,7 +25,6 @@ export default function EntryCreateDialog({
   open,
   onClose,
   cfg,
-  onSave,
   onDelete,
   position,
   entries,
@@ -38,8 +36,15 @@ export default function EntryCreateDialog({
   const [entryValues, setEntryValues] = useState<Record<string, string>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
-  const { isList, setIsList, isListItem, setIsListItem, determineIfList } =
-    useContext(EditEntryContext);
+  const {
+    isList,
+    setIsList,
+    isListItem,
+    setIsListItem,
+    determineIfList,
+    handleAddEntry,
+  } = useContext(EditEntryContext);
+  const onSave = handleAddEntry;
   const restrictedTypes = [...EntryContainerTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
@@ -99,7 +104,7 @@ export default function EntryCreateDialog({
       position: isEditing ? entryData?.position : position,
       ...entryValues,
     };
-    //console.log('Entry data to save:', entryDataToSave);
+    console.log('Entry data to save:', entryDataToSave);
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       onSave(normalizeEntryData(entryDataToSave), isEditing);
