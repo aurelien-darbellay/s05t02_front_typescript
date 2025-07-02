@@ -10,11 +10,7 @@ import EntryCreateDialog from './entryCreation/EntryCreateDialog.tsx';
 import { TypesConfig } from '../../model/TypesConfig';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { updateDocDataFromEntries } from '../../model/mappers/updateDocDataFromEntries.ts';
-import {
-  createHandleAddEntry,
-  useCanvasSize,
-  createHandleDeleteEntry,
-} from './CanvasHelpers.tsx';
+import { useCanvasSize } from './CanvasHelpers.ts';
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { EntryListItemTypes } from '../../model/EntriesConfig.ts';
 import { EntryTypesFormatter } from './entryTypesFormatter.ts';
@@ -22,27 +18,29 @@ import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx
 
 interface CanvasProps {
   docData: any;
+  entries: ContainerEntry[];
+  setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>;
   cfg: TypesConfig;
   setDocData: (updatedDoc: any) => void;
   dialogOpen: boolean;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
-  setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
+  handleAddEntry: (entryData: any, isEditing: boolean) => void;
+  handleDeleteEntry: (entryData: EntryType) => void;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
   docData,
+  entries,
+  setEntries,
   cfg,
   setDocData,
   dialogOpen,
   setDialogOpen,
-  setUpdateUser,
-  setUpdateUserMessage,
+  handleAddEntry,
+  handleDeleteEntry,
 }) => {
   //console.log(docData);
-  const listEntries = mapDocDataToEntries(docData);
-  //console.log(listEntries);
-  const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
+
   const [canvasHeight, setCanvasHeight] = useState(1000);
   const canvasRef = useRef<HTMLDivElement>(null);
   const {
@@ -85,20 +83,6 @@ export const Canvas: React.FC<CanvasProps> = ({
       prevEntries.map((e) => (e.type === entry.type ? updated : e))
     );
   };
-
-  const handleAddEntry = createHandleAddEntry(
-    docData.id,
-    setEntries,
-    setUpdateUser,
-    setUpdateUserMessage
-  );
-
-  const handleDeleteEntry = createHandleDeleteEntry(
-    docData.id,
-    setEntries,
-    setUpdateUser,
-    setUpdateUserMessage
-  );
 
   useEffect(() => {
     const buffer = 0;

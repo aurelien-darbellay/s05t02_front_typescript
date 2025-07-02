@@ -2,12 +2,13 @@ import React, { useState, useLayoutEffect } from 'react';
 import {
   ContainedEntry,
   ContainerEntry,
-} from '../../model/EntriesGeneralFeatures.ts';
-import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
-import axios from '../../axiosConfig.ts';
-import { ApiPaths } from '../../apiPaths.ts';
-import { EntryContainerTypes } from '../../model/EntriesConfig.ts';
-import { mapSingleEntryDataToInstance } from '../../model/mappers/mapSingleEntryDataToInstance.ts';
+  Entry,
+} from '../model/EntriesGeneralFeatures.ts';
+import { ListEntries } from '../model/EntriesGeneralFeatures.ts';
+import axios from '../axiosConfig.ts';
+import { ApiPaths } from '../apiPaths.ts';
+import { EntryContainerTypes } from '../model/EntriesConfig.ts';
+import { mapSingleEntryDataToInstance } from '../model/mappers/mapSingleEntryDataToInstance.ts';
 
 const updateEntriesInState = (
   entries: ContainerEntry[],
@@ -81,7 +82,7 @@ export const createHandleDeleteEntry = (
   exposeError: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  return async (entryData: ContainerEntry) => {
+  return async (entryData: Entry) => {
     try {
       const url =
         ApiPaths.ENTRY_BASE_PATH.replace('{docId}', docId) +
