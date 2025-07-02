@@ -7,6 +7,7 @@ import { ApiPaths } from '../apiPaths';
 import { ActionButton } from './ActionButton';
 import { fetchDocData } from '../helpers/generalFetchers';
 import { UserUpdateDialog } from './UserUpdateDialog';
+import { UnprojectedEntriesShelf } from './UnprojectedEntriesShelf';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -82,16 +83,21 @@ const EditDocumentView: React.FC = () => {
       </div>
 
       {/* Canvas grows with content and scrolls normally */}
-      <div className="w-full bg-gray-100">
-        <Canvas
-          docData={initialDocData}
-          cfg={config}
-          setDocData={setUpdatedDocData}
-          dialogOpen={dialogOpen}
-          setDialogOpen={setDialogOpen}
-          setUpdateUser={setUpdateUser}
-          setUpdateUserMessage={setUpdateUserMessage}
-        />
+      <div className="w-full flex">
+        <div className="w-1/7">
+          <UnprojectedEntriesShelf docData={updatedDocData} />
+        </div>
+        <div className="w-6/7 bg-gray-100">
+          <Canvas
+            docData={initialDocData}
+            cfg={config}
+            setDocData={setUpdatedDocData}
+            dialogOpen={dialogOpen}
+            setDialogOpen={setDialogOpen}
+            setUpdateUser={setUpdateUser}
+            setUpdateUserMessage={setUpdateUserMessage}
+          />
+        </div>
       </div>
       <UserUpdateDialog
         open={updateUser}

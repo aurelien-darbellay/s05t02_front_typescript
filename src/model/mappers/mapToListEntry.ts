@@ -1,9 +1,6 @@
-import {
-  EntryListItemTypes,
-  EntryListTypes,
-} from '../../../model/EntriesConfig';
-import { ListEntries } from '../../../model/EntriesGeneralFeatures';
-import { EntryTypesFormatter } from '../entryTypesFormatter';
+import { EntryListItemTypes, EntryListTypes } from '../EntriesConfig';
+import { ListEntries } from '../EntriesGeneralFeatures';
+import { EntryTypesFormatter } from '../../components/canvas/entryTypesFormatter';
 import { mapToListItem } from './mapToListItem';
 
 export const mapToListEntry = (entryData: any): ListEntries | null => {

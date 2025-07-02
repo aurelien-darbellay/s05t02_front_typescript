@@ -7,7 +7,7 @@ import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
 import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
 import { EntryContainerTypes } from '../../model/EntriesConfig.ts';
-import { mapSingleEntryDataToInstance } from './mappers/mapSingleEntryDataToInstance.ts';
+import { mapSingleEntryDataToInstance } from '../../model/mappers/mapSingleEntryDataToInstance.ts';
 
 const updateEntriesInState = (
   entries: ContainerEntry[],

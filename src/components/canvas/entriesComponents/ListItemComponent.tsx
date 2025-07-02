@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
 import ProjectionToggler from '../ProjectionToggler';
-import { mapEntryToComponent } from '../mappers/mapEntryToComponent';
+import { mapEntryToComponent } from '../../../model/mappers/mapEntryToComponent';
 
 interface ListItemComponentProps {
   entry: Entry;

@@ -1,10 +1,10 @@
-import { Education } from '../../../model/concreteEntries/Education';
-import { Experience } from '../../../model/concreteEntries/Experience';
-import { Language } from '../../../model/concreteEntries/Language';
-import { Portfolio } from '../../../model/concreteEntries/Portfolio';
-import { SoftSkill } from '../../../model/concreteEntries/SoftSkill';
-import { TechnicalSkill } from '../../../model/concreteEntries/TechnicalSkill';
-import { ContainedEntry } from '../../../model/EntriesGeneralFeatures';
+import { Education } from '../concreteEntries/Education';
+import { Experience } from '../concreteEntries/Experience';
+import { Language } from '../concreteEntries/Language';
+import { Portfolio } from '../concreteEntries/Portfolio';
+import { SoftSkill } from '../concreteEntries/SoftSkill';
+import { TechnicalSkill } from '../concreteEntries/TechnicalSkill';
+import { ContainedEntry } from '../EntriesGeneralFeatures';
 
 export const mapToListItem = (
   entryData: any,

@@ -1,5 +1,5 @@
-import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
-import { EntryTypesFormatter } from '../entryTypesFormatter';
+import { ContainerEntry } from '../EntriesGeneralFeatures';
+import { EntryTypesFormatter } from '../../components/canvas/entryTypesFormatter';
 export function updateDocDataFromEntries(
   docData: any,
   entries: ContainerEntry[]

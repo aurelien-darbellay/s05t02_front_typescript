@@ -1,9 +1,9 @@
-import { Profession } from '../../../model/concreteEntries/Profession';
-import { Identity } from '../../../model/concreteEntries/Identity';
-import { Contact } from '../../../model/concreteEntries/Contact';
-import { Summary } from '../../../model/concreteEntries/Summary';
-import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
-import { ContainerEntry } from '../../../model/EntriesGeneralFeatures'; // assuming this exports the type
+import { Profession } from '../concreteEntries/Profession';
+import { Identity } from '../concreteEntries/Identity';
+import { Contact } from '../concreteEntries/Contact';
+import { Summary } from '../concreteEntries/Summary';
+import { ProfilePicture } from '../concreteEntries/ProfilePicture';
+import { ContainerEntry } from '../EntriesGeneralFeatures'; // assuming this exports the type
 import { mapToListEntry } from './mapToListEntry';
 
 export function mapSingleEntryDataToInstance(

@@ -1,4 +1,4 @@
-import { useTypesConfig } from '../../../contexts/TypesConfigHook';
+import { useTypesConfig } from '../../contexts/TypesConfigHook';
 
 type InputType =
   | {

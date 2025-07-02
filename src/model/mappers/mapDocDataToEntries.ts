@@ -1,5 +1,5 @@
-import { ContainerEntry } from '../../../model/EntriesGeneralFeatures'; // assuming this exports the type
-import { CvEntries } from '../../../model/EntriesConfig';
+import { ContainerEntry } from '../EntriesGeneralFeatures'; // assuming this exports the type
+import { CvEntries } from '../EntriesConfig';
 import { mapSingleEntryDataToInstance } from './mapSingleEntryDataToInstance';
 
 export function mapDocDataToEntries(docData: any): ContainerEntry[] {

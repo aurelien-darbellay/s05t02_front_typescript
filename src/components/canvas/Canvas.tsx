@@ -5,11 +5,11 @@ import {
   Position,
 } from '../../model/EntriesGeneralFeatures.ts';
 import { Entry } from './Entry.tsx';
-import { mapDocDataToEntries } from './mappers/mapDocDataToEntries.ts';
+import { mapDocDataToEntries } from '../../model/mappers/mapDocDataToEntries.ts';
 import EntryCreateDialog from './entryCreation/EntryCreateDialog.tsx';
 import { TypesConfig } from '../../model/TypesConfig';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
-import { updateDocDataFromEntries } from './mappers/updateDocDataFromEntries.ts';
+import { updateDocDataFromEntries } from '../../model/mappers/updateDocDataFromEntries.ts';
 import {
   createHandleAddEntry,
   useCanvasSize,
@@ -18,7 +18,7 @@ import {
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { EntryListItemTypes } from '../../model/EntriesConfig.ts';
 import { EntryTypesFormatter } from './entryTypesFormatter.ts';
-import { mapEntryToComponent } from './mappers/mapEntryToComponent.tsx';
+import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx';
 
 interface CanvasProps {
   docData: any;
