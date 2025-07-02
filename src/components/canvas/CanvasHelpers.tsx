@@ -3,17 +3,6 @@ import {
   ContainedEntry,
   ContainerEntry,
 } from '../../model/EntriesGeneralFeatures.ts';
-import { ContactComponent } from './entriesComponents/ContactComponent.tsx';
-import { IdentityComponent } from './entriesComponents/IdentityComponent.tsx';
-import { ProfessionComponent } from './entriesComponents/ProfessionComponent.tsx';
-import { ProfilePictureComponent } from './entriesComponents/ProfilePictureComponent.tsx';
-import { SummaryComponent } from './entriesComponents/SummaryComponent.tsx';
-import { ListEntriesComponent } from './entriesComponents/ListEntriesComponent.tsx';
-import { Contact } from '../../model/concreteEntries/Contact.ts';
-import { Identity } from '../../model/concreteEntries/Identity.ts';
-import { Profession } from '../../model/concreteEntries/Profession.ts';
-import { ProfilePicture } from '../../model/concreteEntries/ProfilePicture.ts';
-import { Summary } from '../../model/concreteEntries/Summary.ts';
 import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
 import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
@@ -109,24 +98,6 @@ export const createHandleDeleteEntry = (
       setErrorMessage('Failed to delete entry: ' + (error as Error).message);
     }
   };
-};
-
-export const renderConcrete = (entry: ContainerEntry) => {
-  if (entry instanceof Contact)
-    return <ContactComponent contact={entry as Contact} />;
-  if (entry instanceof Identity)
-    return <IdentityComponent identity={entry as Identity} />;
-  if (entry instanceof Profession)
-    return <ProfessionComponent profession={entry as Profession} />;
-  if (entry instanceof ProfilePicture)
-    return <ProfilePictureComponent profilePicture={entry as ProfilePicture} />;
-  if (entry instanceof Summary)
-    return <SummaryComponent summary={entry as Summary} />;
-  if (entry instanceof ListEntries) {
-    return <ListEntriesComponent listEntries={entry as ListEntries} />;
-  }
-
-  return null;
 };
 
 export const useCanvasSize = (

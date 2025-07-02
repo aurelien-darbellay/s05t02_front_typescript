@@ -9,7 +9,7 @@ const ProjectionToggler = ({ entry, marginTop = 0, size = 20 }) => {
     e.stopPropagation();
 
     const updatedEntry = { ...entry, projected: false };
-    console.log(updatedEntry);
+    //console.log(updatedEntry);
     if (handleAddEntry) {
       handleAddEntry(updatedEntry, true);
     }

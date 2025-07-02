@@ -11,7 +11,6 @@ import { TypesConfig } from '../../model/TypesConfig';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { updateDocDataFromEntries } from './mappers/updateDocDataFromEntries.ts';
 import {
-  renderConcrete,
   createHandleAddEntry,
   useCanvasSize,
   createHandleDeleteEntry,
@@ -19,6 +18,7 @@ import {
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { EntryListItemTypes } from '../../model/EntriesConfig.ts';
 import { EntryTypesFormatter } from './entryTypesFormatter.ts';
+import { mapEntryToComponent } from './mappers/mapEntryToComponent.tsx';
 
 interface CanvasProps {
   docData: any;
@@ -164,7 +164,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               width={canvasWidth}
               setExistOpenEntry={setExistOpenEntry}
             >
-              {renderConcrete(entry)}
+              {mapEntryToComponent(entry)}
             </Entry>
           ))
         )}
