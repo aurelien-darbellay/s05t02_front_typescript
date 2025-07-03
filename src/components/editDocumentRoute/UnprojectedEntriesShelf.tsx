@@ -1,3 +1,4 @@
+import { ProjectionContext } from '../../contexts/ProjectionContext';
 import { EntryListTypes } from '../../model/EntriesConfig';
 import {
   ContainerEntry,
@@ -26,21 +27,23 @@ export const UnprojectedEntriesShelf: React.FC<
   );
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 6,
-        width: '100%',
-        alignItems: 'flex-start',
-      }}
-    >
-      {containerEntriesToShelve.map((entry, idx) => (
-        <ShelvedEntry entry={entry} key={idx} />
-      ))}
-      {listItemToShelve.map((entry, idx) => (
-        <ShelvedEntry entry={entry} key={idx + numContEntriesToShelve} />
-      ))}
-    </div>
+    <ProjectionContext.Provider value={{ projected: false }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 6,
+          width: '100%',
+          alignItems: 'flex-start',
+        }}
+      >
+        {containerEntriesToShelve.map((entry, idx) => (
+          <ShelvedEntry entry={entry} key={idx} />
+        ))}
+        {listItemToShelve.map((entry, idx) => (
+          <ShelvedEntry entry={entry} key={idx + numContEntriesToShelve} />
+        ))}
+      </div>
+    </ProjectionContext.Provider>
   );
 };

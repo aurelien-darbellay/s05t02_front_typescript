@@ -3,6 +3,7 @@ import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
 import ProjectionToggler from '../ProjectionToggler';
 import { mapEntryToComponent } from '../../../model/mappers/mapEntryToComponent';
+import { ProjectionContext } from '../../../contexts/ProjectionContext';
 
 interface ListItemComponentProps {
   entry: Entry;
@@ -13,6 +14,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
 }) => {
   const { handleEditEntry, setIsListItem } = useContext(EditEntryContext);
   const [hasShadow, setHasShadow] = useState(false);
+  const { projected } = useContext(ProjectionContext);
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
     //console.log('holo');
     setHasShadow(false);
     setIsListItem(true);
-    if (handleEditEntry) handleEditEntry(entry);
+    if (handleEditEntry && projected) handleEditEntry(entry);
   };
 
   const handleMouseEnter = () => {
