@@ -64,6 +64,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               key={idx}
               entry={entry}
               width={canvasWidth}
+              existOpenEntry={existOpenEntry}
               setExistOpenEntry={setExistOpenEntry}
             >
               {mapEntryToComponent(entry)}

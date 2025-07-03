@@ -10,6 +10,7 @@ import { EntryFieldInput } from './EntryFieldInput';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
 import { ActionButton } from '../../ActionButton';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
+import ProjectionToggler from '../ProjectionToggler';
 
 interface EntryCreateDialogProps {
   open: boolean;
@@ -86,6 +87,15 @@ export default function EntryCreateDialog({
     setIsListItem(false);
   };
 
+  const getEntryPayload = () => ({
+    ...entryData,
+    type: selectedType,
+    displayedType: displayedType,
+    color,
+    position: isEditing ? entryData?.position : position,
+    ...entryValues,
+  });
+
   const handleSave = () => {
     if (!selectedType) {
       setError('Please select an entry type.');
@@ -96,18 +106,11 @@ export default function EntryCreateDialog({
       return;
     }
 
-    const entryDataToSave = {
-      ...entryData,
-      type: selectedType,
-      displayedType: displayedType,
-      color,
-      position: isEditing ? entryData?.position : position,
-      ...entryValues,
-    };
-    console.log('Entry data to save:', entryDataToSave);
+    console.log('Entry data to save:', getEntryPayload());
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
-      onSave(normalizeEntryData(entryDataToSave), isEditing);
+      if (onSave)
+        onSave(normalizeEntryData(getEntryPayload()) as Entry, isEditing);
       handleClose();
     } catch {
       setError('Failed to save entry.');
@@ -224,6 +227,12 @@ export default function EntryCreateDialog({
 
         {/* Footer Buttons */}
         <div className="flex justify-end space-x-2 mt-4">
+          {isListItem && (
+            <ProjectionToggler
+              entry={getEntryPayload()}
+              onClick={handleClose}
+            />
+          )}
           <ActionButton
             onClick={handleDelete}
             value="Delete"

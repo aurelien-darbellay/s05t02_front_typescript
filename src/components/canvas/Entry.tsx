@@ -23,6 +23,7 @@ interface EntryProps {
     newSize: { width: number; height: number }
   ) => void;
   width: number;
+  existOpenEntry: boolean;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -31,6 +32,7 @@ export const Entry: React.FC<EntryProps> = ({
   children,
   onSizeChange,
   width,
+  existOpenEntry,
   setExistOpenEntry,
 }) => {
   const [dragging, setDragging] = useState(false);
@@ -42,7 +44,7 @@ export const Entry: React.FC<EntryProps> = ({
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
   const displayLabel = entry.displayedType;
-  const { determineIfList, handleEditEntry, updatePosition } =
+  const { determineIfList, handleEditEntry, updatePosition, dialogOpen } =
     useContext(EditEntryContext);
   const handleMouseDown = createHandleMouseDown(
     entry,
@@ -72,14 +74,12 @@ export const Entry: React.FC<EntryProps> = ({
   );
 
   const handleMouseUp = () => {
-    setHovered(true);
     if (dragging) setDragging(false);
     if (resizing) setResizing(false);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setHovered(true);
     console.log('Entry clicked:', entry);
     determineIfList(entry.type);
     if (handleEditEntry) handleEditEntry(entry);
@@ -103,6 +103,10 @@ export const Entry: React.FC<EntryProps> = ({
     }
   }, [hovered, children, scaleFactor]);
 
+  useEffect(() => {
+    if (dialogOpen) setHovered(false);
+  }, [dialogOpen]);
+
   return (
     <div
       ref={entryRef}
@@ -110,14 +114,16 @@ export const Entry: React.FC<EntryProps> = ({
       onMouseUp={handleMouseUp}
       onContextMenu={handleClick}
       onMouseEnter={() => {
-        setHovered(true);
-        setExistOpenEntry(true);
-      }}
-      onMouseLeave={() => {
-        if (!resizing) {
-          setHovered(false);
-          setExistOpenEntry(false);
+        if (!dialogOpen && !existOpenEntry) {
+          setHovered(true);
+          setExistOpenEntry(true);
         }
+      }}
+      onMouseLeave={(e) => {
+        if (resizing || dragging) return;
+        if (e.buttons !== 0) return;
+        setHovered(false);
+        setExistOpenEntry(false);
       }}
       style={getEntryStyle(
         entry,

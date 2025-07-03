@@ -101,6 +101,7 @@ const Editor: React.FC<EditorProps> = ({
       value={{
         handleAddEntry,
         handleEditEntry,
+        dialogOpen,
         isList,
         setIsList,
         isListItem,

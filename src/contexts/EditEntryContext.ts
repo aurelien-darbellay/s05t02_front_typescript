@@ -9,6 +9,7 @@ export const EditEntryContext = React.createContext<{
   handleAddEntry: ((entry: Entry, isEditing: boolean) => void) | null;
   handleEditEntry: ((entry: Entry) => void) | null;
   updatePosition: ((entry: ContainerEntry, newPos: Position) => void) | null;
+  dialogOpen: boolean;
   isList: boolean;
   setIsList: React.Dispatch<React.SetStateAction<boolean>>;
   isListItem: boolean;
@@ -18,6 +19,7 @@ export const EditEntryContext = React.createContext<{
   handleAddEntry: null,
   handleEditEntry: null,
   updatePosition: null,
+  dialogOpen: false,
   isList: false,
   setIsList: () => {},
   isListItem: false,

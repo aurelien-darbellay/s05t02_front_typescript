@@ -16,14 +16,15 @@ export const createHandleMouseDown = (
     if (e.button === 2) return;
     setHovered(true);
     if ((e.target as HTMLElement).classList.contains('toggler')) return;
-    //console.log('MouseDown');
+    console.log('MouseDown');
     if ((e.target as HTMLElement).classList.contains('resize-handle')) {
+      console.log('resizing');
       originMouse.current = { x: e.clientX, y: e.clientY };
       originScale.current = scaleFactor;
       setResizing(true);
     } else {
       e.preventDefault();
-      //console.log('dragging');
+      console.log('dragging');
       originMouse.current = { x: e.clientX, y: e.clientY };
       originPos.current = { ...entry.position };
       setDragging(true);
@@ -45,11 +46,11 @@ export const createHandleMouseMove = (
   setScaleFactor: (scale: number) => void
 ) => {
   return (e: MouseEvent) => {
+    e.preventDefault();
     setHovered(true);
     setExistOpenEntry(true);
     if (dragging) {
       //console.log('Dragging');
-      e.preventDefault();
       const deltaX = e.clientX / width - originMouse.current.x / width;
       const deltaY = e.clientY - originMouse.current.y;
       const newPos: Position = {

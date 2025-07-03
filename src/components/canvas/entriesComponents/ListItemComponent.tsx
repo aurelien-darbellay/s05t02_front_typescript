@@ -46,7 +46,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
       }}
     >
       {mapEntryToComponent(entry)}
-      <ProjectionToggler entry={entry} />
+      {!entry.projected && <ProjectionToggler entry={entry} />}
     </li>
   );
 };
