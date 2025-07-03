@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './components/Home';
 import AdminDashboard from './components/AdminDashboard.tsx';
-import EditDocumentView from './components/EditDocumentView.tsx';
+import EditDocumentView from './components/editDocumentRoute/EditDocumentView.tsx';
 import PublicDocumentView from './components/PublicDocumentView.tsx';
 import UserDashboard from './components/UserDashboard.tsx';
 import UserDetails from './components/UserDetails.tsx';

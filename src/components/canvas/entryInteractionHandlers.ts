@@ -14,13 +14,16 @@ export const createHandleMouseDown = (
 ) => {
   return (e: React.MouseEvent) => {
     setHovered(true);
+    if ((e.target as HTMLElement).classList.contains('toggler')) return;
+    console.log('MouseDown');
+
     if ((e.target as HTMLElement).classList.contains('resize-handle')) {
       originMouse.current = { x: e.clientX, y: e.clientY };
       originScale.current = scaleFactor;
       setResizing(true);
-    } else if (!(e.target as HTMLElement).classList.contains('toggler')) {
-      //if (!resizing) setHovered(false);
+    } else {
       e.preventDefault();
+      console.log('dragging');
       originMouse.current = { x: e.clientX, y: e.clientY };
       originPos.current = { ...entry.position };
       setDragging(true);

@@ -1,14 +1,14 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useTypesConfig } from '../contexts/TypesConfigHook';
-import { Canvas } from './canvas/Canvas';
-import axios from '../axiosConfig';
-import { ApiPaths } from '../apiPaths';
-import { ActionButton } from './ActionButton';
-import { fetchDocData } from '../helpers/generalFetchers';
-import { UserUpdateDialog } from './UserUpdateDialog';
+import { useTypesConfig } from '../../contexts/TypesConfigHook';
+import { Canvas } from '../canvas/Canvas';
+import axios from '../../axiosConfig';
+import { ApiPaths } from '../../apiPaths';
+import { ActionButton } from '../ActionButton';
+import { fetchDocData } from '../../helpers/generalFetchers';
+import { UserUpdateDialog } from '../UserUpdateDialog';
 import { UnprojectedEntriesShelf } from './UnprojectedEntriesShelf';
-import { mapDocDataToEntries } from '../model/mappers/mapDocDataToEntries';
+import { mapDocDataToEntries } from '../../model/mappers/mapDocDataToEntries';
 import {
   createHandleAddEntry,
   createHandleDeleteEntry,
@@ -106,7 +106,7 @@ const EditDocumentView: React.FC = () => {
       {/* Canvas grows with content and scrolls normally */}
       <div className="w-full flex">
         <div className="w-1/7">
-          <UnprojectedEntriesShelf docData={updatedDocData} />
+          <UnprojectedEntriesShelf entries={entries} />
         </div>
         <div className="w-6/7 bg-gray-100">
           <Canvas

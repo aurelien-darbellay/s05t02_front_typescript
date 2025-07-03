@@ -1,14 +1,13 @@
-import React, { useState, useLayoutEffect } from 'react';
 import {
   ContainedEntry,
   ContainerEntry,
   Entry,
-} from '../model/EntriesGeneralFeatures.ts';
-import { ListEntries } from '../model/EntriesGeneralFeatures.ts';
-import axios from '../axiosConfig.ts';
-import { ApiPaths } from '../apiPaths.ts';
-import { EntryContainerTypes } from '../model/EntriesConfig.ts';
-import { mapSingleEntryDataToInstance } from '../model/mappers/mapSingleEntryDataToInstance.ts';
+} from '../../model/EntriesGeneralFeatures.ts';
+import { ListEntries } from '../../model/EntriesGeneralFeatures.ts';
+import axios from '../../axiosConfig.ts';
+import { ApiPaths } from '../../apiPaths.ts';
+import { EntryContainerTypes } from '../../model/EntriesConfig.ts';
+import { mapSingleEntryDataToInstance } from '../../model/mappers/mapSingleEntryDataToInstance.ts';
 
 const updateEntriesInState = (
   entries: ContainerEntry[],
@@ -99,34 +98,4 @@ export const createHandleDeleteEntry = (
       setErrorMessage('Failed to delete entry: ' + (error as Error).message);
     }
   };
-};
-
-export const useCanvasSize = (
-  canvasRef: React.RefObject<HTMLElement | null>
-) => {
-  const [canvasSize, setCanvasSize] = useState({ canvasWidth: 0, height: 0 });
-  const [canvasReady, setCanvasReady] = useState(false);
-
-  useLayoutEffect(() => {
-    if (!canvasRef || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const updateSize = () => {
-      const { width, height } = canvas.getBoundingClientRect();
-      if (width > 0 && height > 0) {
-        setCanvasSize({ canvasWidth: width, height });
-        setCanvasReady(true);
-      }
-    };
-
-    updateSize(); // Initial check
-
-    const resizeObserver = new ResizeObserver(updateSize);
-    resizeObserver.observe(canvas);
-
-    return () => resizeObserver.disconnect();
-  }, [canvasRef]);
-
-  return { canvasSize, canvasReady };
 };
