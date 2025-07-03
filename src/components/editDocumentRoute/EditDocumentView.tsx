@@ -1,18 +1,12 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTypesConfig } from '../../contexts/TypesConfigHook';
-import { Canvas } from '../canvas/Canvas';
 import axios from '../../axiosConfig';
 import { ApiPaths } from '../../apiPaths';
 import { ActionButton } from '../ActionButton';
 import { fetchDocData } from '../../helpers/generalFetchers';
+import Editor from './Editor';
 import { UserUpdateDialog } from '../UserUpdateDialog';
-import { UnprojectedEntriesShelf } from './UnprojectedEntriesShelf';
-import { mapDocDataToEntries } from '../../model/mappers/mapDocDataToEntries';
-import {
-  createHandleAddEntry,
-  createHandleDeleteEntry,
-} from './CreateDeleteEntries';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -26,8 +20,6 @@ const EditDocumentView: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
   const [updateUserMessage, setUpdateUserMessage] = useState('');
-  const listEntries = mapDocDataToEntries(updatedDocData);
-  const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -46,10 +38,6 @@ const EditDocumentView: React.FC = () => {
     fetchDocument();
   }, [id]);
 
-  useEffect(() => {
-    //console.log('DocData updated: ', updatedDocData);
-  }, [updatedDocData]);
-
   const handleSave = async () => {
     if (!initialDocData || !id) return;
     try {
@@ -63,20 +51,6 @@ const EditDocumentView: React.FC = () => {
     }
     setUpdateUser(true);
   };
-
-  const handleAddEntry = createHandleAddEntry(
-    updatedDocData?.id,
-    setEntries,
-    setUpdateUser,
-    setUpdateUserMessage
-  );
-
-  const handleDeleteEntry = createHandleDeleteEntry(
-    updatedDocData?.id,
-    setEntries,
-    setUpdateUser,
-    setUpdateUserMessage
-  );
 
   const closeUserUpdateDialog = () => {
     setUpdateUser(false);
@@ -104,24 +78,15 @@ const EditDocumentView: React.FC = () => {
       </div>
 
       {/* Canvas grows with content and scrolls normally */}
-      <div className="w-full flex">
-        <div className="w-1/7">
-          <UnprojectedEntriesShelf entries={entries} />
-        </div>
-        <div className="w-6/7 bg-gray-100">
-          <Canvas
-            docData={initialDocData}
-            entries={entries}
-            setEntries={setEntries}
-            cfg={config}
-            setDocData={setUpdatedDocData}
-            dialogOpen={dialogOpen}
-            setDialogOpen={setDialogOpen}
-            handleAddEntry={handleAddEntry}
-            handleDeleteEntry={handleDeleteEntry}
-          />
-        </div>
-      </div>
+      <Editor
+        docData={initialDocData}
+        setDocData={setUpdatedDocData}
+        cfg={config}
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        setUpdateUser={setUpdateUser}
+        setUpdateUserMessage={setUpdateUserMessage}
+      />
       <UserUpdateDialog
         open={updateUser}
         message={updateUserMessage}

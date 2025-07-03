@@ -46,7 +46,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
     const centerX = (e.clientX - rect.left) / rect.width;
-    const centerY = (e.clientY - rect.top) / rect.height;
+    const centerY = e.clientY - rect.top;
     onAddClick(centerX, centerY);
   };
 

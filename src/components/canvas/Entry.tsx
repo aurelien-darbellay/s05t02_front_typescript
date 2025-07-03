@@ -18,7 +18,6 @@ import ProjectionToggler from './ProjectionToggler';
 interface EntryProps {
   entry: ContainerEntry;
   children: React.ReactNode;
-  onPositionChange: (entry: ContainerEntry, newPos: Position) => void;
   onSizeChange?: (
     entry: ContainerEntry,
     newSize: { width: number; height: number }
@@ -30,7 +29,6 @@ interface EntryProps {
 export const Entry: React.FC<EntryProps> = ({
   entry,
   children,
-  onPositionChange,
   onSizeChange,
   width,
   setExistOpenEntry,
@@ -44,7 +42,8 @@ export const Entry: React.FC<EntryProps> = ({
   const originScale = useRef<number>(1);
   const entryRef = useRef<HTMLDivElement | null>(null);
   const displayLabel = entry.displayedType;
-  const { determineIfList, handleEditEntry } = useContext(EditEntryContext);
+  const { determineIfList, handleEditEntry, updatePosition } =
+    useContext(EditEntryContext);
   const handleMouseDown = createHandleMouseDown(
     entry,
     setDragging,
@@ -64,7 +63,7 @@ export const Entry: React.FC<EntryProps> = ({
     setExistOpenEntry,
     dragging,
     resizing,
-    onPositionChange,
+    updatePosition,
     width,
     originMouse,
     originPos,
@@ -81,8 +80,8 @@ export const Entry: React.FC<EntryProps> = ({
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setHovered(true);
-    //console.log('Entry clicked:', entry);
-    determineIfList(entry.displayedType);
+    console.log('Entry clicked:', entry);
+    determineIfList(entry.type);
     if (handleEditEntry) handleEditEntry(entry);
   };
 
