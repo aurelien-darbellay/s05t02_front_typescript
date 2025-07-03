@@ -58,16 +58,20 @@ export const Canvas: React.FC<CanvasProps> = ({
           Adjusting positions...
         </div>
       ) : (
-        entries.map((entry, idx) => (
-          <Entry
-            key={idx}
-            entry={entry}
-            width={canvasWidth}
-            setExistOpenEntry={setExistOpenEntry}
-          >
-            {mapEntryToComponent(entry)}
-          </Entry>
-        ))
+        entries.map((entry, idx) =>
+          entry.projected ? (
+            <Entry
+              key={idx}
+              entry={entry}
+              width={canvasWidth}
+              setExistOpenEntry={setExistOpenEntry}
+            >
+              {mapEntryToComponent(entry)}
+            </Entry>
+          ) : (
+            ''
+          )
+        )
       )}
     </div>
   );

@@ -1,4 +1,9 @@
-import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
+import { EntryListTypes } from '../../model/EntriesConfig';
+import {
+  ContainerEntry,
+  Entry,
+  ListEntries,
+} from '../../model/EntriesGeneralFeatures';
 import ShelvedEntry from './ShelvedEntry';
 
 interface UnprojectedEntriesShelfProps {
@@ -8,6 +13,18 @@ interface UnprojectedEntriesShelfProps {
 export const UnprojectedEntriesShelf: React.FC<
   UnprojectedEntriesShelfProps
 > = ({ entries }) => {
+  const getListItemsToShelve = (entry: ContainerEntry): Entry[] => {
+    if (entry.projected && EntryListTypes.includes(entry.type))
+      return (entry as ListEntries).entries.filter((item) => !item.projected);
+    return [];
+  };
+  const containerEntriesToShelve = entries.filter((entry) => !entry.projected);
+  const numContEntriesToShelve = containerEntriesToShelve.length;
+  const listItemToShelve = entries.reduce(
+    (a, b) => a.concat(getListItemsToShelve(b)),
+    [] as Entry[]
+  );
+
   return (
     <div
       style={{
@@ -18,9 +35,12 @@ export const UnprojectedEntriesShelf: React.FC<
         alignItems: 'flex-start',
       }}
     >
-      {entries.map((entry, idx) =>
-        !entry.projected ? <ShelvedEntry entry={entry} key={idx} /> : ''
-      )}
+      {containerEntriesToShelve.map((entry, idx) => (
+        <ShelvedEntry entry={entry} key={idx} />
+      ))}
+      {listItemToShelve.map((entry, idx) => (
+        <ShelvedEntry entry={entry} key={idx + numContEntriesToShelve} />
+      ))}
     </div>
   );
 };

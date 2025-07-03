@@ -13,9 +13,9 @@ export const ListEntriesComponent: React.FC<ListEntriesComponentProps> = ({
   return (
     <div>
       <ul>
-        {listEntries.entries.map((entry, index) => (
-          <ListItemComponent key={index} entry={entry} />
-        ))}
+        {listEntries.entries.map((entry, index) =>
+          entry.projected ? <ListItemComponent key={index} entry={entry} /> : ''
+        )}
       </ul>
     </div>
   );

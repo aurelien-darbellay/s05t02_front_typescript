@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   ContainerEntry,
   Entry,
+  ListEntries,
   Position,
 } from '../../model/EntriesGeneralFeatures';
 import { mapDocDataToEntries } from '../../model/mappers/mapDocDataToEntries';
