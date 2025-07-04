@@ -27,7 +27,14 @@ export async function getTypesConfig(): Promise<TypesConfig> {
   return config;
 }
 
-export async function fetchDocData(id: string): Promise<any> {
-  const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id || '');
-  return axios.get(url, { withCredentials: true });
+export async function fetchDocData(
+  id: string,
+  actingUser: string
+): Promise<any> {
+  const url = actingUser
+    ? ApiPaths.DOC_ID_PATH.replace('{docId}', id || '') +
+      '?targetUser=' +
+      actingUser
+    : ApiPaths.DOC_ID_PATH.replace('{docId}', id || '');
+  return axios.get(url);
 }

@@ -11,6 +11,9 @@ import UserTextInputDialog from '../utils/UserTextInputDialog';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const [actingUser, setActingUser] = useState<string | null>(() => {
+    return sessionStorage.getItem('actingUser');
+  });
   const id = searchParams.get('id');
   const location = useLocation();
   const { username } = location.state || {};
@@ -30,7 +33,7 @@ const EditDocumentView: React.FC = () => {
     const fetchDocument = async () => {
       try {
         if (!id) throw new Error("can't fetch doc data without defined id");
-        const response = await fetchDocData(id);
+        const response = await fetchDocData(id, actingUser);
         //console.log('Document data fetched:', response.data);
         setInitialDocData(response.data);
         setUpdatedDocData(response.data); // Initialize updatedDocData with fetched data
@@ -47,7 +50,7 @@ const EditDocumentView: React.FC = () => {
     if (!initialDocData || !id) return;
     try {
       const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id);
-      await axios.post(url, updatedDocData, { withCredentials: true });
+      await axios.post(url, updatedDocData);
       setUpdateUserMessage('Document saved successfully!');
     } catch (err: any) {
       const message =
@@ -92,16 +95,23 @@ const EditDocumentView: React.FC = () => {
           value="Back to Dashboard"
           color="#007bff"
         />
-        <ActionButton onClick={handleSave} value="Save" color="#28a745" />
+        <ActionButton
+          onClick={handleSave}
+          value="Save"
+          color="#28a745"
+          disabled={!!actingUser}
+        />
         <ActionButton
           onClick={() => setDialogOpen(true)}
           value="Add Entry"
           color="#28a745"
+          disabled={!!actingUser}
         />
         <ActionButton
           onClick={pickPublicViewId}
           value="Create Public View"
           color="purple"
+          disabled={!!actingUser}
         />
       </div>
 
@@ -114,6 +124,7 @@ const EditDocumentView: React.FC = () => {
         setDialogOpen={setDialogOpen}
         setUpdateUser={setUpdateUser}
         setUpdateUserMessage={setUpdateUserMessage}
+        editable={!actingUser}
       />
       <UserUpdateDialog
         open={updateUser}

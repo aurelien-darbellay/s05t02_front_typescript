@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import axios from '../axiosConfig';
 import Dashboard from './dashboard/Dashboard';
 import { ApiPaths } from '../apiPaths';
+import { ActionButton } from '../utils/ActionButton';
+import { useNavigate } from 'react-router-dom';
 
 const USER_DASHBOARD_URL = ApiPaths.USER_DASHBOARD_PATH;
 const PVS_URL = ApiPaths.PVs_PATH;
@@ -9,16 +11,21 @@ const PVS_URL = ApiPaths.PVs_PATH;
 const UserDashboard = () => {
   const [documentsData, setDocumentsData] = useState<any>(null);
   const username = documentsData?.username;
+  const [actingUser, setActingUser] = useState<string | null>(() => {
+    return sessionStorage.getItem('actingUser');
+  });
+
   const [documents, setDocuments] = useState<any[]>([]);
   const [publicViews, setPublicViews] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      const responseDoc = await axios.get(USER_DASHBOARD_URL, {
-        withCredentials: true,
-      });
+      const responseDoc = actingUser
+        ? await axios.get(USER_DASHBOARD_URL + '?targetUser=' + actingUser)
+        : await axios.get(USER_DASHBOARD_URL);
       setDocumentsData(responseDoc.data);
       setDocuments(responseDoc.data.documentsIds || []);
       const responsePublicView = await axios.get(PVS_URL, {
@@ -51,20 +58,21 @@ const UserDashboard = () => {
           marginBottom: '1.5rem',
         }}
       >
-        <h2>Welcome {username}</h2>
-        <button
-          onClick={() => {}}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          User Details
-        </button>
+        {actingUser ? (
+          <h2>This is {username}'s dashboard</h2>
+        ) : (
+          <h2>Welcome {username}</h2>
+        )}
+        <ActionButton value="User Details" color="blue" onClick={() => {}} />
+        {actingUser ? (
+          <ActionButton
+            value="Admin Dashboard"
+            color="purple"
+            onClick={() => navigate('/admin')}
+          />
+        ) : (
+          ''
+        )}
       </div>
       <Dashboard
         documents={documents}

@@ -91,7 +91,7 @@ export const createHandleDeleteEntry = (
         type: entryData.type,
       };
 
-      await axios.post(url, payload, { withCredentials: true });
+      await axios.post(url, payload);
       setEntries((prev) => removeEntryFromState(prev, entryData));
     } catch (error) {
       exposeError(true);

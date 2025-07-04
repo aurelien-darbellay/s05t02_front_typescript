@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   ContainerEntry,
   Entry,
-  ListEntries,
   Position,
 } from '../../model/EntriesGeneralFeatures';
 import { mapDocDataToEntries } from '../../model/mappers/mapDocDataToEntries';
@@ -27,6 +26,7 @@ interface EditorProps {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
+  editable: boolean;
 }
 const Editor: React.FC<EditorProps> = ({
   docData,
@@ -36,6 +36,7 @@ const Editor: React.FC<EditorProps> = ({
   setDialogOpen,
   setUpdateUser,
   setUpdateUserMessage,
+  editable,
 }) => {
   const listEntries = mapDocDataToEntries(docData);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
@@ -114,11 +115,11 @@ const Editor: React.FC<EditorProps> = ({
     >
       <div className="w-full flex">
         <div className="w-1/7">
-          <UnprojectedEntriesShelf entries={entries} />
+          <UnprojectedEntriesShelf entries={entries} editable={editable} />
         </div>
         <div className="w-6/7 bg-gray-100">
           <Canvas
-            editable={true}
+            editable={editable}
             entries={entries}
             setDialogOpen={setDialogOpen}
             setEntrySpawnPosition={setEntrySpawnPosition}

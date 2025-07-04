@@ -11,6 +11,7 @@ interface ProjectionTogglerProps {
   marginTop?: number;
   size?: number;
   onClick?: () => void;
+  editable: boolean;
 }
 
 const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
@@ -18,6 +19,7 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   marginTop = 0,
   size = 20,
   onClick,
+  editable,
 }) => {
   const { handleAddEntry, dialogOpen, isListItem } =
     useContext(EditEntryContext);
@@ -37,7 +39,7 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
 
   const handleClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
-
+    if (!editable) return;
     const updatedEntry = { ...entry, projected: !entry.projected };
     const consistentEntry = EntryListTypes.includes(entry.type)
       ? ensureConsistentProjectionInListEntries(updatedEntry)

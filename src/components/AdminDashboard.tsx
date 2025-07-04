@@ -3,6 +3,7 @@ import axios from '../axiosConfig';
 import { ApiPaths } from '../apiPaths';
 import { UserPreview } from './adminRoute/UserPreview';
 import { ActionButton } from '../utils/ActionButton';
+import { useNavigate } from 'react-router-dom';
 
 interface DocumentInfo {
   docId: string;
@@ -25,7 +26,7 @@ const AdminDashboard: React.FC = () => {
   const handleDelete = async (username: string) => {
     const url = ApiPaths.USER_DELETE_PATH;
     try {
-      await axios.post(url, { username }, { withCredentials: true });
+      await axios.post(url, { username });
       fetchAdminData();
     } catch (e) {}
   };
@@ -47,6 +48,7 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchAdminData();
+    sessionStorage.removeItem('actingUser');
   }, []);
 
   return (
@@ -60,6 +62,7 @@ const AdminDashboard: React.FC = () => {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {data.map((user) => (
             <div
+              key={'Container:' + user.username}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
