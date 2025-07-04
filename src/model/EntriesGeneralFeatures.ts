@@ -1,4 +1,4 @@
-import { EntryTypesFormatter } from '../components/canvas/entryTypesFormatter';
+import { EntryTypesFormatter } from './entryTypesFormatter';
 
 export interface Entry {
   projected: boolean;

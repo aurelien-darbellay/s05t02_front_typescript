@@ -7,6 +7,7 @@ interface AddButtonGridProps {
   onAddClick: (relativeX, relativeY) => void;
   existOpenEntry: boolean;
   canvasRef: React.RefObject<HTMLDivElement | null>;
+  editable: boolean;
 }
 
 export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
@@ -15,6 +16,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
   onAddClick,
   existOpenEntry,
   canvasRef,
+  editable,
 }) => {
   const totalCells = gridLines * 6;
   const overlappedGridIndices = new Set<number>();
@@ -56,7 +58,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
       style={{
         gridTemplateColumns: `repeat(6, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${gridLines}, 100px)`,
-        opacity: existOpenEntry ? 0 : 1,
+        opacity: existOpenEntry || !editable ? 0 : 1,
       }}
     >
       {Array.from({ length: totalCells }).map((_, idx) => {

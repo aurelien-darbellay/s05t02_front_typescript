@@ -7,8 +7,8 @@ import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
 import { EntryFieldInput } from './EntryFieldInput';
-import { EntryTypesFormatter } from '../entryTypesFormatter';
-import { ActionButton } from '../../ActionButton';
+import { EntryTypesFormatter } from '../../../model/entryTypesFormatter';
+import { ActionButton } from '../../../utils/ActionButton';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import ProjectionToggler from '../ProjectionToggler';
 
@@ -56,11 +56,12 @@ export default function EntryCreateDialog({
     entries.some((entry) => entry.type === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
-    //console.log(type);
+    console.log(type);
+    console.log(determineIfList(type));
     const formattedType = determineIfList(type)
       ? EntryTypesFormatter.fromDisplayToConstant('List ' + type)
       : EntryTypesFormatter.fromDisplayToConstant(type);
-    //console.log(formattedType);
+    console.log(formattedType);
     setSelectedType(formattedType);
     setDisplayedType(type);
     const newSelector = formattedType;

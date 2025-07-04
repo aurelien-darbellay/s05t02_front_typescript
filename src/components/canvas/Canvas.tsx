@@ -7,8 +7,9 @@ import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx
 
 interface CanvasProps {
   entries: ContainerEntry[];
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setEntrySpawnPosition: React.Dispatch<
+  editable: boolean;
+  setDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  setEntrySpawnPosition?: React.Dispatch<
     React.SetStateAction<{
       xCord: number;
       yCord: number;
@@ -18,6 +19,7 @@ interface CanvasProps {
 
 export const Canvas: React.FC<CanvasProps> = ({
   entries,
+  editable,
   setDialogOpen,
   setEntrySpawnPosition,
 }) => {
@@ -40,8 +42,9 @@ export const Canvas: React.FC<CanvasProps> = ({
   }, [entries]);
 
   const handleButtonGrid = (relativeX, relativeY) => {
-    setEntrySpawnPosition({ xCord: relativeX, yCord: relativeY });
-    setDialogOpen(true);
+    if (setEntrySpawnPosition)
+      setEntrySpawnPosition({ xCord: relativeX, yCord: relativeY });
+    if (setDialogOpen) setDialogOpen(true);
   };
 
   return (
@@ -52,7 +55,9 @@ export const Canvas: React.FC<CanvasProps> = ({
         onAddClick={handleButtonGrid}
         existOpenEntry={existOpenEntry}
         canvasRef={canvasRef}
+        editable={editable}
       />
+
       {!canvasReady ? (
         <div className="text-center py-10 text-gray-600 text-lg">
           Adjusting positions...
@@ -66,6 +71,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               width={canvasWidth}
               existOpenEntry={existOpenEntry}
               setExistOpenEntry={setExistOpenEntry}
+              editable={editable}
             >
               {mapEntryToComponent(entry)}
             </Entry>

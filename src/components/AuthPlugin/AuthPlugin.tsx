@@ -1,18 +1,27 @@
-import { useEffect, useState } from "react";
-import axios from "../../axiosConfig"; // Make sure this is the custom config
-import Logout from "./Logout";
-import LoginRegister from "./LoginRegister";
-import { ApiPaths } from "../../apiPaths";
+import { useEffect, useState } from 'react';
+import axios from '../../axiosConfig'; // Make sure this is the custom config
+import Logout from './Logout';
+import LoginRegister from './LoginRegister';
+import { ApiPaths } from '../../apiPaths';
+import { useLocation } from 'react-router-dom';
 
 const AuthPlugin = ({ right, left, top }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const authStateSetters ={ setIsVisible, setIsAuthenticated, setUsername, setPassword, setPassword2, setError,setIsRegister };
+  const authStateSetters = {
+    setIsVisible,
+    setIsAuthenticated,
+    setUsername,
+    setPassword,
+    setPassword2,
+    setError,
+    setIsRegister,
+  };
   const authState = {
     isVisible,
     isRegister,
@@ -22,6 +31,10 @@ const AuthPlugin = ({ right, left, top }) => {
     password2,
     error,
   };
+  const location = useLocation();
+
+  // Check if we're on the public view route
+  const hideAuthPlugin = location.pathname.startsWith('/public/');
 
   // On mount, try to check if already logged in
   useEffect(() => {
@@ -31,8 +44,7 @@ const AuthPlugin = ({ right, left, top }) => {
         if (res.status === 200) {
           //console.log("User is authenticated");
           setIsAuthenticated(true);
-        }
-        else {
+        } else {
           setIsAuthenticated(false);
         }
       } catch {
@@ -41,15 +53,23 @@ const AuthPlugin = ({ right, left, top }) => {
     };
     checkAuth();
   }, []);
-
-
+  if (hideAuthPlugin) return null;
   if (isAuthenticated) {
-    return <Logout authStateSetters={authStateSetters} pluginCfg={{ right, left, top }} />;
+    return (
+      <Logout
+        authStateSetters={authStateSetters}
+        pluginCfg={{ right, left, top }}
+      />
+    );
   }
 
   // --- Unauthenticated state (login/register)
   return (
-    <LoginRegister authStateSetters={authStateSetters} authState={authState} pluginCfg={{ right, left, top }} />
+    <LoginRegister
+      authStateSetters={authStateSetters}
+      authState={authState}
+      pluginCfg={{ right, left, top }}
+    />
   );
 };
 

@@ -13,10 +13,10 @@ import {
   createHandleAddEntry,
   createHandleDeleteEntry,
 } from './CreateDeleteEntries';
-import EntryCreateDialog from '../canvas/entryCreation/EntryCreateDialog';
+import EntryCreateDialog from './entryCreation/EntryCreateDialog';
 import { updateDocDataFromEntries } from '../../model/mappers/updateDocDataFromEntries';
-import { EntryListTypes } from '../../model/EntriesConfig';
-import { EntryTypesFormatter } from '../canvas/entryTypesFormatter';
+import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
+import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 
 interface EditorProps {
@@ -48,7 +48,9 @@ const Editor: React.FC<EditorProps> = ({
   const [isListItem, setIsListItem] = useState<boolean>(false);
   const determineIfList = (type: string) => {
     if (
-      EntryListTypes.includes(EntryTypesFormatter.fromDisplayToConstant(type))
+      EntryListItemTypes.concat(EntryListTypes).includes(
+        EntryTypesFormatter.fromDisplayToConstant(type)
+      )
     ) {
       setIsList(true);
       return true;
@@ -116,6 +118,7 @@ const Editor: React.FC<EditorProps> = ({
         </div>
         <div className="w-6/7 bg-gray-100">
           <Canvas
+            editable={true}
             entries={entries}
             setDialogOpen={setDialogOpen}
             setEntrySpawnPosition={setEntrySpawnPosition}

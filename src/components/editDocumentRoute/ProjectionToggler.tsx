@@ -1,9 +1,10 @@
 import { useContext, MouseEvent } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
-import { ListEntries } from '../../model/EntriesGeneralFeatures';
+import { Entry, ListEntries } from '../../model/EntriesGeneralFeatures';
 import { EntryListTypes } from '../../model/EntriesConfig';
-import { ActionButton } from '../ActionButton';
+import { ActionButton } from '../../utils/ActionButton';
+import { normalizeEntryData } from './entryCreation/normalizeEntryData';
 
 interface ProjectionTogglerProps {
   entry: any;
@@ -41,10 +42,12 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
     const consistentEntry = EntryListTypes.includes(entry.type)
       ? ensureConsistentProjectionInListEntries(updatedEntry)
       : updatedEntry;
-
     //console.log(consistentEntry);
     if (handleAddEntry) {
-      handleAddEntry(consistentEntry, true);
+      handleAddEntry(
+        normalizeEntryData(consistentEntry as Record<string, any>) as Entry,
+        true
+      );
     }
   };
 

@@ -13,7 +13,7 @@ import {
   createHandleMouseMove,
 } from './entryInteractionHandlers';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
-import ProjectionToggler from './ProjectionToggler';
+import ProjectionToggler from '../editDocumentRoute/ProjectionToggler';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -25,6 +25,7 @@ interface EntryProps {
   width: number;
   existOpenEntry: boolean;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
+  editable: boolean;
 }
 
 export const Entry: React.FC<EntryProps> = ({
@@ -34,6 +35,7 @@ export const Entry: React.FC<EntryProps> = ({
   width,
   existOpenEntry,
   setExistOpenEntry,
+  editable,
 }) => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
@@ -163,7 +165,9 @@ export const Entry: React.FC<EntryProps> = ({
           }}
         />
       )}
-      {hovered && <ProjectionToggler entry={entry} marginTop={5} size={35} />}
+      {hovered && editable && (
+        <ProjectionToggler entry={entry} marginTop={5} size={35} />
+      )}
     </div>
   );
 };

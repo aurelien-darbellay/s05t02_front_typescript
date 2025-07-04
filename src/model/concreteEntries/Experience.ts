@@ -15,7 +15,7 @@ export class Experience implements ContainedEntry {
   public startDate: Date;
   public endDate: Date;
   public description: string;
-  public keywords: string[];
+  public keywords: string;
   public nameLink: string;
   public linkUrl: string;
 

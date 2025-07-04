@@ -2,7 +2,7 @@
 import React from 'react';
 import { useGetInputType } from '../../../model/mappers/getInputType';
 import { CloudinaryMetaInput } from './CloudinaryMetaInput';
-import { EntryTypesFormatter } from '../entryTypesFormatter';
+import { EntryTypesFormatter } from '../../../model/entryTypesFormatter';
 
 interface EntryFieldInputProps {
   field: string;

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
-import ProjectionToggler from '../ProjectionToggler';
+import ProjectionToggler from '../../editDocumentRoute/ProjectionToggler';
 import { mapEntryToComponent } from '../../../model/mappers/mapEntryToComponent';
 import { ProjectionContext } from '../../../contexts/ProjectionContext';
 

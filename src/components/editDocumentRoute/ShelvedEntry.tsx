@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Entry } from '../../model/EntriesGeneralFeatures';
-import ProjectionToggler from '../canvas/ProjectionToggler';
+import ProjectionToggler from './ProjectionToggler';
 import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent';
 import { EntryListTypes } from '../../model/EntriesConfig';
 

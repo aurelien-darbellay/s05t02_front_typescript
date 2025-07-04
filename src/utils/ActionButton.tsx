@@ -9,23 +9,28 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
   value,
   color,
-  disabled,
+  disabled = false,
 }) => {
-  if (!disabled) disabled = false;
   return (
     <div>
       <button
         onClick={onClick}
         disabled={disabled}
+        className={`
+          px-4 py-2 
+          rounded 
+          text-white 
+          text-base 
+          transition 
+          duration-200 
+          ${
+            disabled
+              ? 'bg-gray-400 cursor-not-allowed opacity-60'
+              : 'hover:shadow-lg active:shadow-none cursor-pointer'
+          }
+        `}
         style={{
-          padding: '0.5rem 1.2rem',
           backgroundColor: disabled ? '#ccc' : color,
-          color: '#fff',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          fontSize: '1rem',
-          opacity: disabled ? 0.6 : 1,
         }}
       >
         {value}

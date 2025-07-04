@@ -3,7 +3,7 @@
 // @refresh reset
 
 import React, { useEffect, useState } from 'react';
-import { getTypesConfig } from '../helpers/generalFetchers';
+import { getTypesConfig } from '../utils/generalFetchers';
 import { TypesConfig } from '../model/TypesConfig';
 import { TypesConfigContext } from './TypesConfigContext';
 

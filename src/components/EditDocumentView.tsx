@@ -1,16 +1,19 @@
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useTypesConfig } from '../../contexts/TypesConfigHook';
-import axios from '../../axiosConfig';
-import { ApiPaths } from '../../apiPaths';
-import { ActionButton } from '../ActionButton';
-import { fetchDocData } from '../../helpers/generalFetchers';
-import Editor from './Editor';
-import { UserUpdateDialog } from '../UserUpdateDialog';
+import { useTypesConfig } from '../contexts/TypesConfigHook';
+import axios from '../axiosConfig';
+import { ApiPaths } from '../apiPaths';
+import { ActionButton } from '../utils/ActionButton';
+import { fetchDocData } from '../utils/generalFetchers';
+import Editor from './editDocumentRoute/Editor';
+import { UserUpdateDialog } from '../utils/UserUpdateDialog';
+import UserTextInputDialog from '../utils/UserTextInputDialog';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
+  const location = useLocation();
+  const { username } = location.state || {};
   const navigate = useNavigate();
   const initialConfig = useTypesConfig();
   const [config, setConfig] = useState(initialConfig);
@@ -20,6 +23,8 @@ const EditDocumentView: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
   const [updateUserMessage, setUpdateUserMessage] = useState('');
+  const [isPvDialogOpen, setIsPvDialogOpen] = useState(false);
+  const [pvId, setPvId] = useState('');
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -51,6 +56,24 @@ const EditDocumentView: React.FC = () => {
     }
     setUpdateUser(true);
   };
+  const pickPublicViewId = () => setIsPvDialogOpen(true);
+  const createPublicView = async () => {
+    const usernameInId = username.toLowerCase().replace(/\s/g, '-');
+    setIsPvDialogOpen(false);
+    const url = ApiPaths.PV_PATH.replace('{pvId}', usernameInId + '-' + pvId);
+    try {
+      const response = await axios.post(url, updatedDocData, {
+        withCredentials: true,
+      });
+      const id = response.data.id;
+      const message = `Your public view has been created. You can consult it by visiting: localhost:5173/public/${id}`;
+      setUpdateUser(true);
+      setUpdateUserMessage(message);
+    } catch (error) {
+      setUpdateUser(true);
+      setUpdateUserMessage(error.getMessage());
+    }
+  };
 
   const closeUserUpdateDialog = () => {
     setUpdateUser(false);
@@ -75,6 +98,11 @@ const EditDocumentView: React.FC = () => {
           value="Add Entry"
           color="#28a745"
         />
+        <ActionButton
+          onClick={pickPublicViewId}
+          value="Create Public View"
+          color="purple"
+        />
       </div>
 
       {/* Canvas grows with content and scrolls normally */}
@@ -91,6 +119,17 @@ const EditDocumentView: React.FC = () => {
         open={updateUser}
         message={updateUserMessage}
         onClick={closeUserUpdateDialog}
+      />
+      <UserTextInputDialog
+        open={isPvDialogOpen}
+        label="Chose an identifier for your public view"
+        onChange={(newValue) => setPvId(newValue)}
+        onCancel={() => {
+          setPvId('');
+          setIsPvDialogOpen(false);
+        }}
+        onConfirm={createPublicView}
+        value={pvId}
       />
     </div>
   );
