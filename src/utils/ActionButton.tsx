@@ -3,6 +3,7 @@ interface ActionButtonProps {
   value: string;
   color: string;
   disabled?: boolean;
+  margin?: number;
 }
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
@@ -10,6 +11,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   value,
   color,
   disabled = false,
+  margin = 0,
 }) => {
   return (
     <div>
@@ -31,6 +33,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         `}
         style={{
           backgroundColor: disabled ? '#ccc' : color,
+          margin: margin,
         }}
       >
         {value}

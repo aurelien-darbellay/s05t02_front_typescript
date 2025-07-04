@@ -2,19 +2,26 @@ import DocumentPreview from './DocumentPreview';
 import DeleteDocumentButton from './DeleteDocumentButton';
 import { useState } from 'react';
 import CreateDocumentDialog from './CreateDocumentDialog';
+import PublicViewPreview from './PublicViewPreview';
+import { createDeleteDocument, createDeletePublicView } from './deleters';
+import { ActionButton } from '../../utils/ActionButton';
 
 interface DashboardProps {
   documents: { docTitle: string; docId: string; docType: string }[];
+  publicViews: { pvId: string; docTitle: string }[];
   onRefresh: () => void;
   username: string;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
   documents,
+  publicViews,
   onRefresh,
   username,
 }) => {
   const [open, setOpen] = useState(false);
+  const deleteDocument = createDeleteDocument(onRefresh);
+  const deletePublicView = createDeletePublicView(onRefresh);
 
   return (
     <div
@@ -29,7 +36,15 @@ const Dashboard: React.FC<DashboardProps> = ({
         borderTop: '1px solid #ccc',
       }}
     >
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <h2>Documents</h2>
+      <div
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          marginBottom: '20px',
+        }}
+      >
         {documents.map((doc, index) => (
           <div
             key={index}
@@ -40,7 +55,12 @@ const Dashboard: React.FC<DashboardProps> = ({
             }}
           >
             <DocumentPreview document={doc} username={username} />
-            <DeleteDocumentButton docId={doc.docId} onDelete={onRefresh} />
+            <ActionButton
+              value="Delete"
+              color="red"
+              onClick={() => deleteDocument(doc.docId)}
+              margin={10}
+            />
           </div>
         ))}
         <div
@@ -59,6 +79,38 @@ const Dashboard: React.FC<DashboardProps> = ({
         >
           +
         </div>
+      </div>
+      <h2>Public Views</h2>
+      <div
+        style={{
+          display: 'flex',
+          gap: '1rem',
+          flexWrap: 'wrap',
+          marginBottom: '20px',
+        }}
+      >
+        {publicViews.map((publicView, index) => (
+          <div
+            key={index}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <PublicViewPreview
+              id={publicView.pvId}
+              title={publicView.docTitle}
+              key={index}
+            />
+            <ActionButton
+              value="Delete"
+              color="red"
+              onClick={() => deletePublicView(publicView.pvId)}
+              margin={10}
+            />
+          </div>
+        ))}
       </div>
       <CreateDocumentDialog
         open={open}
