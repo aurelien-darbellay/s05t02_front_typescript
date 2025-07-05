@@ -34,6 +34,8 @@ export const ApiPaths = {
 
   // Cloud storage
   CLOUD_STORAGE_PATH: '/api/protected/users/cloud-storage',
+  CLOUD_SIGNATURE_PATH: '/api/protected/users/cloud-storage/signature',
+  CLOUD_DELETE_PATH: '/api/protected/users/cloud-storage/delete',
 
   // Admin
   ADMIN_BASE_PATH: '/api/protected/admin',

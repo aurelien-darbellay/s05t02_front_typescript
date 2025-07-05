@@ -4,6 +4,7 @@ import Dashboard from './dashboard/Dashboard';
 import { ApiPaths } from '../apiPaths';
 import { ActionButton } from '../utils/ActionButton';
 import { useNavigate } from 'react-router-dom';
+import CloudAccessManager from './cloud/CloudAccessManager';
 
 const USER_DASHBOARD_URL = ApiPaths.USER_DASHBOARD_PATH;
 const PVS_URL = ApiPaths.PVs_PATH;
@@ -73,6 +74,15 @@ const UserDashboard = () => {
         ) : (
           ''
         )}
+        <CloudAccessManager
+          editable={true}
+          cloudMetaData={{
+            publicUrl:
+              'https://res.cloudinary.com/dhll1igfz/image/upload/v1751714727/admin/donorForm.png.png',
+            id: 'admin/donorForm.png',
+          }}
+          cloudDocumentName="donorForm"
+        />
       </div>
       <Dashboard
         documents={documents}
