@@ -36,11 +36,11 @@ const AdminDashboard: React.FC = () => {
     axios
       .get(ApiPaths.ADMIN_BASE_PATH)
       .then((response) => {
-        console.debug('Admin data received:', response.data);
+        //console.debug('Admin data received:', response.data);
         setData(response.data);
       })
       .catch((err) => {
-        console.error('Error fetching admin data:', err);
+        //console.error('Error fetching admin data:', err);
         setError('Failed to load admin data');
       })
       .finally(() => setLoading(false));

@@ -15,7 +15,7 @@ const PublicDocumentView: React.FC = () => {
 
   useEffect(() => {
     if (!id) return;
-    console.log('About to fectch id:', id);
+    //console.log('About to fectch id:', id);
 
     const fetchData = async () => {
       try {
@@ -25,12 +25,12 @@ const PublicDocumentView: React.FC = () => {
         const response = await axios.get(
           `${ApiPaths.PUBLIC_VIEWS_PATH}?id=${id}`
         );
-        console.log(response.data);
+        //console.log(response.data);
         const mappedEntries = mapDocDataToEntries(response.data.document);
-        console.log(mappedEntries);
+        //console.log(mappedEntries);
         setEntries(mappedEntries);
       } catch (err) {
-        console.error(err);
+        //console.error(err);
         setError('Failed to load document.');
       } finally {
         setLoading(false);

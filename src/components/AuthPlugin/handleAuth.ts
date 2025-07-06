@@ -57,7 +57,7 @@ export const createHandleAuth = ({
 
     try {
       const response = await axios.post(url, body, options);
-      console.log(response.data);
+      //console.log(response.data);
       if (response.status === 200) {
         setIsAuthenticated(true);
         if (response.data?.authorities?.includes('ROLE_ADMIN')) {

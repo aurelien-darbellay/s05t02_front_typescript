@@ -7,13 +7,11 @@ import { PointsToFileInCloud } from '../../model/EntriesGeneralFeatures';
 
 type CloudAccessManagerProps = {
   entry: PointsToFileInCloud;
-  onDelete?: () => void;
   size?: number;
 };
 
 export default function CloudAccessManager({
   entry,
-  onDelete,
   size = 1,
 }: CloudAccessManagerProps) {
   const [open, setOpen] = useState(false);
@@ -24,9 +22,7 @@ export default function CloudAccessManager({
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
   const isEmptyMeta =
-    !documentCloudMetadata ||
-    documentCloudMetadata === '' ||
-    documentCloudMetadata.publicUrl === '';
+    !documentCloudMetadata || !documentCloudMetadata.publicUrl;
 
   // Toggle dropdown
   const toggleOpen = () => {
@@ -117,11 +113,7 @@ export default function CloudAccessManager({
 
                   {editable && (
                     // Case 4: Editable & Not Empty -> Delete
-                    <CloudinaryDeleteButton
-                      publicId={documentCloudMetadata.id}
-                      size={size}
-                      onDeleteSuccess={onDelete}
-                    />
+                    <CloudinaryDeleteButton entry={entry} size={size} />
                   )}
                 </>
               )}
