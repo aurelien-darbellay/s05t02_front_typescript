@@ -12,7 +12,10 @@ import UserTextInputDialog from '../utils/UserTextInputDialog';
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [actingUser, setActingUser] = useState<string | null>(() => {
-    return sessionStorage.getItem('actingUser');
+    const acting = sessionStorage.getItem('actingUser');
+    const real = localStorage.getItem('username');
+    if (acting && !(acting == real)) return acting;
+    return null;
   });
   const id = searchParams.get('id');
   const location = useLocation();

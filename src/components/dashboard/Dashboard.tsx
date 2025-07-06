@@ -1,5 +1,4 @@
 import DocumentPreview from './DocumentPreview';
-import DeleteDocumentButton from './DeleteDocumentButton';
 import { useState } from 'react';
 import CreateDocumentDialog from './CreateDocumentDialog';
 import PublicViewPreview from './PublicViewPreview';
@@ -11,6 +10,7 @@ interface DashboardProps {
   publicViews: { pvId: string; docTitle: string }[];
   onRefresh: () => void;
   username: string;
+  isAdminInSomeoneElseSpace: boolean;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -18,6 +18,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   publicViews,
   onRefresh,
   username,
+  isAdminInSomeoneElseSpace,
 }) => {
   const [open, setOpen] = useState(false);
   const deleteDocument = createDeleteDocument(onRefresh);
@@ -60,6 +61,7 @@ const Dashboard: React.FC<DashboardProps> = ({
               color="red"
               onClick={() => deleteDocument(doc.docId)}
               margin={10}
+              disabled={isAdminInSomeoneElseSpace}
             />
           </div>
         ))}
@@ -108,6 +110,7 @@ const Dashboard: React.FC<DashboardProps> = ({
               color="red"
               onClick={() => deletePublicView(publicView.pvId)}
               margin={10}
+              disabled={isAdminInSomeoneElseSpace}
             />
           </div>
         ))}

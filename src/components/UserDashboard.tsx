@@ -4,7 +4,6 @@ import Dashboard from './dashboard/Dashboard';
 import { ApiPaths } from '../apiPaths';
 import { ActionButton } from '../utils/ActionButton';
 import { useNavigate } from 'react-router-dom';
-import CloudAccessManager from './cloud/CloudAccessManager';
 
 const USER_DASHBOARD_URL = ApiPaths.USER_DASHBOARD_PATH;
 const PVS_URL = ApiPaths.PVs_PATH;
@@ -15,12 +14,15 @@ const UserDashboard = () => {
   const [actingUser, setActingUser] = useState<string | null>(() => {
     return sessionStorage.getItem('actingUser');
   });
-
   const [documents, setDocuments] = useState<any[]>([]);
   const [publicViews, setPublicViews] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+
+  const loggedInUser = localStorage.getItem('username');
+  const isAdminInSomeoneElseSpace =
+    actingUser && !(actingUser === loggedInUser);
 
   const fetchDashboardData = useCallback(async () => {
     try {
@@ -29,9 +31,9 @@ const UserDashboard = () => {
         : await axios.get(USER_DASHBOARD_URL);
       setDocumentsData(responseDoc.data);
       setDocuments(responseDoc.data.documentsIds || []);
-      const responsePublicView = await axios.get(PVS_URL, {
-        withCredentials: true,
-      });
+      const responsePublicView = actingUser
+        ? await axios.get(PVS_URL + '?targetUser=' + actingUser)
+        : await axios.get(PVS_URL);
       setPublicViews(responsePublicView.data.publicViews);
     } catch (err: any) {
       const message =
@@ -59,7 +61,7 @@ const UserDashboard = () => {
           marginBottom: '1.5rem',
         }}
       >
-        {actingUser ? (
+        {isAdminInSomeoneElseSpace ? (
           <h2>This is {username}'s dashboard</h2>
         ) : (
           <h2>Welcome {username}</h2>
@@ -80,6 +82,7 @@ const UserDashboard = () => {
         publicViews={publicViews}
         onRefresh={fetchDashboardData}
         username={username}
+        isAdminInSomeoneElseSpace={isAdminInSomeoneElseSpace}
       />
     </div>
   );

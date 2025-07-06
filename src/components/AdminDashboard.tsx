@@ -3,7 +3,6 @@ import axios from '../axiosConfig';
 import { ApiPaths } from '../apiPaths';
 import { UserPreview } from './adminRoute/UserPreview';
 import { ActionButton } from '../utils/ActionButton';
-import { useNavigate } from 'react-router-dom';
 
 interface DocumentInfo {
   docId: string;

@@ -19,8 +19,8 @@ export class CloudinaryMetaData implements CloudMetaData {
       obj != null &&
       typeof obj === 'object' &&
       obj.type === 'CLOUDINARYMETADATA' &&
-      typeof obj.id === 'string' &&
-      typeof obj.publicUrl === 'string'
+      (typeof obj.id === 'string' || obj.id === null) &&
+      (typeof obj.publicUrl === 'string' || obj.publicUrl === null)
     );
   }
 } // Specific implementation

@@ -60,6 +60,7 @@ export const createHandleAuth = ({
       //console.log(response.data);
       if (response.status === 200) {
         setIsAuthenticated(true);
+        localStorage.setItem('username', username);
         if (response.data?.authorities?.includes('ROLE_ADMIN')) {
           window.location.href = '/admin';
         } else {
