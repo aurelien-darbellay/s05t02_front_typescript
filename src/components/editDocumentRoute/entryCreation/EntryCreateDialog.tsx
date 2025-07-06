@@ -6,7 +6,7 @@ import {
 import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
-import { EntryFieldInput } from './EntryFieldInput';
+import { EntryFieldInput } from '../../../model/mappers/EntryFieldInput';
 import { EntryTypesFormatter } from '../../../model/entryTypesFormatter';
 import { ActionButton } from '../../../utils/ActionButton';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
@@ -34,7 +34,7 @@ export default function EntryCreateDialog({
   const isEditing = !!entryData;
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
-  const [entryValues, setEntryValues] = useState<Record<string, string>>({});
+  const [entryValues, setEntryValues] = useState<Record<string, any>>({});
   const [color, setColor] = useState<string>('#000000');
   const [error, setError] = useState<string | null>(null);
   const {
@@ -43,9 +43,9 @@ export default function EntryCreateDialog({
     isListItem,
     setIsListItem,
     determineIfList,
-    handleAddEntry,
+    addOrUpdateEntry,
   } = useContext(EditEntryContext);
-  const onSave = handleAddEntry;
+  const onSave = addOrUpdateEntry;
   const restrictedTypes = [...EntryContainerTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
@@ -56,12 +56,12 @@ export default function EntryCreateDialog({
     entries.some((entry) => entry.type === selectedType && !isEditing);
 
   const handleTypeChange = (type: string) => {
-    console.log(type);
-    console.log(determineIfList(type));
+    //console.log(type);
+    //console.log(determineIfList(type));
     const formattedType = determineIfList(type)
       ? EntryTypesFormatter.fromDisplayToConstant('List ' + type)
       : EntryTypesFormatter.fromDisplayToConstant(type);
-    console.log(formattedType);
+    //console.log(formattedType);
     setSelectedType(formattedType);
     setDisplayedType(type);
     const newSelector = formattedType;
@@ -107,7 +107,7 @@ export default function EntryCreateDialog({
       return;
     }
 
-    console.log('Entry data to save:', getEntryPayload());
+    //console.log('Entry data to save:', getEntryPayload());
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
       if (onSave)
@@ -141,6 +141,7 @@ export default function EntryCreateDialog({
 
   useEffect(() => {
     if (entryData) {
+      //console.log(entryData);
       setSelectedType(entryData.type);
       setDisplayedType(entryData.displayedType);
       setColor(entryData.color);

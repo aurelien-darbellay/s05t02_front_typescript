@@ -10,7 +10,9 @@ type InputType =
         | 'color'
         | 'tel'
         | 'number'
-        | 'password';
+        | 'password'
+        | 'cloudMetadata'
+        | 'ignore';
     }
   | { kind: 'textarea'; maxLength?: number }
   | { kind: 'select'; options: string[] }
@@ -20,6 +22,7 @@ export const useGetInputType = () => {
   const cfg = useTypesConfig();
 
   const getInputType = (selectedType: string, fieldName: string): InputType => {
+    //console.log('finding types');
     const type = selectedType.toLowerCase();
     const field = fieldName.toLowerCase();
 
@@ -41,7 +44,11 @@ export const useGetInputType = () => {
 
     // Specific case for custom Cloudinary metadata object
     if (field === 'documentcloudmetadata') {
-      return { kind: 'custom', component: 'cloudinary' };
+      return { kind: 'cloudMetadata' };
+    }
+    if (field === 'clouddocumentname') {
+      //console.log('cloudDocumentName');
+      return { kind: 'ignore' };
     }
 
     // Generic field rules

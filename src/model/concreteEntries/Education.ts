@@ -1,7 +1,11 @@
-import { ContainedEntry, CloudMetaData } from '../EntriesGeneralFeatures'; // adjust import paths as needed// adjust import paths
+import {
+  ContainedEntry,
+  CloudMetaData,
+  PointsToFileInCloud,
+} from '../EntriesGeneralFeatures'; // adjust import paths as needed// adjust import paths
 import { v4 as uuidv4 } from 'uuid';
 
-export class Education implements ContainedEntry {
+export class Education implements ContainedEntry, PointsToFileInCloud {
   // From Entry (via ContainedEntry)
   public type: string = 'EDUCATION';
   public displayedType: string = 'Education';

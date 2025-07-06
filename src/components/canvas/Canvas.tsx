@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures.ts';
 import { Entry } from './Entry.tsx';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { useCanvasSize } from './CanvasHelpers.ts';
 import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx';
+import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 
 interface CanvasProps {
   entries: ContainerEntry[];
-  editable: boolean;
   setDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setEntrySpawnPosition?: React.Dispatch<
     React.SetStateAction<{
@@ -19,7 +19,6 @@ interface CanvasProps {
 
 export const Canvas: React.FC<CanvasProps> = ({
   entries,
-  editable,
   setDialogOpen,
   setEntrySpawnPosition,
 }) => {
@@ -30,6 +29,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     canvasSize: { canvasWidth },
   } = useCanvasSize(canvasRef);
   const [existOpenEntry, setExistOpenEntry] = useState(false);
+  const { editable } = useContext(EditEntryContext);
 
   useEffect(() => {
     const buffer = 0;

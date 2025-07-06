@@ -6,7 +6,6 @@ import { EntryListTypes } from '../../model/EntriesConfig';
 
 interface ShelvedEntryProps {
   entry: Entry;
-  editable: boolean;
 }
 
 const ShelvedEntry: React.FC<ShelvedEntryProps> = ({ entry, editable }) => {
@@ -24,7 +23,7 @@ const ShelvedEntry: React.FC<ShelvedEntryProps> = ({ entry, editable }) => {
     >
       <h3 className="text-m font-semibold mb-2">{title}</h3>
       {isHovered && mapEntryToComponent(entry)}
-      <ProjectionToggler entry={entry} editable={editable} />
+      <ProjectionToggler entry={entry} />
     </div>
   );
 };

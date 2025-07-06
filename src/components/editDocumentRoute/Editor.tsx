@@ -9,7 +9,7 @@ import { TypesConfig } from '../../model/TypesConfig';
 import { Canvas } from '../canvas/Canvas';
 import { UnprojectedEntriesShelf } from './UnprojectedEntriesShelf';
 import {
-  createHandleAddEntry,
+  createAddOrUpdateEntry,
   createHandleDeleteEntry,
 } from './CreateDeleteEntries';
 import EntryCreateDialog from './entryCreation/EntryCreateDialog';
@@ -60,7 +60,7 @@ const Editor: React.FC<EditorProps> = ({
     return false;
   };
 
-  const handleAddEntry = createHandleAddEntry(
+  const addOrUpdateEntry = createAddOrUpdateEntry(
     docData?.id,
     setEntries,
     setUpdateUser,
@@ -75,6 +75,7 @@ const Editor: React.FC<EditorProps> = ({
   );
 
   const handleEditEntry = (entry: Entry) => {
+    if (!editable) return;
     setEntryDataInModif(entry);
     setDialogOpen(true);
   };
@@ -102,7 +103,7 @@ const Editor: React.FC<EditorProps> = ({
   return (
     <EditEntryContext.Provider
       value={{
-        handleAddEntry,
+        addOrUpdateEntry,
         handleEditEntry,
         dialogOpen,
         isList,
@@ -111,11 +112,14 @@ const Editor: React.FC<EditorProps> = ({
         setIsListItem,
         determineIfList,
         updatePosition,
+        editable,
+        setUpdateUser,
+        setUpdateUserMessage,
       }}
     >
       <div className="w-full flex">
         <div className="w-1/7">
-          <UnprojectedEntriesShelf entries={entries} editable={editable} />
+          <UnprojectedEntriesShelf entries={entries} />
         </div>
         <div className="w-6/7 bg-gray-100">
           <Canvas

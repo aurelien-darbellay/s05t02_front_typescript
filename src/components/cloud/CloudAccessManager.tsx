@@ -1,35 +1,45 @@
+import { useContext, useState } from 'react';
 import CloudinaryUploadButton from './CloudinaryUploadButton';
 import { ActionButton } from '../../utils/ActionButton';
 import CloudinaryDeleteButton from './CloudinaryDeleteButton';
-
-type CloudMetaData = {
-  publicUrl: string;
-  [key: string]: any;
-};
+import { EditEntryContext } from '../../contexts/EditEntryContext';
+import { PointsToFileInCloud } from '../../model/EntriesGeneralFeatures';
 
 type CloudAccessManagerProps = {
-  cloudDocumentName: string;
-  cloudMetaData: CloudMetaData | null | '';
-  editable: boolean;
-  onUploadSuccess?: (meta: any) => void;
+  entry: PointsToFileInCloud;
   onDelete?: () => void;
+  size?: number;
 };
 
 export default function CloudAccessManager({
-  cloudDocumentName,
-  cloudMetaData,
-  editable,
-  onUploadSuccess,
+  entry,
   onDelete,
+  size = 1,
 }: CloudAccessManagerProps) {
+  const [open, setOpen] = useState(false);
+  const icon = `<svg class="target" width="20" height="20" viewBox="0 0 24 24" fill="grey" xmlns="http://www.w3.org/2000/svg">
+    <path class="target" d="M6 2C4.9 2 4 2.9 4 4V20C4 21.11 4.9 22 6 22H18C19.1 22 20 21.11 20 20V8L14 2H6M13 9V3.5L18.5 9H13Z" />
+  </svg>`;
+  const { documentCloudMetadata, cloudDocumentName } = entry ?? {};
+  const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
-  const isEmptyMeta = !cloudMetaData || cloudMetaData === '';
+  const isEmptyMeta =
+    !documentCloudMetadata ||
+    documentCloudMetadata === '' ||
+    documentCloudMetadata.publicUrl === '';
+
+  // Toggle dropdown
+  const toggleOpen = () => {
+    setOpen((prev) => !prev);
+  };
 
   // Helpers
   const handleDownload = async () => {
-    if (cloudMetaData && cloudMetaData.publicUrl) {
+    if (documentCloudMetadata && documentCloudMetadata.publicUrl) {
       try {
-        const response = await fetch(cloudMetaData.publicUrl, { mode: 'cors' });
+        const response = await fetch(documentCloudMetadata.publicUrl, {
+          mode: 'cors',
+        });
         if (!response.ok) throw new Error('Network response was not ok');
         const blob = await response.blob();
 
@@ -40,35 +50,85 @@ export default function CloudAccessManager({
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        // Clean up
         window.URL.revokeObjectURL(blobUrl);
       } catch (error) {
-        console.error('Download failed:', error);
+        //console.error('Download failed:', error);
         alert('Download failed. Check console for details.');
       }
     }
   };
 
-  // Render
-  if (isEmptyMeta) {
-    if (editable) {
-      return (
-        <CloudinaryUploadButton
-          onUploadSuccess={() => {}}
-          onUploadError={() => {}}
-        />
-      );
-    } else {
-      return null;
+  function openInNewWindow(url) {
+    if (!url) {
+      //console.error('No URL provided');
+      return;
     }
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
-  // If metadata exists
   return (
-    <div style={{ display: 'flex', gap: '10px' }}>
-      <ActionButton onClick={handleDownload} value="Download" color="green" />
-      {editable && <CloudinaryDeleteButton publicId={cloudMetaData.id} />}
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      {(editable || !isEmptyMeta) && (
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <ActionButton
+            onClick={toggleOpen}
+            value={open ? 'Close File Actions' : 'Manage File'}
+            color="transparent"
+            margin={2}
+            icon={icon}
+            text="black"
+            size={size}
+          />
+
+          {open && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '0px',
+                position: 'absolute',
+                top: 0,
+                left: `${size * 42}px`,
+                zIndex: 1000,
+              }}
+            >
+              {isEmptyMeta ? (
+                editable ? (
+                  // Case 3: Editable & Empty -> Upload
+                  <CloudinaryUploadButton size={size} entry={entry} />
+                ) : null
+              ) : (
+                <>
+                  {/* Always show Download and View if not empty */}
+                  <ActionButton
+                    onClick={handleDownload}
+                    value="Download"
+                    color="green"
+                    size={0.8 * size}
+                  />
+                  <ActionButton
+                    onClick={() =>
+                      openInNewWindow(documentCloudMetadata.publicUrl)
+                    }
+                    value="View"
+                    color="green"
+                    size={0.8 * size}
+                  />
+
+                  {editable && (
+                    // Case 4: Editable & Not Empty -> Delete
+                    <CloudinaryDeleteButton
+                      publicId={documentCloudMetadata.id}
+                      size={size}
+                      onDeleteSuccess={onDelete}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

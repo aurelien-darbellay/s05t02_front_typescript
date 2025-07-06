@@ -1,7 +1,11 @@
-import { ContainedEntry, CloudMetaData } from '../EntriesGeneralFeatures';
+import {
+  ContainedEntry,
+  CloudMetaData,
+  PointsToFileInCloud,
+} from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
 
-export class Experience implements ContainedEntry {
+export class Experience implements ContainedEntry, PointsToFileInCloud {
   // From Entry (via ContainedEntry)
   public type: string = 'EXPERIENCE';
   public displayedType: string = 'Experience';

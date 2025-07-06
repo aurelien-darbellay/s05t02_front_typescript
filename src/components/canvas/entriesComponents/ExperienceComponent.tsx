@@ -1,6 +1,7 @@
 // ExperienceComponent.tsx
 import React from 'react';
 import { Experience } from '../../../model/concreteEntries/Experience';
+import CloudAccessManager from '../../cloud/CloudAccessManager';
 
 interface ExperienceComponentProps {
   experience: Experience;
@@ -38,7 +39,7 @@ export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({
         <strong>Link URL:</strong>{' '}
         <a href={experience.linkUrl}>{experience.linkUrl}</a>
       </p>
-      <p>Certificate {experience.cloudDocumentName}</p>
+      <CloudAccessManager entry={experience} />
     </div>
   );
 };

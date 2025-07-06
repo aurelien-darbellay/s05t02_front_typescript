@@ -1,12 +1,12 @@
 // components/EntryFieldInput.tsx
 import React from 'react';
-import { useGetInputType } from '../../../model/mappers/getInputType';
-import { CloudinaryMetaInput } from './CloudinaryMetaInput';
-import { EntryTypesFormatter } from '../../../model/entryTypesFormatter';
+import { useGetInputType } from './getInputType';
+import { EntryTypesFormatter } from '../entryTypesFormatter';
+import CloudAccessManager from '../../components/cloud/CloudAccessManager';
 
 interface EntryFieldInputProps {
   field: string;
-  value: string;
+  value: any;
   onChange: (value: string) => void;
   type: string;
 }
@@ -19,10 +19,17 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
 }) => {
   const getInputType = useGetInputType();
   const inputType = getInputType(type, field);
-
-  const label = EntryTypesFormatter.fromCamelCaseToDisplay(field);
+  console.log(field);
+  console.log(value);
+  const getLabel = (field: string): string => {
+    if (field === 'documentCloudMetadata') return '';
+    else return EntryTypesFormatter.fromCamelCaseToDisplay(field);
+  };
+  const label = getLabel(field);
   const commonClasses = 'border border-gray-300 rounded-md p-2';
-
+  if (inputType.kind === 'ignore') {
+    return '';
+  }
   return (
     <div className="mb-3 w-[380px]">
       <label className="block text-sm font-medium mb-1">{label}</label>
@@ -51,13 +58,20 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
         />
       )}
 
-      {inputType.kind === 'custom' && inputType.component === 'cloudinary' && (
-        <CloudinaryMetaInput value={value} />
+      {inputType.kind === 'cloudMetadata' && (
+        <CloudAccessManager
+          entry={{
+            documentCloudMetadata: value,
+            cloudDocumentName: extractBaseName(value.id),
+          }}
+          size={1.2}
+        />
       )}
 
       {inputType.kind !== 'textarea' &&
         inputType.kind !== 'select' &&
-        inputType.kind !== 'custom' && (
+        inputType.kind !== 'custom' &&
+        inputType.kind !== 'cloudMetadata' && (
           <input
             type={inputType.kind}
             className={`${commonClasses} w-full`}
@@ -69,3 +83,15 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
     </div>
   );
 };
+
+function extractBaseName(path) {
+  if (!path) return '';
+
+  // 1️⃣ Get last segment after "/"
+  const filename = path.split('/').pop() || '';
+
+  // 2️⃣ Remove extension
+  const nameWithoutExtension = filename.replace(/\.[^/.]+$/, '');
+
+  return nameWithoutExtension;
+}

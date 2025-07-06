@@ -33,6 +33,11 @@ export interface ContainedEntry extends Entry {
   id: string;
 }
 
+export interface PointsToFileInCloud extends Entry {
+  cloudDocumentName: string;
+  documentCloudMetadata: CloudMetaData;
+}
+
 export class ListEntries implements ContainerEntry {
   public type: string;
   public displayedType: string;

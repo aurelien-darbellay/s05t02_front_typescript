@@ -82,7 +82,6 @@ export const Entry: React.FC<EntryProps> = ({
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log('Entry clicked:', entry);
     determineIfList(entry.type);
     if (handleEditEntry) handleEditEntry(entry);
   };
@@ -166,7 +165,12 @@ export const Entry: React.FC<EntryProps> = ({
         />
       )}
       {hovered && editable && (
-        <ProjectionToggler entry={entry} marginTop={5} size={35} />
+        <ProjectionToggler
+          entry={entry}
+          marginTop={5}
+          size={35}
+          editable={editable}
+        />
       )}
     </div>
   );

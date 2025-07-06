@@ -11,7 +11,6 @@ interface ProjectionTogglerProps {
   marginTop?: number;
   size?: number;
   onClick?: () => void;
-  editable: boolean;
 }
 
 const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
@@ -19,9 +18,8 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   marginTop = 0,
   size = 20,
   onClick,
-  editable,
 }) => {
-  const { handleAddEntry, dialogOpen, isListItem } =
+  const { addOrUpdateEntry, dialogOpen, isListItem, editable } =
     useContext(EditEntryContext);
 
   const ensureConsistentProjectionInListEntries = (
@@ -40,13 +38,14 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   const handleClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
     if (!editable) return;
+    console.log(editable);
     const updatedEntry = { ...entry, projected: !entry.projected };
     const consistentEntry = EntryListTypes.includes(entry.type)
       ? ensureConsistentProjectionInListEntries(updatedEntry)
       : updatedEntry;
-    //console.log(consistentEntry);
-    if (handleAddEntry) {
-      handleAddEntry(
+
+    if (addOrUpdateEntry) {
+      addOrUpdateEntry(
         normalizeEntryData(consistentEntry as Record<string, any>) as Entry,
         true
       );
@@ -65,10 +64,11 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
           onClick={handleActionButtonClick}
           value="Hide"
           color="lightgrey"
+          disabled={!editable}
         />
       ) : (
         <button
-          className="toggler active:text-pink-500"
+          className="target active:text-pink-500"
           onClick={handleClick}
           style={{
             background: 'none',
@@ -78,9 +78,15 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
           }}
         >
           {entry.projected ? (
-            <EyeOff className="toggler" size={size} />
+            <EyeOff
+              className={`target ${editable ? '' : 'opacity-0'}`}
+              size={size}
+            />
           ) : (
-            <Eye className="toggler" size={size} />
+            <Eye
+              className={`target ${editable ? '' : 'opacity-0'}`}
+              size={size}
+            />
           )}
         </button>
       )}

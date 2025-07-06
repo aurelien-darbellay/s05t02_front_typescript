@@ -6,7 +6,7 @@ import {
 } from '../model/EntriesGeneralFeatures';
 
 export const EditEntryContext = React.createContext<{
-  handleAddEntry: ((entry: Entry, isEditing: boolean) => void) | null;
+  addOrUpdateEntry: ((entry: Entry, isEditing: boolean) => void) | null;
   handleEditEntry: ((entry: Entry) => void) | null;
   updatePosition: ((entry: ContainerEntry, newPos: Position) => void) | null;
   dialogOpen: boolean;
@@ -15,8 +15,11 @@ export const EditEntryContext = React.createContext<{
   isListItem: boolean;
   setIsListItem: React.Dispatch<React.SetStateAction<boolean>>;
   determineIfList: (type: string) => boolean;
+  editable: boolean;
+  setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
 }>({
-  handleAddEntry: null,
+  addOrUpdateEntry: null,
   handleEditEntry: null,
   updatePosition: null,
   dialogOpen: false,
@@ -25,4 +28,7 @@ export const EditEntryContext = React.createContext<{
   isListItem: false,
   setIsListItem: () => {},
   determineIfList: () => false,
+  editable: false,
+  setUpdateUser: () => {},
+  setUpdateUserMessage: () => {},
 });

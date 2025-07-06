@@ -9,12 +9,11 @@ import ShelvedEntry from './ShelvedEntry';
 
 interface UnprojectedEntriesShelfProps {
   entries: ContainerEntry[];
-  editable: boolean;
 }
 
 export const UnprojectedEntriesShelf: React.FC<
   UnprojectedEntriesShelfProps
-> = ({ entries, editable }) => {
+> = ({ entries }) => {
   const getListItemsToShelve = (entry: ContainerEntry): Entry[] => {
     if (entry.projected && EntryListTypes.includes(entry.type))
       return (entry as ListEntries).entries.filter((item) => !item.projected);
@@ -39,14 +38,10 @@ export const UnprojectedEntriesShelf: React.FC<
         }}
       >
         {containerEntriesToShelve.map((entry, idx) => (
-          <ShelvedEntry entry={entry} key={idx} editable={editable} />
+          <ShelvedEntry entry={entry} key={idx} />
         ))}
         {listItemToShelve.map((entry, idx) => (
-          <ShelvedEntry
-            entry={entry}
-            key={idx + numContEntriesToShelve}
-            editable={editable}
-          />
+          <ShelvedEntry entry={entry} key={idx + numContEntriesToShelve} />
         ))}
       </div>
     </ProjectionContext.Provider>

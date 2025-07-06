@@ -26,7 +26,7 @@ const updateEntriesInState = (
   return updatedEntries;
 };
 
-export const createHandleAddEntry = (
+export const createAddOrUpdateEntry = (
   docId: string,
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
   exposeError: React.Dispatch<React.SetStateAction<boolean>>,
@@ -51,7 +51,9 @@ export const createHandleAddEntry = (
       setEntries((prev) => updateEntriesInState(prev, newEntry));
     } catch (error) {
       exposeError(true);
-      setErrorMessage('Failed to add entry: ' + (error as Error).message);
+      setErrorMessage(
+        'Failed to add or upload entry: ' + (error as Error).message
+      );
     }
   };
 };

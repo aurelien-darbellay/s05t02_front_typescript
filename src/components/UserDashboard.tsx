@@ -74,15 +74,6 @@ const UserDashboard = () => {
         ) : (
           ''
         )}
-        <CloudAccessManager
-          editable={true}
-          cloudMetaData={{
-            publicUrl:
-              'https://res.cloudinary.com/dhll1igfz/image/upload/v1751714727/admin/donorForm.png.png',
-            id: 'admin/donorForm.png',
-          }}
-          cloudDocumentName="donorForm"
-        />
       </div>
       <Dashboard
         documents={documents}

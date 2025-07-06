@@ -1,4 +1,8 @@
-import { ContainedEntry, CloudMetaData } from '../EntriesGeneralFeatures';
+import {
+  ContainedEntry,
+  CloudMetaData,
+  PointsToFileInCloud,
+} from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum Level {
@@ -9,7 +13,7 @@ export enum Level {
   PROFESSIONAL = 'PROFESSIONAL',
 }
 
-export class Language implements ContainedEntry {
+export class Language implements ContainedEntry, PointsToFileInCloud {
   // From Entry (via ContainedEntry)
   public type: string = 'LANGUAGE';
   public displayedType: string = 'Language';
