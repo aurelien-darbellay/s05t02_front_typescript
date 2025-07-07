@@ -17,10 +17,12 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
   onChange,
   type,
 }) => {
+  console.log('Field ', field);
+  //console.log('Value ', value);
   const getInputType = useGetInputType();
   const inputType = getInputType(type, field);
-  console.log(field);
-  console.log(value);
+  //console.log(field);
+  //console.log(value);
   const getLabel = (field: string): string => {
     if (field === 'documentCloudMetadata') return '';
     else return EntryTypesFormatter.fromCamelCaseToDisplay(field);
@@ -58,13 +60,23 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
         />
       )}
 
-      {inputType.kind === 'cloudMetadata' && (
+      {inputType.kind === 'cloudMetadata' &&
+        field === 'documentCloudMetadata' && (
+          <CloudAccessManager
+            entry={{
+              documentCloudMetadata: value,
+              cloudDocumentName: extractBaseName(value.id),
+            }}
+            size={1.2}
+          />
+        )}
+      {inputType.kind === 'cloudMetadata' && field === 'urlPicture' && (
         <CloudAccessManager
           entry={{
-            documentCloudMetadata: value,
-            cloudDocumentName: extractBaseName(value.id),
+            urlPicture: value,
           }}
           size={1.2}
+          value="Add Picture"
         />
       )}
 

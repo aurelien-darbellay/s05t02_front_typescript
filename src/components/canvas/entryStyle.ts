@@ -1,5 +1,6 @@
 // src/components/canvas/getEntryStyle.ts
 
+import { Shape } from '../../model/concreteEntries/ProfilePicture';
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
 
 export const getEntryStyle = (
@@ -9,36 +10,78 @@ export const getEntryStyle = (
   resizing: boolean,
   scaleFactor: number,
   width: number
-): React.CSSProperties => ({
-  position: 'absolute',
-  left: entry.position.xCord * width,
-  top: entry.position.yCord,
-  zIndex: hovered ? 999 : 'auto',
+): React.CSSProperties => {
+  const hasPicture = Boolean(
+    entry.urlPicture && entry.urlPicture.trim() !== ''
+  );
+  const pictureStyle = hovered ? { ...getShapeStyle(entry.shape) } : {};
 
-  borderTopStyle: 'solid',
-  borderTopWidth: '6px',
-  borderTopColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+  return {
+    position: 'absolute',
+    left: entry.position.xCord * width,
+    top: entry.position.yCord,
+    zIndex: hovered ? 999 : 'auto',
 
-  borderRightStyle: 'solid',
-  borderRightWidth: '6px',
-  borderRightColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+    borderTopStyle: 'solid',
+    borderTopWidth: '6px',
+    borderTopColor:
+      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
 
-  borderBottomStyle: 'solid',
-  borderBottomWidth: '6px',
-  borderBottomColor: entry.color ?? '#ccc',
+    borderRightStyle: 'solid',
+    borderRightWidth: '6px',
+    borderRightColor:
+      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
 
-  borderLeftStyle: 'solid',
-  borderLeftWidth: '6px',
-  borderLeftColor: hovered ? (entry.color ?? '#ccc') : 'transparent',
+    borderBottomStyle: 'solid',
+    borderBottomWidth: '6px',
+    borderBottomColor:
+      hovered && hasPicture ? 'transparent' : (entry.color ?? '#ccc'),
 
-  padding: hovered ? `${8 * scaleFactor}px` : 0,
+    borderLeftStyle: 'solid',
+    borderLeftWidth: '6px',
+    borderLeftColor:
+      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
 
-  background: hovered ? '#fff' : 'transparent',
-  pointerEvents: dragging || resizing ? 'none' : 'auto',
-  boxSizing: 'border-box',
-  display: 'inline-block',
-  transform: `scale(${scaleFactor})`,
-  transformOrigin: 'top left',
-  cursor: 'grab',
-  maxWidth: '20em',
-});
+    padding: hovered ? `${8 * scaleFactor}px` : 0,
+
+    background: hovered ? (hasPicture ? 'transparent' : '#fff') : 'transparent',
+
+    pointerEvents: dragging || resizing ? 'none' : 'auto',
+    boxSizing: 'border-box',
+    display: 'inline-block',
+    transform: `scale(${scaleFactor})`,
+    transformOrigin: 'top left',
+    cursor: 'grab',
+    maxWidth: '20em',
+  };
+};
+
+export const getShapeStyle = (shape: Shape): React.CSSProperties => {
+  switch (shape) {
+    case Shape.SQUARE:
+      return {
+        clipPath: 'inset(0%)',
+      };
+    case Shape.ROUND:
+      return {
+        clipPath: 'circle(50% at 50% 50%)',
+        objectFit: 'cover',
+      };
+    case Shape.RECTANGLE:
+      return {
+        clipPath: 'inset(0%)',
+        width: '300px',
+        height: '200px',
+        objectFit: 'cover',
+      };
+    case Shape.STAR:
+      return {
+        clipPath:
+          'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+      };
+    case Shape.MATCH:
+      return {}; // No clipPath at all
+    default:
+      return {};
+  }
+};

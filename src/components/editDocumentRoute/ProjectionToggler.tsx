@@ -38,7 +38,7 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   const handleClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
     if (!editable) return;
-    console.log(editable);
+    //console.log(editable);
     const updatedEntry = { ...entry, projected: !entry.projected };
     const consistentEntry = EntryListTypes.includes(entry.type)
       ? ensureConsistentProjectionInListEntries(updatedEntry)

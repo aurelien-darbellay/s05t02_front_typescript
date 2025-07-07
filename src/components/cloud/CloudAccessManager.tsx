@@ -21,13 +21,21 @@ export default function CloudAccessManager({
   const { documentCloudMetadata, cloudDocumentName } = entry ?? {};
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
-  const isEmptyMeta =
-    !documentCloudMetadata || !documentCloudMetadata.publicUrl;
+  const isPicture = entry.urlPicture != undefined;
+  const isEmptyMeta = isPicture
+    ? !(entry.urlPicture || entry.urlPicture.trim() != '')
+    : !documentCloudMetadata || !documentCloudMetadata.publicUrl;
+  console.log('Empty: ', isEmptyMeta);
+  const targetUrl = isPicture
+    ? entry.urlPicture
+    : documentCloudMetadata?.publicUrl;
 
+  const textUpload = isPicture ? 'Add Picture' : 'Add File';
   // Toggle dropdown
   const toggleOpen = () => {
     setOpen((prev) => !prev);
   };
+  //console.log(entry.urlPicture);
 
   // Helpers
   const handleDownload = async () => {
@@ -91,26 +99,30 @@ export default function CloudAccessManager({
               {isEmptyMeta ? (
                 editable ? (
                   // Case 3: Editable & Empty -> Upload
-                  <CloudinaryUploadButton size={size} entry={entry} />
+                  <CloudinaryUploadButton
+                    size={size}
+                    entry={entry}
+                    value={textUpload}
+                  />
                 ) : null
               ) : (
                 <>
                   {/* Always show Download and View if not empty */}
+                  !isPicture &&
+                  {
+                    <ActionButton
+                      onClick={handleDownload}
+                      value="Download"
+                      color="green"
+                      size={0.8 * size}
+                    />
+                  }
                   <ActionButton
-                    onClick={handleDownload}
-                    value="Download"
-                    color="green"
-                    size={0.8 * size}
-                  />
-                  <ActionButton
-                    onClick={() =>
-                      openInNewWindow(documentCloudMetadata.publicUrl)
-                    }
+                    onClick={() => openInNewWindow(targetUrl)}
                     value="View"
                     color="green"
                     size={0.8 * size}
                   />
-
                   {editable && (
                     // Case 4: Editable & Not Empty -> Delete
                     <CloudinaryDeleteButton entry={entry} size={size} />

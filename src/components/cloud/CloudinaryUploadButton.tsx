@@ -3,7 +3,11 @@ import { ActionButton } from '../../utils/ActionButton';
 import { createCloudinaryUploadHandler } from './createCloudinaryUploadHandler';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 
-export default function CloudinaryUploadButton({ size = 1, entry }) {
+export default function CloudinaryUploadButton({
+  size = 1,
+  entry,
+  value = 'Add file',
+}) {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const { addOrUpdateEntry, setUpdateUser, setUpdateUserMessage } =
@@ -27,7 +31,7 @@ export default function CloudinaryUploadButton({ size = 1, entry }) {
         onClick={handleButtonClick}
         disabled={uploading}
         color="purple"
-        value={uploading ? 'Uploading...' : 'Add file'}
+        value={uploading ? 'Uploading...' : value}
         size={0.8 * size}
       />
 

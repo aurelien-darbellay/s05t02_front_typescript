@@ -30,8 +30,10 @@ export const useGetInputType = () => {
     if (type === 'language' && field === 'level') {
       return { kind: 'select', options: cfg.linguisticLevels };
     }
-    if (type === 'profile_picture' && field === 'shape') {
-      return { kind: 'select', options: cfg.pictureShapes };
+    if (type === 'profile_picture') {
+      if (field === 'shape')
+        return { kind: 'select', options: cfg.pictureShapes };
+      else if (field === 'urlpicture') return { kind: 'cloudMetadata' };
     }
 
     // Summary.text as paragraph input

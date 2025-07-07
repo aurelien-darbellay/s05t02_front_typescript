@@ -48,12 +48,21 @@ export function createCloudinaryUploadHandler({
         withCredentials: false,
       });
       const { public_id, url, original_filename } = cloudinaryResp.data;
-      const documentCloudMetadata = new CloudinaryMetaData(public_id, url);
-      const updatedEntry = {
-        ...entry,
-        cloudDocumentName: original_filename,
-        documentCloudMetadata,
-      };
+      let updatedEntry;
+      if (entry.type === 'PROFILE_PICTURE') {
+        updatedEntry = {
+          ...entry,
+          urlPicture: url,
+        };
+      } else {
+        const documentCloudMetadata = new CloudinaryMetaData(public_id, url);
+        updatedEntry = {
+          ...entry,
+          cloudDocumentName: original_filename,
+          documentCloudMetadata,
+        };
+      }
+
       //console.log(updatedEntry);
       addOrUpdateEntry(normalizeEntryData(updatedEntry), true);
     } catch (error) {

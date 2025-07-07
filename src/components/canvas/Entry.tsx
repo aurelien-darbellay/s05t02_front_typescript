@@ -150,7 +150,7 @@ export const Entry: React.FC<EntryProps> = ({
         {displayLabel}
       </div>
       {hovered && children}
-      {hovered && (
+      {hovered && editable && (
         <div
           className="resize-handle"
           style={{
@@ -165,12 +165,7 @@ export const Entry: React.FC<EntryProps> = ({
         />
       )}
       {hovered && editable && (
-        <ProjectionToggler
-          entry={entry}
-          marginTop={5}
-          size={35}
-          editable={editable}
-        />
+        <ProjectionToggler entry={entry} marginTop={5} size={35} />
       )}
     </div>
   );
