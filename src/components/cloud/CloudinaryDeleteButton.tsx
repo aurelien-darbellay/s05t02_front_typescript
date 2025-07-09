@@ -12,7 +12,7 @@ const CloudinaryDeleteButton = ({ entry, size = 1, onClose }) => {
     setUpdateUserMessage: setErrorMessage,
   } = useContext(EditEntryContext);
   const publicId = entry.documentCloudMetadata.id;
-  console.log(entry);
+  //console.log(entry);
   const handleDelete = async () => {
     try {
       await axios.post(ApiPaths.CLOUD_DELETE_PATH, {

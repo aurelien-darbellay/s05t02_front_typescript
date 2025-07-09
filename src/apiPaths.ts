@@ -12,6 +12,7 @@ export const ApiPaths = {
   USER_DASHBOARD_PATH: '/api/protected/users/dashboard',
   USER_DELETE_REL: '/delete',
   USER_DELETE_PATH: '/api/protected/users/delete',
+  USER_GENERATE_PDF_PATH: '/api/protected/users/pdf',
 
   // Document paths
   DOC_REL: '/doc',

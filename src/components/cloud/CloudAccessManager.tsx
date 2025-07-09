@@ -18,7 +18,7 @@ export default function CloudAccessManager({
   const icon = `<svg class="target" width="20" height="20" viewBox="0 0 24 24" fill="grey" xmlns="http://www.w3.org/2000/svg">
     <path class="target" d="M6 2C4.9 2 4 2.9 4 4V20C4 21.11 4.9 22 6 22H18C19.1 22 20 21.11 20 20V8L14 2H6M13 9V3.5L18.5 9H13Z" />
   </svg>`;
-  console.log(entry);
+  //console.log(entry);
   const { documentCloudMetadata, cloudDocumentName } = entry ?? {};
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"

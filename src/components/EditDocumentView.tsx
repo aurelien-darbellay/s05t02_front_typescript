@@ -86,6 +86,16 @@ const EditDocumentView: React.FC = () => {
     setUpdateUserMessage('');
   };
 
+  const printPdf = async () => {
+    const url = ApiPaths.USER_GENERATE_PDF_PATH;
+    try {
+      await axios.post(url, updatedDocData);
+    } catch (e) {
+      setUpdateUser(true);
+      setUpdateUserMessage('Error printing pdf:');
+    }
+  };
+
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!initialDocData) return <p>Loading document...</p>;
 
@@ -113,6 +123,12 @@ const EditDocumentView: React.FC = () => {
         <ActionButton
           onClick={pickPublicViewId}
           value="Create Public View"
+          color="purple"
+          disabled={!!actingUser}
+        />
+        <ActionButton
+          onClick={printPdf}
+          value="Print Pdf"
           color="purple"
           disabled={!!actingUser}
         />
