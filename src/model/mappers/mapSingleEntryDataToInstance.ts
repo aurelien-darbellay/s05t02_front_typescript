@@ -43,7 +43,7 @@ export function mapSingleEntryDataToInstance(
 
     case 'PROFILE_PICTURE':
       return new ProfilePicture(
-        entryData.urlPicture,
+        entryData.documentCloudMetadata,
         entryData.shape,
         entryData.position || { xCord: 0, yCord: 0 },
         entryData.color,

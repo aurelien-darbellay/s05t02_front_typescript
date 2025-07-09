@@ -220,6 +220,9 @@ export default function EntryCreateDialog({
               field={field}
               value={entryValues[field] || ''}
               onChange={(value) => handleInputChange(field, value)}
+              entryData={
+                field === 'documentCloudMetadata' ? getEntryPayload() : null
+              }
             />
           </div>
         ))}

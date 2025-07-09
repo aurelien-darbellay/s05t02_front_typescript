@@ -1,7 +1,7 @@
 import { CloudinaryMetaData } from '../../../model/cloud/CloudMetaData'; // adjust path as needed
 
 export const normalizeEntryData = (entryData: Record<string, any>) => {
-  console.log(entryData);
+  //console.log(entryData);
   const normalized: Record<string, any> = { ...entryData };
 
   if (
@@ -38,6 +38,10 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
   // ✅ New logic to ensure projected = true if missing or null/undefined
   if (normalized.projected == null) {
     normalized.projected = true;
+  }
+
+  if (normalized.shape === '') {
+    delete normalized.shape;
   }
 
   return normalized;

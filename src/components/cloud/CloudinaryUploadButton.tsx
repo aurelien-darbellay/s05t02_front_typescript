@@ -7,6 +7,7 @@ export default function CloudinaryUploadButton({
   size = 1,
   entry,
   value = 'Add file',
+  isPicture = false,
 }) {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
@@ -23,6 +24,7 @@ export default function CloudinaryUploadButton({
     addOrUpdateEntry,
     exposeError: setUpdateUser,
     setErrorMessage: setUpdateUserMessage,
+    isPicture,
   });
 
   return (

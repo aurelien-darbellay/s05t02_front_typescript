@@ -16,14 +16,16 @@ export const ProfilePictureComponent: React.FC<
 > = ({ profilePicture }) => {
   const { editable } = useContext(EditEntryContext);
   const hasPicture = Boolean(
-    profilePicture.urlPicture && profilePicture.urlPicture.trim() !== ''
+    profilePicture.documentCloudMetadata &&
+      profilePicture.documentCloudMetadata.publicUrl &&
+      profilePicture.documentCloudMetadata.publicUrl.trim() !== ''
   );
   return (
     <>
       {hasPicture && (
         <div style={{ maxWidth: '300px' }}>
           <img
-            src={profilePicture.urlPicture}
+            src={profilePicture.documentCloudMetadata.publicUrl}
             alt="Profile"
             style={{
               maxWidth: '300px',
@@ -39,6 +41,7 @@ export const ProfilePictureComponent: React.FC<
           entry={profilePicture}
           size={0.8}
           value="Add Picture"
+          isPicture={true}
         />
       )}
     </>

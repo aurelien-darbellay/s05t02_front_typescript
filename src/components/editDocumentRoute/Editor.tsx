@@ -39,7 +39,7 @@ const Editor: React.FC<EditorProps> = ({
   editable,
 }) => {
   const listEntries = mapDocDataToEntries(docData);
-  console.log(listEntries);
+  //console.log(listEntries);
   const [entries, setEntries] = useState<ContainerEntry[]>(listEntries);
   const [entrySpawnPosition, setEntrySpawnPosition] = useState<{
     xCord: number;

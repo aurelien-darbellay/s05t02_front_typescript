@@ -9,6 +9,7 @@ interface EntryFieldInputProps {
   value: any;
   onChange: (value: string) => void;
   type: string;
+  entryData: Record<string, any> | null;
 }
 
 export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
@@ -16,8 +17,9 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
   value,
   onChange,
   type,
+  entryData,
 }) => {
-  console.log('Field ', field);
+  //console.log('Field ', field);
   //console.log('Value ', value);
   const getInputType = useGetInputType();
   const inputType = getInputType(type, field);
@@ -60,25 +62,14 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
         />
       )}
 
-      {inputType.kind === 'cloudMetadata' &&
-        field === 'documentCloudMetadata' && (
-          <CloudAccessManager
-            entry={{
-              documentCloudMetadata: value,
-              cloudDocumentName: extractBaseName(value.id),
-            }}
-            size={1.2}
-          />
-        )}
-      {inputType.kind === 'cloudMetadata' && field === 'urlPicture' && (
-        <CloudAccessManager
-          entry={{
-            urlPicture: value,
-          }}
-          size={1.2}
-          value="Add Picture"
-        />
+      {inputType.kind === 'cloudMetadata' && inputType.type === 'else' && (
+        <CloudAccessManager entry={entryData} size={1.2} />
       )}
+
+      {inputType.kind === 'cloudMetadata' &&
+        inputType.type === 'profile_picture' && (
+          <CloudAccessManager entry={entryData} size={1.2} />
+        )}
 
       {inputType.kind !== 'textarea' &&
         inputType.kind !== 'select' &&

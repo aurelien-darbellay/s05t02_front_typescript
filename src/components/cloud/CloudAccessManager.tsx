@@ -18,24 +18,21 @@ export default function CloudAccessManager({
   const icon = `<svg class="target" width="20" height="20" viewBox="0 0 24 24" fill="grey" xmlns="http://www.w3.org/2000/svg">
     <path class="target" d="M6 2C4.9 2 4 2.9 4 4V20C4 21.11 4.9 22 6 22H18C19.1 22 20 21.11 20 20V8L14 2H6M13 9V3.5L18.5 9H13Z" />
   </svg>`;
+  console.log(entry);
   const { documentCloudMetadata, cloudDocumentName } = entry ?? {};
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
-  const isPicture = entry.urlPicture != undefined;
-  const isEmptyMeta = isPicture
-    ? !(entry.urlPicture || entry.urlPicture.trim() != '')
-    : !documentCloudMetadata || !documentCloudMetadata.publicUrl;
-  console.log('Empty: ', isEmptyMeta);
-  const targetUrl = isPicture
-    ? entry.urlPicture
-    : documentCloudMetadata?.publicUrl;
+  const isPicture = entry.type === 'PROFILE_PICTURE';
+  const isEmptyMeta =
+    !documentCloudMetadata || !documentCloudMetadata.publicUrl;
+  //console.log('Empty: ', isEmptyMeta);
+  const targetUrl = documentCloudMetadata?.publicUrl;
 
   const textUpload = isPicture ? 'Add Picture' : 'Add File';
   // Toggle dropdown
   const toggleOpen = () => {
     setOpen((prev) => !prev);
   };
-  //console.log(entry.urlPicture);
 
   // Helpers
   const handleDownload = async () => {
@@ -103,12 +100,11 @@ export default function CloudAccessManager({
                     size={size}
                     entry={entry}
                     value={textUpload}
+                    isPicture
                   />
                 ) : null
               ) : (
                 <>
-                  {/* Always show Download and View if not empty */}
-                  !isPicture &&
                   {
                     <ActionButton
                       onClick={handleDownload}
@@ -125,7 +121,11 @@ export default function CloudAccessManager({
                   />
                   {editable && (
                     // Case 4: Editable & Not Empty -> Delete
-                    <CloudinaryDeleteButton entry={entry} size={size} />
+                    <CloudinaryDeleteButton
+                      entry={entry}
+                      size={size}
+                      onClose={toggleOpen}
+                    />
                   )}
                 </>
               )}

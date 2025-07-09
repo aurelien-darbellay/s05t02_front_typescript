@@ -12,7 +12,10 @@ export const getEntryStyle = (
   width: number
 ): React.CSSProperties => {
   const hasPicture = Boolean(
-    entry.urlPicture && entry.urlPicture.trim() !== ''
+    entry.type === 'PROFILE_PICTURE' &&
+      entry.documentCloudMetadata &&
+      entry.documentCloudMetadata.publicUrl &&
+      entry.documentCloudMetadata.publicUrl.trim() !== ''
   );
 
   return {

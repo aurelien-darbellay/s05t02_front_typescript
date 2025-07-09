@@ -11,12 +11,13 @@ type InputType =
         | 'tel'
         | 'number'
         | 'password'
-        | 'cloudMetadata'
         | 'ignore';
     }
   | { kind: 'textarea'; maxLength?: number }
   | { kind: 'select'; options: string[] }
-  | { kind: 'custom'; component: string }; // e.g. for special cases
+  | { kind: 'custom'; component: string }
+  | { kind: 'cloudMetadata'; type: 'profile_picture' }
+  | { kind: 'cloudMetadata'; type: 'else' }; // e.g. for special cases
 
 export const useGetInputType = () => {
   const cfg = useTypesConfig();
@@ -34,7 +35,7 @@ export const useGetInputType = () => {
       if (field === 'shape')
         return { kind: 'select', options: cfg.pictureShapes };
       else if (field === 'documentcloudmetadata')
-        return { kind: 'cloudMetadata' };
+        return { kind: 'cloudMetadata', type: 'profile_picture' };
     }
 
     // Summary.text as paragraph input
@@ -47,7 +48,7 @@ export const useGetInputType = () => {
 
     // Specific case for custom Cloudinary metadata object
     if (field === 'documentcloudmetadata') {
-      return { kind: 'cloudMetadata' };
+      return { kind: 'cloudMetadata', type: 'else' };
     }
     if (field === 'clouddocumentname') {
       //console.log('cloudDocumentName');

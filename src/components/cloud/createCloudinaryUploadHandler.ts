@@ -8,6 +8,7 @@ export function createCloudinaryUploadHandler({
   addOrUpdateEntry,
   exposeError,
   setErrorMessage,
+  isPicture = false,
 }) {
   return async function handleFileChange(event, entry) {
     const file = event.target.files[0];
@@ -16,10 +17,14 @@ export function createCloudinaryUploadHandler({
     try {
       setUploading(true);
       // 1️⃣ Validate file type
-      if (!file.type.startsWith('image/') || file.type === 'application/pdf') {
+      console.log(file.type);
+      if (
+        !(file.type.startsWith('image/') || file.type === 'application/pdf') ||
+        (isPicture && !file.type.startsWith('image/'))
+      ) {
         exposeError(true);
         setErrorMessage(
-          'Unsupported file type. Please upload an image or a PDF.'
+          `Unsupported file type. Please upload an image ${isPicture ? '' : 'or a PDF'}.`
         );
         setUploading(false);
         return;
@@ -48,20 +53,13 @@ export function createCloudinaryUploadHandler({
         withCredentials: false,
       });
       const { public_id, url, original_filename } = cloudinaryResp.data;
-      let updatedEntry;
-      if (entry.type === 'PROFILE_PICTURE') {
-        updatedEntry = {
-          ...entry,
-          urlPicture: url,
-        };
-      } else {
-        const documentCloudMetadata = new CloudinaryMetaData(public_id, url);
-        updatedEntry = {
-          ...entry,
-          cloudDocumentName: original_filename,
-          documentCloudMetadata,
-        };
-      }
+
+      const documentCloudMetadata = new CloudinaryMetaData(public_id, url);
+      const updatedEntry = {
+        ...entry,
+        cloudDocumentName: original_filename,
+        documentCloudMetadata,
+      };
 
       //console.log(updatedEntry);
       addOrUpdateEntry(normalizeEntryData(updatedEntry), true);
