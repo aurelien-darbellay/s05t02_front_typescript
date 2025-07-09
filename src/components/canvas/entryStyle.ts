@@ -14,7 +14,6 @@ export const getEntryStyle = (
   const hasPicture = Boolean(
     entry.urlPicture && entry.urlPicture.trim() !== ''
   );
-  const pictureStyle = hovered ? { ...getShapeStyle(entry.shape) } : {};
 
   return {
     position: 'absolute',

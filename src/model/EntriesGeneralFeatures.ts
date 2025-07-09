@@ -6,6 +6,7 @@ export interface Entry {
   type: string;
   displayedType: string;
   codeName: string;
+  id: string | null;
 }
 export interface Position {
   xCord: number;
@@ -26,12 +27,10 @@ interface Sized {
   size: number;
 }
 export interface ContainerEntry extends Entry, Positioned, Colored, Sized {
-  previousEntry: Entry | null;
-  nextEntry: Entry | null;
+  previousEntry: string | null;
+  nextEntry: string | null;
 }
-export interface ContainedEntry extends Entry {
-  id: string;
-}
+export interface ContainedEntry extends Entry {}
 
 export interface PointsToFileInCloud extends Entry {
   cloudDocumentName: string;

@@ -37,7 +37,7 @@ export class Experience implements ContainedEntry, PointsToFileInCloud {
     startDate: Date,
     endDate: Date,
     description: string,
-    keywords: string[],
+    keywords: string,
     nameLink: string,
     linkUrl: string,
 

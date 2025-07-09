@@ -1,5 +1,5 @@
-import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
-
+import { ContainerEntry, Position } from '../EntriesGeneralFeatures';
+import { v4 as uuidv4 } from 'uuid';
 export class Summary implements ContainerEntry {
   // From Entry (via ContainerEntry)
   public type: string = 'SUMMARY';
@@ -14,8 +14,9 @@ export class Summary implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry | null;
-  public nextEntry: Entry | null;
+  public previousEntry: string | null;
+  public nextEntry: string | null;
+  public id: string | null;
 
   // Summary-specific fields
   public title: string;
@@ -34,10 +35,11 @@ export class Summary implements ContainerEntry {
     // Entry fields (defaults to false)
     projected: boolean = true,
     highlighted: boolean = false,
+    id?: string,
 
     // Optional previous/next entries
-    previousEntry?: Entry,
-    nextEntry?: Entry
+    previousEntry?: string,
+    nextEntry?: string
   ) {
     // Initialize Summary-specific fields
     this.title = title;
@@ -51,6 +53,7 @@ export class Summary implements ContainerEntry {
     // Initialize Entry fields
     this.projected = projected;
     this.highlighted = highlighted;
+    this.id = id ?? uuidv4();
 
     // Initialize ContainerEntry links
     this.previousEntry = previousEntry ?? null;

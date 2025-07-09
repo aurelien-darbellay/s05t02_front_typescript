@@ -1,5 +1,5 @@
 import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
-
+import { v4 as uuidv4 } from 'uuid';
 export class Identity implements ContainerEntry {
   // From Entry (via ContainerEntry)
   public type: string = 'IDENTITY';
@@ -14,12 +14,13 @@ export class Identity implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry | null;
-  public nextEntry: Entry | null;
+  public previousEntry: string | null;
+  public nextEntry: string | null;
 
   // Identity-specific fields
   public names: string[];
   public lastNames: string[];
+  public id: string | null;
 
   constructor(
     position: Position,
@@ -29,9 +30,11 @@ export class Identity implements ContainerEntry {
     highlighted: boolean = false,
     names?: string[],
     lastNames?: string[],
-    previousEntry?: Entry,
-    nextEntry?: Entry
+    id?: string,
+    previousEntry?: string,
+    nextEntry?: string
   ) {
+    this.id = id ?? uuidv4();
     this.position = position;
     this.color = color;
     this.size = size;

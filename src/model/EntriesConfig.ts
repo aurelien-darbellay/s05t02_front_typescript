@@ -34,7 +34,7 @@ export const EntryFieldConfig: Record<string, string[]> = {
   LANGUAGE: ['name', 'level', 'cloudDocumentName', 'documentCloudMetadata'],
   PORTFOLIO: ['projectName', 'projectUrl'],
   PROFESSION: ['generalTitle', 'specificTitle'],
-  PROFILE_PICTURE: ['urlPicture', 'shape'],
+  PROFILE_PICTURE: ['documentCloudMetadata', 'shape'],
   SOFT_SKILL: ['keyWords'],
   SUMMARY: ['title', 'text'],
   TECHNICAL_SKILL: ['keyWords'],

@@ -24,7 +24,7 @@ export class Education implements ContainedEntry, PointsToFileInCloud {
   public documentCloudMetadata: CloudMetaData;
 
   // From ContainedEntry
-  public id: string;
+  public id: string | null;
 
   constructor(
     // Optional ID: if none is provided, generate a UUID

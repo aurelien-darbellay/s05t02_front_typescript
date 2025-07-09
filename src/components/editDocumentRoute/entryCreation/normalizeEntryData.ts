@@ -1,8 +1,9 @@
 import { CloudinaryMetaData } from '../../../model/cloud/CloudMetaData'; // adjust path as needed
 
 export const normalizeEntryData = (entryData: Record<string, any>) => {
-  //console.log(entryData);
+  console.log(entryData);
   const normalized: Record<string, any> = { ...entryData };
+
   if (
     entryDataTypes.cloudMetaData in normalized &&
     !CloudinaryMetaData.isCloudinaryMetaData(
@@ -15,6 +16,7 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
       value
     );
   }
+
   if (
     entryDataTypes.names in normalized &&
     !isArrayOfStrings(normalized[entryDataTypes.names])
@@ -23,6 +25,7 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
       .split(' ')
       .map((str) => str.trim());
   }
+
   if (
     entryDataTypes.lastNames in normalized &&
     !isArrayOfStrings(normalized[entryDataTypes.lastNames])
@@ -31,6 +34,12 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
       .split(' ')
       .map((str) => str.trim());
   }
+
+  // ✅ New logic to ensure projected = true if missing or null/undefined
+  if (normalized.projected == null) {
+    normalized.projected = true;
+  }
+
   return normalized;
 };
 

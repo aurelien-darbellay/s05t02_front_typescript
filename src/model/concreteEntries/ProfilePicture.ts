@@ -1,11 +1,16 @@
-import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
-
+import {
+  ContainerEntry,
+  Position,
+  Entry,
+  CloudMetaData,
+} from '../EntriesGeneralFeatures';
+import { v4 as uuidv4 } from 'uuid';
 export enum Shape {
   SQUARE = 'SQUARE',
-  TRIANGLE = 'TRIANGLE',
   RECTANGLE = 'RECTANGLE',
   STAR = 'STAR',
   ROUND = 'ROUND',
+  MATCH = 'MATCH',
 }
 
 export class ProfilePicture implements ContainerEntry {
@@ -22,16 +27,17 @@ export class ProfilePicture implements ContainerEntry {
   public size: number;
 
   // From ContainerEntry
-  public previousEntry: Entry | null;
-  public nextEntry: Entry | null;
+  public previousEntry: string | null;
+  public nextEntry: string | null;
+  public id: string | null;
 
   // ProfilePicture-specific fields
-  public urlPicture: string;
+  public documentCloudMetadata: CloudMetaData;
   public shape: Shape;
 
   constructor(
     // ProfilePicture fields
-    urlPicture: string,
+    documentCloudMetadata: CloudMetaData,
     shape: Shape = Shape.ROUND,
 
     // Positioned, Colored, Sized fields
@@ -42,13 +48,14 @@ export class ProfilePicture implements ContainerEntry {
     // Entry fields (defaults to false)
     projected: boolean = true,
     highlighted: boolean = false,
+    id?: string,
 
     // Optional previous/next entries
-    previousEntry?: Entry,
-    nextEntry?: Entry
+    previousEntry?: string,
+    nextEntry?: string
   ) {
     // Initialize ProfilePicture-specific fields
-    this.urlPicture = urlPicture;
+    this.documentCloudMetadata = documentCloudMetadata;
     this.shape = shape;
 
     // Initialize Positioned, Colored, Sized fields
@@ -59,6 +66,7 @@ export class ProfilePicture implements ContainerEntry {
     // Initialize Entry fields
     this.projected = projected;
     this.highlighted = highlighted;
+    this.id = id ?? uuidv4();
 
     // Initialize ContainerEntry links
     this.previousEntry = previousEntry ?? null;

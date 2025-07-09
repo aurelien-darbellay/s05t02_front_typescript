@@ -33,7 +33,8 @@ export const useGetInputType = () => {
     if (type === 'profile_picture') {
       if (field === 'shape')
         return { kind: 'select', options: cfg.pictureShapes };
-      else if (field === 'urlpicture') return { kind: 'cloudMetadata' };
+      else if (field === 'documentcloudmetadata')
+        return { kind: 'cloudMetadata' };
     }
 
     // Summary.text as paragraph input

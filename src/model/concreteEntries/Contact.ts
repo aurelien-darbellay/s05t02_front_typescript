@@ -1,5 +1,5 @@
-import { Entry, Position, ContainerEntry } from '../EntriesGeneralFeatures'; // adjust the import path as needed
-
+import { Position, ContainerEntry } from '../EntriesGeneralFeatures'; // adjust the import path as needed
+import { v4 as uuidv4 } from 'uuid';
 export class Contact implements ContainerEntry {
   // ContainerEntry (and Entry) properties
   public type: string = 'CONTACT';
@@ -10,8 +10,9 @@ export class Contact implements ContainerEntry {
   public position: Position;
   public color: string;
   public size: number;
-  public previousEntry: Entry | null;
-  public nextEntry: Entry | null;
+  public previousEntry: string | null;
+  public nextEntry: string | null;
+  public id: string | null;
 
   // Contact‐specific properties
   public phoneNumber: string;
@@ -42,9 +43,10 @@ export class Contact implements ContainerEntry {
 
     projected: boolean = true,
     highlighted: boolean = false,
+    id?: string,
     // Optional previous/next entries
-    previousEntry?: Entry,
-    nextEntry?: Entry
+    previousEntry?: string,
+    nextEntry?: string
   ) {
     // Initialize ContainerEntry (and Entry) properties
     this.projected = projected;
@@ -54,6 +56,7 @@ export class Contact implements ContainerEntry {
     this.size = size;
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
+    this.id = id ?? uuidv4();
 
     // Initialize Contact‐specific properties
     this.phoneNumber = phoneNumber;
