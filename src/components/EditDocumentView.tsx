@@ -89,7 +89,25 @@ const EditDocumentView: React.FC = () => {
   const printPdf = async () => {
     const url = ApiPaths.USER_GENERATE_PDF_PATH;
     try {
-      await axios.post(url, updatedDocData);
+      const response = await axios.post(url, updatedDocData, {
+        responseType: 'blob', // Ensure you get binary
+      });
+      console.log(response.data);
+
+      // Create a blob URL
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const urlBlob = window.URL.createObjectURL(blob);
+
+      // Create a temporary link to download
+      const link = document.createElement('a');
+      link.href = urlBlob;
+      link.download = 'new-generated-doc.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(urlBlob);
     } catch (e) {
       setUpdateUser(true);
       setUpdateUserMessage('Error printing pdf:');
