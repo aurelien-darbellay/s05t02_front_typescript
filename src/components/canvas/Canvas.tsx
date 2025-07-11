@@ -43,6 +43,8 @@ export const Canvas: React.FC<CanvasProps> = ({
       to: { x: number; y: number } | null;
     }[]
   >([]);
+  const [layoutVersion, setLayoutVersion] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [selectedConnectionIndex, setSelectedConnectionIndex] = useState<
     number | null
@@ -96,7 +98,14 @@ export const Canvas: React.FC<CanvasProps> = ({
       .filter(Boolean);
 
     setConnections(newConnections);
-  }, [entries, existOpenEntry, entryRefs, canvasReady, canvasWidth]);
+  }, [
+    entries,
+    layoutVersion,
+    existOpenEntry,
+    entryRefs,
+    canvasReady,
+    canvasWidth,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = createHandleKeyDown({
@@ -119,9 +128,13 @@ export const Canvas: React.FC<CanvasProps> = ({
     <div
       ref={canvasRef}
       className="w-full"
-      style={{ position: 'relative', height: canvasHeight }}
+      style={{
+        position: 'relative',
+        height: canvasHeight,
+        pointerEvents: isPlaying ? 'none' : 'auto',
+      }}
     >
-      <PlayButton />
+      <PlayButton setIsPlaying={setIsPlaying} />
       <AddButtonGrid
         entries={entries}
         gridLines={Math.ceil(canvasHeight / 100)}
@@ -211,6 +224,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               key={idx}
               entry={entry}
               width={canvasWidth}
+              onSizeChange={() => setLayoutVersion((prev) => prev + 1)}
               existOpenEntry={existOpenEntry}
               setExistOpenEntry={setExistOpenEntry}
               editable={editable}

@@ -20,10 +20,7 @@ import ProjectionToggler from '../editDocumentRoute/ProjectionToggler';
 interface EntryProps {
   entry: ContainerEntry;
   children: React.ReactNode;
-  onSizeChange?: (
-    entry: ContainerEntry,
-    newSize: { width: number; height: number }
-  ) => void;
+  onSizeChange?: () => void;
   width: number;
   existOpenEntry: boolean;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
@@ -138,13 +135,19 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       setHovered(entry.highlighted);
     }, [entry.highlighted]);
 
-    useLayoutEffect(() => {
-      //console.log(hovered);
-      if (entryRef.current && onSizeChange) {
-        const rect = entryRef.current.getBoundingClientRect();
-        onSizeChange(entry, { width: rect.width, height: rect.height });
-      }
-    }, [hovered, children, scaleFactor]);
+    useEffect(() => {
+      if (!entryRef.current || !onSizeChange) return;
+
+      const observer = new ResizeObserver(() => {
+        onSizeChange();
+      });
+
+      observer.observe(entryRef.current);
+
+      return () => {
+        observer.disconnect();
+      };
+    }, [entryRef.current, onSizeChange]);
 
     useEffect(() => {
       if (dialogOpen) setHovered(false);

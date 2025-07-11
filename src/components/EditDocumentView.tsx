@@ -94,7 +94,7 @@ const EditDocumentView: React.FC = () => {
       const response = await axios.post(url, updatedDocData, {
         responseType: 'blob', // Ensure you get binary
       });
-      console.log(response.data);
+      //console.log(response.data);
 
       // Create a blob URL
       const blob = new Blob([response.data], { type: 'application/pdf' });

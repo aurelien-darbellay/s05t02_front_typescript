@@ -62,7 +62,7 @@ export async function playDocument(
 
   // 3️⃣ Play in order
   for (const entry of ordered) {
-    console.log(entry.type);
+    //console.log(entry.type);
     // Mark only this entry as opened
     setEntries((prev) =>
       prev.map((e) =>
