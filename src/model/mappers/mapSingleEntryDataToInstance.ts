@@ -24,8 +24,9 @@ export function mapSingleEntryDataToInstance(
         entryData.size,
         entryData.projected,
         entryData.highlighted,
-        entryData.previousEntry,
-        entryData.nextEntry
+        entryData.id,
+        entryData.nextEntry,
+        entryData.previousEntry
       );
 
     case 'IDENTITY':
@@ -37,6 +38,7 @@ export function mapSingleEntryDataToInstance(
         entryData.highlighted,
         entryData.names,
         entryData.lastNames,
+        entryData.id,
         entryData.previousEntry,
         entryData.nextEntry
       );
@@ -50,6 +52,7 @@ export function mapSingleEntryDataToInstance(
         entryData.size,
         entryData.projected,
         entryData.highlighted,
+        entryData.id,
         entryData.previousEntry,
         entryData.nextEntry
       );
@@ -69,6 +72,7 @@ export function mapSingleEntryDataToInstance(
         entryData.zipCode,
         entryData.projected,
         entryData.highlighted,
+        entryData.id,
         entryData.previousEntry,
         entryData.nextEntry
       );
@@ -82,6 +86,7 @@ export function mapSingleEntryDataToInstance(
         entryData.size,
         entryData.projected,
         entryData.highlighted,
+        entryData.id,
         entryData.previousEntry,
         entryData.nextEntry
       );

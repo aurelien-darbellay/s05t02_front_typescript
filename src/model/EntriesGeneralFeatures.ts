@@ -47,6 +47,7 @@ export class ListEntries implements ContainerEntry {
   public position: Position;
   public color: string;
   public size: number;
+  public id: string | null;
   public previousEntry: Entry | null;
   public nextEntry: Entry | null;
 
@@ -58,6 +59,7 @@ export class ListEntries implements ContainerEntry {
     color: string,
     size: number,
     type?: string,
+    id?: string,
     previous?: Entry,
     next?: Entry
   ) {
@@ -75,6 +77,7 @@ export class ListEntries implements ContainerEntry {
     this.position = position;
     this.color = color;
     this.size = size;
+    this.id = id ?? null;
     this.previousEntry = previous ?? null;
     this.nextEntry = next ?? null;
   }

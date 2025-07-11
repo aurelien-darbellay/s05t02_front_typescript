@@ -31,6 +31,8 @@ const EditDocumentView: React.FC = () => {
   const [updateUserMessage, setUpdateUserMessage] = useState('');
   const [isPvDialogOpen, setIsPvDialogOpen] = useState(false);
   const [pvId, setPvId] = useState('');
+  const [connectMode, setConnectMode] = useState(false);
+  const [connectOriginId, setConnectOriginId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDocument = async () => {

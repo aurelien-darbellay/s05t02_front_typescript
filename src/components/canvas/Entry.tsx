@@ -1,10 +1,12 @@
 // --- Entry.tsx ---
+
 import React, {
   useState,
   useRef,
   useEffect,
   useLayoutEffect,
   useContext,
+  forwardRef,
 } from 'react';
 import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
 import { getEntryStyle } from './entryStyle';
@@ -28,145 +30,165 @@ interface EntryProps {
   editable: boolean;
 }
 
-export const Entry: React.FC<EntryProps> = ({
-  entry,
-  children,
-  onSizeChange,
-  width,
-  existOpenEntry,
-  setExistOpenEntry,
-  editable,
-}) => {
-  const [dragging, setDragging] = useState(false);
-  const [resizing, setResizing] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const [scaleFactor, setScaleFactor] = useState(1);
-  const originMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
-  const originScale = useRef<number>(1);
-  const entryRef = useRef<HTMLDivElement | null>(null);
-  const displayLabel = entry.displayedType;
-  const { determineIfList, handleEditEntry, updatePosition, dialogOpen } =
-    useContext(EditEntryContext);
-  const handleMouseDown = createHandleMouseDown(
-    entry,
-    setDragging,
-    setResizing,
-    originMouse,
-    originPos,
-    originScale,
-    scaleFactor,
-    setHovered
-  );
+// 👇 Here's the key: forwardRef lets us accept the parent's ref
+export const Entry = forwardRef<HTMLDivElement, EntryProps>(
+  (
+    {
+      entry,
+      children,
+      onSizeChange,
+      width,
+      existOpenEntry,
+      setExistOpenEntry,
+      editable,
+    },
+    ref
+  ) => {
+    const [dragging, setDragging] = useState(false);
+    const [resizing, setResizing] = useState(false);
+    const [hovered, setHovered] = useState(false);
+    const [scaleFactor, setScaleFactor] = useState(1);
+    const originMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
+    const originScale = useRef<number>(1);
 
-  //console.log(entry);
+    // ✅ Local ref for interactions
+    const entryRef = useRef<HTMLDivElement | null>(null);
 
-  const handleMouseMove = createHandleMouseMove(
-    entry,
-    setHovered,
-    setExistOpenEntry,
-    dragging,
-    resizing,
-    updatePosition,
-    width,
-    originMouse,
-    originPos,
-    originScale,
-    setScaleFactor
-  );
+    const displayLabel = entry.displayedType;
+    const { determineIfList, handleEditEntry, updatePosition, dialogOpen } =
+      useContext(EditEntryContext);
 
-  const handleMouseUp = () => {
-    if (dragging) setDragging(false);
-    if (resizing) setResizing(false);
-  };
+    const handleMouseDown = createHandleMouseDown(
+      entry,
+      setDragging,
+      setResizing,
+      originMouse,
+      originPos,
+      originScale,
+      scaleFactor,
+      setHovered
+    );
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    determineIfList(entry.type);
-    if (handleEditEntry) handleEditEntry(entry);
-  };
+    const handleMouseMove = createHandleMouseMove(
+      entry,
+      setHovered,
+      setExistOpenEntry,
+      dragging,
+      resizing,
+      updatePosition,
+      width,
+      originMouse,
+      originPos,
+      originScale,
+      setScaleFactor
+    );
 
-  useEffect(() => {
-    if (dragging || resizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-    }
-  }, [dragging, resizing]);
+    const handleMouseUp = () => {
+      if (dragging) setDragging(false);
+      if (resizing) setResizing(false);
+    };
 
-  useLayoutEffect(() => {
-    if (entryRef.current && onSizeChange) {
-      const rect = entryRef.current.getBoundingClientRect();
-      onSizeChange(entry, { width: rect.width, height: rect.height });
-    }
-  }, [hovered, children, scaleFactor]);
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      determineIfList(entry.type);
+      if (handleEditEntry) handleEditEntry(entry);
+    };
 
-  useEffect(() => {
-    if (dialogOpen) setHovered(false);
-  }, [dialogOpen]);
+    useEffect(() => {
+      if (dragging || resizing) {
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+        return () => {
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+        };
+      }
+    }, [dragging, resizing]);
 
-  return (
-    <div
-      ref={entryRef}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onContextMenu={handleClick}
-      onMouseEnter={() => {
-        if (!dialogOpen && !existOpenEntry) {
-          setHovered(true);
-          setExistOpenEntry(true);
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (resizing || dragging) return;
-        if (e.buttons !== 0) return;
-        setHovered(false);
-        setExistOpenEntry(false);
-      }}
-      style={getEntryStyle(
-        entry,
-        hovered,
-        dragging,
-        resizing,
-        scaleFactor,
-        width
-      )}
-    >
+    useLayoutEffect(() => {
+      if (entryRef.current && onSizeChange) {
+        const rect = entryRef.current.getBoundingClientRect();
+        onSizeChange(entry, { width: rect.width, height: rect.height });
+      }
+    }, [hovered, children, scaleFactor]);
+
+    useEffect(() => {
+      if (dialogOpen) setHovered(false);
+    }, [dialogOpen]);
+
+    // 👇 Bridge the internal ref to the external one
+    useEffect(() => {
+      if (!ref) return;
+      if (typeof ref === 'function') {
+        ref(entryRef.current);
+      } else {
+        ref.current = entryRef.current;
+      }
+    }, [entryRef.current, ref]);
+
+    return (
       <div
-        style={{
-          cursor: 'grab',
-          fontFamily: 'Bangers',
-          fontSize: `${1.5}rem`,
-          letterSpacing: `${0.04}em`,
-          fontWeight: 'bold',
-          userSelect: 'none',
-          textAlign: 'center',
-          marginBottom: hovered ? 0 : '-5px',
+        ref={entryRef}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onContextMenu={handleClick}
+        onMouseEnter={() => {
+          if (!dialogOpen && !existOpenEntry) {
+            setHovered(true);
+            setExistOpenEntry(true);
+          }
         }}
+        onMouseLeave={(e) => {
+          if (resizing || dragging) return;
+          if (e.buttons !== 0) return;
+          setHovered(false);
+          setExistOpenEntry(false);
+        }}
+        style={getEntryStyle(
+          entry,
+          hovered,
+          dragging,
+          resizing,
+          scaleFactor,
+          width
+        )}
       >
-        {displayLabel}
-      </div>
-      {hovered && children}
-      {hovered && editable && (
         <div
-          className="resize-handle"
           style={{
-            position: 'absolute',
-            right: 0,
-            bottom: 0,
-            width: '16px',
-            height: '16px',
-            cursor: 'nwse-resize',
-            background: entry.color,
+            cursor: 'grab',
+            fontFamily: 'Bangers',
+            fontSize: `${1.5}rem`,
+            letterSpacing: `${0.04}em`,
+            fontWeight: 'bold',
+            userSelect: 'none',
+            textAlign: 'center',
+            marginBottom: hovered ? 0 : '-5px',
           }}
-        />
-      )}
-      {hovered && editable && (
-        <ProjectionToggler entry={entry} marginTop={5} size={35} />
-      )}
-    </div>
-  );
-};
+        >
+          {displayLabel}
+        </div>
+        {hovered && children}
+        {hovered && editable && (
+          <div
+            className="resize-handle"
+            style={{
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              width: '16px',
+              height: '16px',
+              cursor: 'nwse-resize',
+              background: entry.color,
+            }}
+          />
+        )}
+        {hovered && editable && (
+          <ProjectionToggler entry={entry} marginTop={5} size={35} />
+        )}
+      </div>
+    );
+  }
+);
+
+Entry.displayName = 'Entry';

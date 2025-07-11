@@ -28,6 +28,7 @@ export const mapToListEntry = (entryData: any): ListEntries | null => {
     entryData.color,
     entryData.size,
     type,
+    entryData.id,
     entryData.previousEntry,
     entryData.nextEntry
   );
