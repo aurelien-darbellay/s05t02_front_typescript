@@ -18,6 +18,7 @@ import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
 import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 import { createAddConnection } from './createAddConnection';
+import { playDocument } from '../canvas/playDocument';
 
 interface EditorProps {
   docData: any;
@@ -107,6 +108,10 @@ const Editor: React.FC<EditorProps> = ({
     setUpdateUserMessage
   );
 
+  /* useEffect(() => {
+    playDocument(entries, setEntries, setUpdateUser, setUpdateUserMessage);
+  }, [entries]); */
+
   useEffect(() => {
     const newDocData = updateDocDataFromEntries(docData, entries);
     setDocData(newDocData);
@@ -136,6 +141,9 @@ const Editor: React.FC<EditorProps> = ({
         connectOriginId,
         setConnectOriginId,
         addConnection,
+        entries,
+        setEntries,
+        playDocument,
       }}
     >
       <div className="w-full flex">

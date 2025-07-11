@@ -7,6 +7,7 @@ import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { computeConnectionPoints } from './computeConnectionPoints.ts';
 import { createHandleKeyDown } from './createHandleKeyDown';
+import { PlayButton } from './PlayButton.tsx';
 
 interface CanvasProps {
   entries: ContainerEntry[];
@@ -120,6 +121,7 @@ export const Canvas: React.FC<CanvasProps> = ({
       className="w-full"
       style={{ position: 'relative', height: canvasHeight }}
     >
+      <PlayButton />
       <AddButtonGrid
         entries={entries}
         gridLines={Math.ceil(canvasHeight / 100)}

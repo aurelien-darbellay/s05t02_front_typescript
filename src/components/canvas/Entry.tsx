@@ -134,7 +134,12 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       }
     }, [dragging, resizing]);
 
+    useEffect(() => {
+      setHovered(entry.highlighted);
+    }, [entry.highlighted]);
+
     useLayoutEffect(() => {
+      //console.log(hovered);
       if (entryRef.current && onSizeChange) {
         const rect = entryRef.current.getBoundingClientRect();
         onSizeChange(entry, { width: rect.width, height: rect.height });

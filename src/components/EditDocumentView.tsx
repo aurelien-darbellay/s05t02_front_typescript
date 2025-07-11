@@ -33,8 +33,6 @@ const EditDocumentView: React.FC = () => {
   const [pvId, setPvId] = useState('');
   const [connectMode, setConnectMode] = useState(false);
   const [connectOriginId, setConnectOriginId] = useState<string | null>(null);
-  const [valueConnectButton, setValueConnectButton] =
-    useState('Connect Entries');
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -143,16 +141,8 @@ const EditDocumentView: React.FC = () => {
           disabled={!!actingUser}
         />
         <ActionButton
-          onClick={() => {
-            if (valueConnectButton === 'Connecting ...') {
-              setValueConnectButton('Connect Entries');
-              setConnectMode(false);
-            } else {
-              setValueConnectButton('Connecting ...');
-              setConnectMode(true);
-            }
-          }}
-          value={valueConnectButton}
+          onClick={() => setConnectMode((prev) => !prev)}
+          value={connectMode ? 'Connecting ...' : 'Connect Entries'}
           color={connectMode ? 'red' : 'orange'}
           disabled={!!actingUser}
         />
