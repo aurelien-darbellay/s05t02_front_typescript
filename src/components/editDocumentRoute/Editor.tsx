@@ -17,6 +17,7 @@ import { updateDocDataFromEntries } from '../../model/mappers/updateDocDataFromE
 import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
 import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
+import { createAddConnection } from './createAddConnection';
 
 interface EditorProps {
   docData: any;
@@ -27,6 +28,10 @@ interface EditorProps {
   setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
   editable: boolean;
+  connectMode: boolean;
+  setConnectMode: React.Dispatch<React.SetStateAction<boolean>>;
+  connectOriginId: string | null;
+  setConnectOriginId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 const Editor: React.FC<EditorProps> = ({
   docData,
@@ -37,6 +42,10 @@ const Editor: React.FC<EditorProps> = ({
   setUpdateUser,
   setUpdateUserMessage,
   editable,
+  connectMode,
+  setConnectMode,
+  connectOriginId,
+  setConnectOriginId,
 }) => {
   const listEntries = mapDocDataToEntries(docData);
   //console.log(listEntries);
@@ -92,6 +101,12 @@ const Editor: React.FC<EditorProps> = ({
     );
   };
 
+  const addConnection = createAddConnection(
+    setEntries,
+    setUpdateUser,
+    setUpdateUserMessage
+  );
+
   useEffect(() => {
     const newDocData = updateDocDataFromEntries(docData, entries);
     setDocData(newDocData);
@@ -116,6 +131,11 @@ const Editor: React.FC<EditorProps> = ({
         editable,
         setUpdateUser,
         setUpdateUserMessage,
+        connectMode,
+        setConnectMode,
+        connectOriginId,
+        setConnectOriginId,
+        addConnection,
       }}
     >
       <div className="w-full flex">
@@ -124,8 +144,8 @@ const Editor: React.FC<EditorProps> = ({
         </div>
         <div className="w-6/7 bg-gray-100">
           <Canvas
-            editable={editable}
             entries={entries}
+            setEntries={setEntries}
             setDialogOpen={setDialogOpen}
             setEntrySpawnPosition={setEntrySpawnPosition}
           />

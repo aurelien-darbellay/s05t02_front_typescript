@@ -33,6 +33,8 @@ const EditDocumentView: React.FC = () => {
   const [pvId, setPvId] = useState('');
   const [connectMode, setConnectMode] = useState(false);
   const [connectOriginId, setConnectOriginId] = useState<string | null>(null);
+  const [valueConnectButton, setValueConnectButton] =
+    useState('Connect Entries');
 
   useEffect(() => {
     const fetchDocument = async () => {
@@ -141,6 +143,20 @@ const EditDocumentView: React.FC = () => {
           disabled={!!actingUser}
         />
         <ActionButton
+          onClick={() => {
+            if (valueConnectButton === 'Connecting ...') {
+              setValueConnectButton('Connect Entries');
+              setConnectMode(false);
+            } else {
+              setValueConnectButton('Connecting ...');
+              setConnectMode(true);
+            }
+          }}
+          value={valueConnectButton}
+          color={connectMode ? 'red' : 'orange'}
+          disabled={!!actingUser}
+        />
+        <ActionButton
           onClick={pickPublicViewId}
           value="Create Public View"
           color="purple"
@@ -164,6 +180,10 @@ const EditDocumentView: React.FC = () => {
         setUpdateUser={setUpdateUser}
         setUpdateUserMessage={setUpdateUserMessage}
         editable={!actingUser}
+        connectMode={connectMode}
+        setConnectMode={setConnectMode}
+        connectOriginId={connectOriginId}
+        setConnectOriginId={setConnectOriginId}
       />
       <UserUpdateDialog
         open={updateUser}

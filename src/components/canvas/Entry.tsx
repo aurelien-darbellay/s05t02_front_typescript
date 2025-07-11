@@ -56,8 +56,17 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
     const entryRef = useRef<HTMLDivElement | null>(null);
 
     const displayLabel = entry.displayedType;
-    const { determineIfList, handleEditEntry, updatePosition, dialogOpen } =
-      useContext(EditEntryContext);
+    const {
+      determineIfList,
+      handleEditEntry,
+      updatePosition,
+      dialogOpen,
+      connectMode,
+      connectOriginId,
+      setConnectOriginId,
+      setConnectMode,
+      addConnection,
+    } = useContext(EditEntryContext);
 
     const handleMouseDown = createHandleMouseDown(
       entry,
@@ -69,6 +78,22 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       scaleFactor,
       setHovered
     );
+
+    const handleSwitchMouseDown = (e: React.MouseEvent) => {
+      if (connectMode) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!connectOriginId) {
+          if (setConnectOriginId) setConnectOriginId(entry.id);
+        } else if (connectOriginId && connectOriginId !== entry.id) {
+          if (addConnection) addConnection(connectOriginId, entry.id);
+          if (setConnectOriginId) setConnectOriginId(null);
+          if (setConnectMode) setConnectMode(false);
+        }
+      } else {
+        handleMouseDown(e);
+      }
+    };
 
     const handleMouseMove = createHandleMouseMove(
       entry,
@@ -95,13 +120,16 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       if (handleEditEntry) handleEditEntry(entry);
     };
 
+    const handleSwitchMouseMove = connectMode ? undefined : handleMouseMove;
+    const handleSwitchMouseUp = connectMode ? undefined : handleMouseUp;
+
     useEffect(() => {
       if (dragging || resizing) {
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('mousemove', handleSwitchMouseMove);
+        document.addEventListener('mouseup', handleSwitchMouseUp);
         return () => {
-          document.removeEventListener('mousemove', handleMouseMove);
-          document.removeEventListener('mouseup', handleMouseUp);
+          document.removeEventListener('mousemove', handleSwitchMouseMove);
+          document.removeEventListener('mouseup', handleSwitchMouseUp);
         };
       }
     }, [dragging, resizing]);
@@ -130,11 +158,11 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
     return (
       <div
         ref={entryRef}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
+        onMouseDown={(e) => handleSwitchMouseDown(e)}
+        onMouseUp={handleSwitchMouseUp}
         onContextMenu={handleClick}
         onMouseEnter={() => {
-          if (!dialogOpen && !existOpenEntry) {
+          if (!dialogOpen && !existOpenEntry && !connectMode) {
             setHovered(true);
             setExistOpenEntry(true);
           }

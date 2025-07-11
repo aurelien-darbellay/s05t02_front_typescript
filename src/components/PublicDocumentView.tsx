@@ -56,7 +56,7 @@ const PublicDocumentView: React.FC = () => {
 
   return (
     <div className="w-full bg-gray-100">
-      <Canvas editable={false} entries={entries} />
+      <Canvas entries={entries} setEntries={null} />
     </div>
   );
 };

@@ -6,9 +6,11 @@ import { useCanvasSize } from './CanvasHelpers.ts';
 import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx';
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { computeConnectionPoints } from './computeConnectionPoints.ts';
+import { createHandleKeyDown } from './createHandleKeyDown';
 
 interface CanvasProps {
   entries: ContainerEntry[];
+  setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>> | null;
   setDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   setEntrySpawnPosition?: React.Dispatch<
     React.SetStateAction<{
@@ -21,6 +23,7 @@ interface CanvasProps {
 
 export const Canvas: React.FC<CanvasProps> = ({
   entries,
+  setEntries,
   setDialogOpen,
   setEntrySpawnPosition,
 }) => {
@@ -32,8 +35,20 @@ export const Canvas: React.FC<CanvasProps> = ({
   } = useCanvasSize(canvasRef);
   const [existOpenEntry, setExistOpenEntry] = useState(false);
   const [connections, setConnections] = useState<
-    { from: { x: number; y: number }; to: { x: number; y: number } }[]
+    {
+      sourceId: string;
+      targetId: string;
+      from: { x: number; y: number } | null;
+      to: { x: number; y: number } | null;
+    }[]
   >([]);
+
+  const [selectedConnectionIndex, setSelectedConnectionIndex] = useState<
+    number | null
+  >(null);
+  const [hoveredConnectionIndex, setHoveredConnectionIndex] = useState<
+    number | null
+  >(null);
 
   const { editable } = useContext(EditEntryContext);
 
@@ -41,7 +56,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   const entryRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
 
   useEffect(() => {
-    const buffer = 0;
+    const buffer = 200;
     let maxY = window.innerHeight - 250;
     entries.forEach((entry) => {
       const bottom = entry.position.yCord + 50;
@@ -62,16 +77,41 @@ export const Canvas: React.FC<CanvasProps> = ({
 
     const newConnections = entries
       .filter((e) => e.id && e.nextEntry)
-      .map((e) =>
-        computeConnectionPoints(e, entryRefs.current, canvasRef.current)
-      )
-      .filter(Boolean) as {
-      from: { x: number; y: number };
-      to: { x: number; y: number };
-    }[];
+      .map((e) => {
+        const points = computeConnectionPoints(
+          e,
+          entryRefs.current,
+          canvasRef.current
+        );
+        if (!points) return null;
+
+        return {
+          sourceId: e.id,
+          targetId: e.nextEntry,
+          from: points.from,
+          to: points.to,
+        };
+      })
+      .filter(Boolean);
 
     setConnections(newConnections);
-  }, [entries, existOpenEntry, entryRefs, canvasReady]);
+  }, [entries, existOpenEntry, entryRefs, canvasReady, canvasWidth]);
+
+  useEffect(() => {
+    const handleKeyDown = createHandleKeyDown({
+      selectedConnectionIndex,
+      setSelectedConnectionIndex,
+      connections,
+      entries,
+      setEntries,
+      entryRefs,
+      canvasRef,
+      computeConnectionPoints,
+    });
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedConnectionIndex, connections, entries]);
 
   //console.log(connections);
   return (
@@ -97,7 +137,6 @@ export const Canvas: React.FC<CanvasProps> = ({
           left: 0,
           width: '100%',
           height: canvasHeight,
-          pointerEvents: 'none',
         }}
       >
         <defs>
@@ -114,21 +153,49 @@ export const Canvas: React.FC<CanvasProps> = ({
           </marker>
         </defs>
 
-        {connections.map((conn, idx) => (
-          <path
-            key={idx}
-            d={`
-        M ${conn.from.x} ${conn.from.y}
-        C ${conn.from.x + 100} ${conn.from.y},
-          ${conn.to.x - 100} ${conn.to.y},
-          ${conn.to.x} ${conn.to.y}
-      `}
-            stroke="black"
-            strokeWidth="2"
-            fill="none"
-            markerEnd="url(#arrow)"
-          />
-        ))}
+        {connections.map((conn, idx) => {
+          const pathD = `
+    M ${conn.from?.x ?? 0} ${conn.from?.y ?? 0}
+    C ${conn.from ? conn.from.x + 100 : 0} ${conn.from?.y ?? 0},
+      ${conn.to ? conn.to.x - 100 : 0} ${conn.to?.y ?? 0},
+      ${conn.to?.x ?? 0} ${conn.to?.y ?? 0}
+  `;
+
+          return (
+            <g key={idx}>
+              {/* Invisible fat path for interaction */}
+              <path
+                d={pathD}
+                stroke="transparent"
+                strokeWidth="20"
+                fill="none"
+                style={{ cursor: 'pointer' }}
+                onMouseEnter={() => setHoveredConnectionIndex(idx)}
+                onMouseLeave={() => setHoveredConnectionIndex(null)}
+                onClick={() =>
+                  setSelectedConnectionIndex((prev) =>
+                    prev === idx ? null : idx
+                  )
+                }
+              />
+
+              {/* Visible thin path */}
+              <path
+                d={pathD}
+                stroke={
+                  selectedConnectionIndex === idx
+                    ? 'orange'
+                    : hoveredConnectionIndex === idx
+                      ? 'red'
+                      : 'black'
+                }
+                strokeWidth="2"
+                fill="none"
+                markerEnd="url(#arrow)"
+              />
+            </g>
+          );
+        })}
       </svg>
 
       {!canvasReady ? (

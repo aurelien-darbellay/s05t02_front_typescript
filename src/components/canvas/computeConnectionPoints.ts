@@ -9,57 +9,65 @@ export function computeConnectionPoints(
   entry: ContainerEntry,
   entryRefs: Map<string, HTMLDivElement | null>,
   canvasEl: HTMLDivElement | null
-): { from: Point; to: Point } | null {
-  if (!entry.id || !entry.nextEntry) return null;
+): { from: Point | null; to: Point | null } | null {
+  if (!entry.id) return null;
   if (!canvasEl) return null;
 
-  const fromEl = entryRefs.get(entry.id);
-  const toEl = entryRefs.get(entry.nextEntry);
-
-  if (!fromEl || !toEl) return null;
-
-  const fromRect = fromEl.getBoundingClientRect();
-  const toRect = toEl.getBoundingClientRect();
   const canvasRect = canvasEl.getBoundingClientRect();
 
-  // Centers relative to canvas
-  const fromCenter = {
-    x: fromRect.left + fromRect.width / 2 - canvasRect.left,
-    y: fromRect.top + fromRect.height / 2 - canvasRect.top,
-  };
-  const toCenter = {
-    x: toRect.left + toRect.width / 2 - canvasRect.left,
-    y: toRect.top + toRect.height / 2 - canvasRect.top,
-  };
+  let fromEdge: Point | null = null;
+  let toEdge: Point | null = null;
 
-  const dx = toCenter.x - fromCenter.x;
-  const dy = toCenter.y - fromCenter.y;
+  const fromEl = entryRefs.get(entry.id);
+  if (fromEl) {
+    const fromRect = fromEl.getBoundingClientRect();
+    const fromCenter = {
+      x: fromRect.left + fromRect.width / 2 - canvasRect.left,
+      y: fromRect.top + fromRect.height / 2 - canvasRect.top,
+    };
 
-  if (dx === 0 && dy === 0) return null; // avoid division by zero
+    // If there's also a to, compute vector for edge alignment
+    if (entry.nextEntry) {
+      const toEl = entryRefs.get(entry.nextEntry);
+      if (toEl) {
+        const toRect = toEl.getBoundingClientRect();
+        const toCenter = {
+          x: toRect.left + toRect.width / 2 - canvasRect.left,
+          y: toRect.top + toRect.height / 2 - canvasRect.top,
+        };
 
-  // Compute edge exit point from source box
-  const fromHalfWidth = fromRect.width / 2;
-  const fromHalfHeight = fromRect.height / 2;
-  const fromScale = Math.min(
-    Math.abs(fromHalfWidth / dx),
-    Math.abs(fromHalfHeight / dy)
-  );
-  const fromEdge = {
-    x: fromCenter.x + dx * fromScale,
-    y: fromCenter.y + dy * fromScale,
-  };
+        const dx = toCenter.x - fromCenter.x;
+        const dy = toCenter.y - fromCenter.y;
 
-  // Compute edge entry point into target box
-  const toHalfWidth = toRect.width / 2;
-  const toHalfHeight = toRect.height / 2;
-  const toScale = Math.min(
-    Math.abs(toHalfWidth / -dx),
-    Math.abs(toHalfHeight / -dy)
-  );
-  const toEdge = {
-    x: toCenter.x - dx * toScale,
-    y: toCenter.y - dy * toScale,
-  };
+        if (dx !== 0 || dy !== 0) {
+          const fromHalfWidth = fromRect.width / 2;
+          const fromHalfHeight = fromRect.height / 2;
+          const fromScale = Math.min(
+            Math.abs(fromHalfWidth / dx),
+            Math.abs(fromHalfHeight / dy)
+          );
+          fromEdge = {
+            x: fromCenter.x + dx * fromScale,
+            y: fromCenter.y + dy * fromScale,
+          };
 
-  return { from: fromEdge, to: toEdge };
+          const toHalfWidth = toRect.width / 2;
+          const toHalfHeight = toRect.height / 2;
+          const toScale = Math.min(
+            Math.abs(toHalfWidth / -dx),
+            Math.abs(toHalfHeight / -dy)
+          );
+          toEdge = {
+            x: toCenter.x - dx * toScale,
+            y: toCenter.y - dy * toScale,
+          };
+        }
+      }
+    } else {
+      // if no nextEntry, still provide center as from
+      fromEdge = fromCenter;
+    }
+  }
+
+  return fromEdge || toEdge ? { from: fromEdge, to: toEdge } : null;
 }

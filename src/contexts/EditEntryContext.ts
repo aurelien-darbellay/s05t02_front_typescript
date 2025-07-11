@@ -18,6 +18,13 @@ export const EditEntryContext = React.createContext<{
   editable: boolean;
   setUpdateUser: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdateUserMessage: React.Dispatch<React.SetStateAction<string>>;
+  connectMode: boolean;
+  setConnectMode: React.Dispatch<React.SetStateAction<boolean>> | null;
+  connectOriginId: string | null;
+  setConnectOriginId: React.Dispatch<
+    React.SetStateAction<string | null>
+  > | null;
+  addConnection: ((sourceId: string, targetId: string) => void) | null;
 }>({
   addOrUpdateEntry: null,
   handleEditEntry: null,
@@ -31,4 +38,9 @@ export const EditEntryContext = React.createContext<{
   editable: false,
   setUpdateUser: () => {},
   setUpdateUserMessage: () => {},
+  connectMode: false,
+  setConnectMode: null,
+  connectOriginId: null,
+  setConnectOriginId: null,
+  addConnection: null,
 });

@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
+import { ContainedEntry } from '../../model/EntriesGeneralFeatures';
 
 export const useCanvasSize = (
   canvasRef: React.RefObject<HTMLElement | null>
