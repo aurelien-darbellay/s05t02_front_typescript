@@ -162,24 +162,26 @@ const EditDocumentView: React.FC = () => {
         <ActionButton
           onClick={() => navigate('/user')}
           value="Back to Dashboard"
-          color="#007bff"
+          color="#0e4785ff"
         />
         <ActionButton
           onClick={() => handleSave()}
           value="Save"
-          color="#28a745"
+          color="#23b144ff"
           disabled={!!actingUser}
         />
         <ActionButton
           onClick={() => setDialogOpen(true)}
           value="Add Entry"
-          color="#28a745"
+          color="#de7ff1ff"
+          text="black"
           disabled={!!actingUser}
         />
         <ActionButton
           onClick={() => setConnectMode((prev) => !prev)}
           value={connectMode ? 'Connecting ...' : 'Connect Entries'}
           color={connectMode ? 'red' : 'orange'}
+          text={connectMode ? 'white' : 'black'}
           disabled={!!actingUser}
         />
         <ActionButton
@@ -198,7 +200,7 @@ const EditDocumentView: React.FC = () => {
         <ActionButton
           onClick={printPdf}
           value="Print Pdf"
-          color="purple"
+          color="rgb(233,28,188)"
           disabled={!!actingUser}
         />
       </div>

@@ -77,6 +77,12 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
     // Resize observer for notifying parent
     const lastSize = useRef<{ width: number; height: number } | null>(null);
 
+    const hasPicture =
+      entry.type === 'PROFILE_PICTURE' &&
+      entry.documentCloudMetadata &&
+      entry.documentCloudMetadata.publicUrl &&
+      entry.documentCloudMetadata.publicUrl != '';
+
     useEffect(() => {
       if (!entryRef.current || !onSizeChange) return;
 
@@ -158,7 +164,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
             marginBottom: hovered ? 0 : '-5px',
           }}
         >
-          {displayLabel.toUpperCase()}
+          {(!hovered || !hasPicture) && displayLabel.toUpperCase()}
         </div>
 
         <CSSTransition
