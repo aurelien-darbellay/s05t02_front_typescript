@@ -119,6 +119,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={(e) => {
+          if ((e.target as HTMLElement).closest('a')) return;
           if (connectMode) {
             e.preventDefault();
             e.stopPropagation();

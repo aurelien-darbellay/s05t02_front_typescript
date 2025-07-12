@@ -58,6 +58,7 @@ export const getEntryStyle = (
       border-color 300ms ease,
       background 300ms ease
     `,
+    userSelect: 'none',
   };
 };
 

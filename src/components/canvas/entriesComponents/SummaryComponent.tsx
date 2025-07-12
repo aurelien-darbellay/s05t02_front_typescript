@@ -6,11 +6,21 @@ interface SummaryComponentProps {
   summary: Summary;
 }
 
-export const SummaryComponent: React.FC<SummaryComponentProps> = ({ summary }) => {
+export const SummaryComponent: React.FC<SummaryComponentProps> = ({
+  summary,
+}) => {
+  const isNonEmpty = (value?: string | null) =>
+    value !== undefined && value !== null && value !== '';
+
   return (
-    <div>
-      <p><strong>Title:</strong> {summary.title}</p>
-      <p><strong>Text:</strong> {summary.text}</p>
+    <div className="space-y-1">
+      {isNonEmpty(summary.title) && (
+        <p className="text-center font-bold">{summary.title}</p>
+      )}
+
+      {isNonEmpty(summary.text) && (
+        <p className="text-justify">{summary.text}</p>
+      )}
     </div>
   );
 };

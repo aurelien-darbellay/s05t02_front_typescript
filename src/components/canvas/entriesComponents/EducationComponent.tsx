@@ -1,4 +1,5 @@
 // EducationComponent.tsx
+// EducationComponent.tsx
 import React from 'react';
 import { Education } from '../../../model/concreteEntries/Education';
 import CloudAccessManager from '../../cloud/CloudAccessManager';
@@ -10,20 +11,29 @@ interface EducationComponentProps {
 export const EducationComponent: React.FC<EducationComponentProps> = ({
   education,
 }) => {
+  const isNonEmpty = (value?: string | number | null) =>
+    value !== undefined && value !== null && value !== '' && value !== 0;
+
   return (
-    <div>
-      <p>
-        <strong>Title:</strong> {education.title}
-      </p>
-      <p>
-        <strong>Training Center:</strong> {education.trainingCenter}
-      </p>
-      <p>
-        <strong>Graduation Year:</strong> {education.graduationYear}
-      </p>
-      <p>
-        <strong>Comments:</strong> {education.comments}
-      </p>
+    <div className="space-y-0">
+      {isNonEmpty(education.title) && (
+        <p>
+          <strong>{education.title}</strong>
+        </p>
+      )}
+
+      {isNonEmpty(education.trainingCenter) && (
+        <p>
+          <i>{education.trainingCenter}</i>
+        </p>
+      )}
+
+      {isNonEmpty(education.graduationYear) && (
+        <p>{education.graduationYear}</p>
+      )}
+
+      {isNonEmpty(education.comments) && <p>{education.comments}</p>}
+
       <CloudAccessManager entry={education} />
     </div>
   );

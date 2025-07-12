@@ -116,6 +116,42 @@ const EditDocumentView: React.FC = () => {
     }
   };
 
+  function clearAllConnectionsInDocData(docData: any): any {
+    if (!docData) return docData;
+
+    const newDocData = { ...docData };
+
+    // Go through each top-level field in the document
+    for (const key of Object.keys(newDocData)) {
+      const entry = newDocData[key];
+
+      // We only want to touch top-level entries that are objects with id
+      if (entry && typeof entry === 'object' && entry.id) {
+        newDocData[key] = {
+          ...entry,
+          nextEntry: null,
+          previousEntry: null,
+        };
+      }
+    }
+
+    return newDocData;
+  }
+
+  const handleClearConnections = () => {
+    if (!updatedDocData) return;
+
+    // Make the cleared copy
+    const cleared = clearAllConnectionsInDocData(updatedDocData);
+
+    // Update local state so Editor re-renders
+    setInitialDocData(cleared);
+    setUpdatedDocData(cleared);
+
+    // Immediately save to backend
+    handleSave();
+  };
+
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!initialDocData) return <p>Loading document...</p>;
 
@@ -146,6 +182,13 @@ const EditDocumentView: React.FC = () => {
           color={connectMode ? 'red' : 'orange'}
           disabled={!!actingUser}
         />
+        <ActionButton
+          onClick={handleClearConnections}
+          value="Clear Connections"
+          color="red"
+          disabled={!!actingUser}
+        />
+
         <ActionButton
           onClick={pickPublicViewId}
           value="Create Public View"

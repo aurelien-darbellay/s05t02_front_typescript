@@ -10,14 +10,22 @@ interface LanguageComponentProps {
 export const LanguageComponent: React.FC<LanguageComponentProps> = ({
   language,
 }) => {
+  const isNonEmpty = (value?: string | null) =>
+    value !== undefined && value !== null && value !== '';
+
+  const hasName = isNonEmpty(language.name);
+  const hasLevel = language.level !== undefined && language.level !== null;
+
   return (
-    <div>
-      <p>
-        <strong>Name:</strong> {language.name}
-      </p>
-      <p>
-        <strong>Level:</strong> {Level[language.level]}
-      </p>
+    <div className="space-y-1">
+      {(hasName || hasLevel) && (
+        <p>
+          {hasName && language.name}
+          {hasName && hasLevel && ' - '}
+          {hasLevel && Level[language.level]}
+        </p>
+      )}
+
       <CloudAccessManager entry={language} />
     </div>
   );

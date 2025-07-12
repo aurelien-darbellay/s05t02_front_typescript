@@ -18,14 +18,14 @@ interface ContactComponentProps {
 export const ContactComponent: React.FC<ContactComponentProps> = ({
   contact,
 }) => {
-  const isNonEmpty = (value?: string | null) =>
-    value !== undefined && value !== null && value !== '';
+  const isNonEmpty = (value?: any) =>
+    value !== undefined && value !== null && value !== '' && value !== 0;
 
   const linkClass =
     'text-purple-600 underline hover:text-purple-800 inline-flex items-center gap-2';
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-0">
       {isNonEmpty(contact.phoneNumber) && (
         <p className="flex items-center gap-2">
           <Phone size={16} />
@@ -35,7 +35,11 @@ export const ContactComponent: React.FC<ContactComponentProps> = ({
 
       {isNonEmpty(contact.email) && (
         <p>
-          <a href={`mailto:${contact.email}`} className={linkClass}>
+          <a
+            href={`mailto:${contact.email}`}
+            target="_blank"
+            className={linkClass}
+          >
             <Mail size={16} />
             {contact.email}
           </a>

@@ -10,35 +10,59 @@ interface ExperienceComponentProps {
 export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({
   experience,
 }) => {
+  const isNonEmpty = (value?: string | number | null) =>
+    value !== undefined && value !== null && value !== '';
+
+  const formatDate = (date: Date) =>
+    `${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+
+  const hasStart = !!experience.startDate;
+  const hasEnd = !!experience.endDate;
+
+  let dateLine = '';
+  if (hasStart && hasEnd) {
+    dateLine = `${formatDate(experience.startDate)} - ${formatDate(experience.endDate)}`;
+  } else if (hasStart) {
+    dateLine = `${formatDate(experience.startDate)} -`;
+  } else if (hasEnd) {
+    dateLine = `- ${formatDate(experience.endDate)}`;
+  }
+
   return (
-    <div>
-      <p>
-        <strong>Role:</strong> {experience.role}
-      </p>
-      <p>
-        <strong>Company Name:</strong> {experience.nameCompany}
-      </p>
-      <p>
-        <strong>Start Date:</strong> {experience.startDate.toDateString()}
-      </p>
-      <p>
-        <strong>End Date:</strong> {experience.endDate.toDateString()}
-      </p>
-      <p>
-        <strong>Description:</strong> {experience.description}
-      </p>
-      {experience.keywords && (
+    <div className="space-y-0">
+      {isNonEmpty(experience.role) && (
         <p>
-          <strong>Keywords:</strong> {experience.keywords.join(', ')}
+          <strong>{experience.role}</strong>
         </p>
       )}
-      <p>
-        <strong>Link Name:</strong> {experience.nameLink}
-      </p>
-      <p>
-        <strong>Link URL:</strong>{' '}
-        <a href={experience.linkUrl}>{experience.linkUrl}</a>
-      </p>
+
+      {isNonEmpty(experience.nameCompany) && (
+        <p>
+          <i>{experience.nameCompany}</i>
+        </p>
+      )}
+
+      {dateLine && <p>{dateLine}</p>}
+
+      {isNonEmpty(experience.description) && <p>{experience.description}</p>}
+
+      {experience.keywords && experience.keywords.length > 0 && (
+        <p>{experience.keywords.join(', ')}</p>
+      )}
+
+      {isNonEmpty(experience.nameLink) && isNonEmpty(experience.linkUrl) && (
+        <p>
+          <a
+            href={experience.linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-600 underline hover:text-purple-800"
+          >
+            {experience.nameLink}
+          </a>
+        </p>
+      )}
+
       <CloudAccessManager entry={experience} />
     </div>
   );
