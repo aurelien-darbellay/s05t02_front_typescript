@@ -54,19 +54,34 @@ export const Canvas: React.FC<CanvasProps> = ({
   >(null);
 
   const { editable } = useContext(EditEntryContext);
+  const entryOpenHeights = useRef<Map<string, number>>(new Map());
+  const handleHoverHeightChange = (id: string, height: number) => {
+    entryOpenHeights.current.set(id, height);
+    setLayoutVersion((v) => v + 1); // trigger recompute
+  };
 
   // NEW: Map of id -> ref
   const entryRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
 
   useEffect(() => {
-    const buffer = 200;
     let maxY = window.innerHeight - 250;
+
     entries.forEach((entry) => {
-      const bottom = entry.position.yCord + 50;
+      const ref = entryRefs.current.get(entry.id);
+      if (!ref) return;
+
+      const rect = ref.getBoundingClientRect();
+      const baseHeight = rect.height;
+
+      const openHeight = entryOpenHeights.current.get(entry.id) ?? baseHeight;
+
+      const bottom = entry.position.yCord + openHeight;
+
       if (bottom > maxY) maxY = bottom;
     });
-    setCanvasHeight(maxY + buffer);
-  }, [entries]);
+
+    setCanvasHeight(maxY + 100);
+  }, [entries, layoutVersion]);
 
   const handleButtonGrid = (relativeX, relativeY) => {
     if (setEntrySpawnPosition)
@@ -229,6 +244,7 @@ export const Canvas: React.FC<CanvasProps> = ({
               existOpenEntry={existOpenEntry}
               setExistOpenEntry={setExistOpenEntry}
               editable={editable}
+              onHoverHeightChange={handleHoverHeightChange}
               // NEW: provide the ref to this Entry
               ref={(el) => {
                 if (entry.id) {

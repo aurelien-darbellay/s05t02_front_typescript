@@ -4,7 +4,6 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useLayoutEffect,
   useContext,
   forwardRef,
 } from 'react';
@@ -27,6 +26,7 @@ interface EntryProps {
   existOpenEntry: boolean;
   setExistOpenEntry: React.Dispatch<React.SetStateAction<boolean>>;
   editable: boolean;
+  onHoverHeightChange?: (id: string, height: number) => void;
 }
 
 // 👇 Here's the key: forwardRef lets us accept the parent's ref
@@ -40,6 +40,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       existOpenEntry,
       setExistOpenEntry,
       editable,
+      onHoverHeightChange,
     },
     ref
   ) => {
@@ -165,6 +166,31 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
         ref.current = entryRef.current;
       }
     }, [entryRef.current, ref]);
+
+    useEffect(() => {
+      if (hovered && entryRef.current) {
+        requestAnimationFrame(() => {
+          const el = entryRef.current;
+          const rect = el.getBoundingClientRect();
+          const buffer = 20;
+
+          const isFullyVisible =
+            rect.top >= buffer && rect.bottom <= window.innerHeight - buffer;
+
+          if (!isFullyVisible) {
+            el.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'nearest',
+            });
+          }
+
+          if (onHoverHeightChange) {
+            onHoverHeightChange(entry.id, rect.height);
+          }
+        });
+      }
+    }, [hovered]);
 
     return (
       <div
