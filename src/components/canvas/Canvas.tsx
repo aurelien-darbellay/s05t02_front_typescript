@@ -147,6 +147,7 @@ export const Canvas: React.FC<CanvasProps> = ({
       style={{
         position: 'relative',
         height: canvasHeight,
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
         //pointerEvents: isPlaying ? 'none' : 'auto',
       }}
     >

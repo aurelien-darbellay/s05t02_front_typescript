@@ -44,7 +44,11 @@ export const getEntryStyle = (
 
     padding: hovered ? `${8 * scaleFactor}px` : 0,
 
-    background: hovered ? (hasPicture ? 'transparent' : '#fff') : 'transparent',
+    background: hovered
+      ? hasPicture
+        ? 'transparent'
+        : baseColor
+      : 'transparent',
 
     pointerEvents: dragging || resizing ? 'none' : 'auto',
     boxSizing: 'border-box',
@@ -59,6 +63,7 @@ export const getEntryStyle = (
       background 300ms ease
     `,
     userSelect: 'none',
+    color: hovered ? 'white' : 'black',
   };
 };
 
