@@ -48,7 +48,7 @@ export const ListItemKeyWordsComponent: React.FC<
       style={{
         transition: 'box-shadow 0.2s ease',
         boxShadow: hasShadow ? '0 2px 6px rgba(0,0,0,0.3)' : 'none',
-        padding: '8px',
+        padding: '3px',
         borderRadius: '4px',
         cursor: 'pointer',
         userSelect: 'none',
