@@ -53,6 +53,7 @@ export const ListItemKeyWordsComponent: React.FC<
         cursor: 'pointer',
         userSelect: 'none',
         position: 'relative',
+        whiteSpace: 'nowrap',
       }}
     >
       {capitalizeWords(entry.keyWords)}

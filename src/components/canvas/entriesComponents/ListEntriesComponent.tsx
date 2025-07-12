@@ -14,7 +14,7 @@ export const ListEntriesComponent: React.FC<ListEntriesComponentProps> = ({
 }) => {
   if (EntryListKeyWords.includes(listEntries.type))
     return (
-      <div>
+      <div className="flex flex-wrap w-full">
         {listEntries.entries.map((entry, index) =>
           entry.projected ? (
             <ListItemKeyWordsComponent key={index} entry={entry} />
