@@ -73,9 +73,27 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       });
 
     // Resize observer for notifying parent
+    const lastSize = useRef<{ width: number; height: number } | null>(null);
+
     useEffect(() => {
       if (!entryRef.current || !onSizeChange) return;
-      const observer = new ResizeObserver(() => onSizeChange());
+
+      const observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const { width, height } = entry.contentRect;
+
+          // Only trigger onSizeChange if size really changed
+          if (
+            !lastSize.current ||
+            lastSize.current.width !== width ||
+            lastSize.current.height !== height
+          ) {
+            lastSize.current = { width, height };
+            onSizeChange();
+          }
+        }
+      });
+
       observer.observe(entryRef.current);
       return () => observer.disconnect();
     }, [entryRef.current, onSizeChange]);

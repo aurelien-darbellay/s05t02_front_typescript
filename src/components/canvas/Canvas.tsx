@@ -56,8 +56,11 @@ export const Canvas: React.FC<CanvasProps> = ({
   const { editable } = useContext(EditEntryContext);
   const entryOpenHeights = useRef<Map<string, number>>(new Map());
   const handleHoverHeightChange = (id: string, height: number) => {
-    entryOpenHeights.current.set(id, height);
-    setLayoutVersion((v) => v + 1); // trigger recompute
+    const old = entryOpenHeights.current.get(id);
+    if (old !== height) {
+      entryOpenHeights.current.set(id, height);
+      setLayoutVersion((v) => v + 1);
+    }
   };
 
   // NEW: Map of id -> ref
@@ -80,7 +83,7 @@ export const Canvas: React.FC<CanvasProps> = ({
       if (bottom > maxY) maxY = bottom;
     });
 
-    setCanvasHeight(maxY + 100);
+    setCanvasHeight((prev) => (prev !== maxY + 100 ? maxY + 100 : prev));
   }, [entries, layoutVersion]);
 
   const handleButtonGrid = (relativeX, relativeY) => {
@@ -137,7 +140,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedConnectionIndex, connections, entries]);
-
+  console.log(layoutVersion);
   //console.log(connections);
   return (
     <div
