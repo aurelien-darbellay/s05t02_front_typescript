@@ -5,6 +5,9 @@ import { ApiPaths } from '../apiPaths';
 import { mapDocDataToEntries } from '../model/mappers/mapDocDataToEntries';
 import { ContainerEntry } from '../model/EntriesGeneralFeatures';
 import { Canvas } from '../components/canvas/Canvas';
+import { UserUpdateDialog } from '../utils/UserUpdateDialog';
+import { EditEntryContext } from '../contexts/EditEntryContext';
+import { playDocument } from './canvas/playDocument';
 
 const PublicDocumentView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +15,13 @@ const PublicDocumentView: React.FC = () => {
   const [entries, setEntries] = useState<ContainerEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updateUser, setUpdateUser] = useState(false);
+  const [updateUserMessage, setUpdateUserMessage] = useState('');
+
+  const closeUserUpdateDialog = () => {
+    setUpdateUser(false);
+    setUpdateUserMessage('');
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -55,9 +65,25 @@ const PublicDocumentView: React.FC = () => {
   }
 
   return (
-    <div className="w-full bg-gray-100">
-      <Canvas entries={entries} setEntries={null} />
-    </div>
+    <EditEntryContext.Provider
+      value={{
+        editable: false,
+        setUpdateUser,
+        setUpdateUserMessage,
+        entries,
+        setEntries,
+        playDocument,
+      }}
+    >
+      <div className="w-full bg-gray-100">
+        <Canvas entries={entries} setEntries={null} />
+        <UserUpdateDialog
+          open={updateUser}
+          message={updateUserMessage}
+          onClick={closeUserUpdateDialog}
+        />
+      </div>
+    </EditEntryContext.Provider>
   );
 };
 

@@ -149,16 +149,16 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
         <div
           style={{
             cursor: 'grab',
-            fontFamily: 'Bangers',
+            fontFamily: 'Poppins',
             fontSize: `1.5rem`,
-            letterSpacing: '0.04em',
+            letterSpacing: '0.02em',
             fontWeight: 'bold',
             userSelect: 'none',
             textAlign: 'center',
             marginBottom: hovered ? 0 : '-5px',
           }}
         >
-          {displayLabel}
+          {displayLabel.toUpperCase()}
         </div>
 
         <CSSTransition
