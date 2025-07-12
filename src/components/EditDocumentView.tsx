@@ -51,11 +51,11 @@ const EditDocumentView: React.FC = () => {
     fetchDocument();
   }, [id]);
 
-  const handleSave = async () => {
+  const handleSave = async (dataToSave = updatedDocData) => {
     if (!initialDocData || !id) return;
     try {
       const url = ApiPaths.DOC_ID_PATH.replace('{docId}', id);
-      await axios.post(url, updatedDocData);
+      await axios.post(url, dataToSave);
       setUpdateUserMessage('Document saved successfully!');
     } catch (err: any) {
       const message =
@@ -149,7 +149,7 @@ const EditDocumentView: React.FC = () => {
     setUpdatedDocData(cleared);
 
     // Immediately save to backend
-    handleSave();
+    handleSave(cleared);
   };
 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -165,7 +165,7 @@ const EditDocumentView: React.FC = () => {
           color="#007bff"
         />
         <ActionButton
-          onClick={handleSave}
+          onClick={() => handleSave()}
           value="Save"
           color="#28a745"
           disabled={!!actingUser}

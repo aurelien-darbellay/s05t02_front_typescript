@@ -9,7 +9,7 @@ import { mapToListEntry } from './mapToListEntry';
 export function mapSingleEntryDataToInstance(
   entryData: any
 ): ContainerEntry | null {
-  console.log(entryData);
+  //console.log(entryData);
   if (!entryData?.type) return null;
 
   const type = entryData.type;
