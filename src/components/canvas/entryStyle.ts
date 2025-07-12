@@ -18,6 +18,8 @@ export const getEntryStyle = (
       entry.documentCloudMetadata.publicUrl.trim() !== ''
   );
 
+  const baseColor = entry.color ?? '#ccc';
+
   return {
     position: 'absolute',
     left: entry.position.xCord * width,
@@ -26,23 +28,19 @@ export const getEntryStyle = (
 
     borderTopStyle: 'solid',
     borderTopWidth: '6px',
-    borderTopColor:
-      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
+    borderTopColor: hovered && !hasPicture ? baseColor : 'transparent',
 
     borderRightStyle: 'solid',
     borderRightWidth: '6px',
-    borderRightColor:
-      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
+    borderRightColor: hovered && !hasPicture ? baseColor : 'transparent',
 
     borderBottomStyle: 'solid',
     borderBottomWidth: '6px',
-    borderBottomColor:
-      hovered && hasPicture ? 'transparent' : (entry.color ?? '#ccc'),
+    borderBottomColor: hovered && hasPicture ? 'transparent' : baseColor,
 
     borderLeftStyle: 'solid',
     borderLeftWidth: '6px',
-    borderLeftColor:
-      hovered && !hasPicture ? (entry.color ?? '#ccc') : 'transparent',
+    borderLeftColor: hovered && !hasPicture ? baseColor : 'transparent',
 
     padding: hovered ? `${8 * scaleFactor}px` : 0,
 
@@ -55,6 +53,11 @@ export const getEntryStyle = (
     transformOrigin: 'top left',
     cursor: 'grab',
     maxWidth: '20em',
+    transition: `
+      padding 300ms ease,
+      border-color 300ms ease,
+      background 300ms ease
+    `,
   };
 };
 

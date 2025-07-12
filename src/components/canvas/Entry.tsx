@@ -16,6 +16,8 @@ import {
 } from './entryInteractionHandlers';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 import ProjectionToggler from '../editDocumentRoute/ProjectionToggler';
+import { CSSTransition } from 'react-transition-group';
+import './EntryTransitions.css';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -48,6 +50,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
     const originMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
     const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
     const originScale = useRef<number>(1);
+    const transitionRef = useRef<HTMLDivElement>(null);
 
     // ✅ Local ref for interactions
     const entryRef = useRef<HTMLDivElement | null>(null);
@@ -204,24 +207,34 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
         >
           {displayLabel}
         </div>
-        {hovered && children}
-        {hovered && editable && (
-          <div
-            className="resize-handle"
-            style={{
-              position: 'absolute',
-              right: 0,
-              bottom: 0,
-              width: '16px',
-              height: '16px',
-              cursor: 'nwse-resize',
-              background: entry.color,
-            }}
-          />
-        )}
-        {hovered && editable && (
-          <ProjectionToggler entry={entry} marginTop={5} size={35} />
-        )}
+        <CSSTransition
+          in={hovered}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit
+          nodeRef={transitionRef}
+        >
+          <div ref={transitionRef}>
+            {children}
+            {editable && (
+              <div
+                className="resize-handle"
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  bottom: 0,
+                  width: '16px',
+                  height: '16px',
+                  cursor: 'nwse-resize',
+                  background: entry.color,
+                }}
+              />
+            )}
+            {editable && (
+              <ProjectionToggler entry={entry} marginTop={5} size={35} />
+            )}
+          </div>
+        </CSSTransition>
       </div>
     );
   }

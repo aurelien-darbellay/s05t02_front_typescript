@@ -207,7 +207,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 }
                 strokeWidth="2"
                 fill="none"
-                markerEnd="url(#arrow)"
+                //markerEnd="url(#arrow)"
                 pointerEvents="auto"
               />
             </g>

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import {
   EntryFieldConfig,
   EntryContainerTypes,
+  EntryListItemTypes,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
@@ -47,6 +48,7 @@ export default function EntryCreateDialog({
   } = useContext(EditEntryContext);
   const onSave = addOrUpdateEntry;
   const restrictedTypes = [...EntryContainerTypes];
+  const listItemTypes = [...EntryListItemTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
 
@@ -54,6 +56,9 @@ export default function EntryCreateDialog({
     selectedType &&
     restrictedTypes.includes(selectedType) &&
     entries.some((entry) => entry.type === selectedType && !isEditing);
+
+  const isItemAndListDontExist =
+    selectedType && listItemTypes.includes(selectedType);
 
   const handleTypeChange = (type: string) => {
     //console.log(type);
