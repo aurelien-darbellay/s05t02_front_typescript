@@ -1,7 +1,7 @@
 // src/components/canvas/getEntryStyle.ts
 
-import { Shape } from '../../model/concreteEntries/ProfilePicture';
-import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
+import { Shape } from '../../../model/concreteEntries/ProfilePicture';
+import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 
 export const getEntryStyle = (
   entry: ContainerEntry,

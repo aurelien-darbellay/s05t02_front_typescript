@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import {
   createHandleMouseDown,
   createHandleMouseMove,
-} from './entryInteractionHandlers';
-import { Position } from '../../model/EntriesGeneralFeatures';
+} from '../entryInteractionHandlers';
+import { Position } from '../../../model/EntriesGeneralFeatures';
 
 export function useEntryInteractions({
   entry,

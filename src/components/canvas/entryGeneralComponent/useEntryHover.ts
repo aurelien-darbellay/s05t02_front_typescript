@@ -29,25 +29,31 @@ export function useEntryHover({
 
   useEffect(() => {
     if (hovered && entryRef.current) {
+      const el = entryRef.current;
+      const rect = el.getBoundingClientRect();
+
+      // Call this immediately so Canvas can resize
+      if (onHoverHeightChange) {
+        onHoverHeightChange(entry.id, rect.height);
+      }
+
+      // Wait for next frame (layout update) before scrolling
       requestAnimationFrame(() => {
-        const el = entryRef.current;
-        const rect = el.getBoundingClientRect();
-        const buffer = 20;
+        requestAnimationFrame(() => {
+          const buffer = 20;
+          const updatedRect = el.getBoundingClientRect();
+          const isFullyVisible =
+            updatedRect.top >= buffer &&
+            updatedRect.bottom <= window.innerHeight - buffer;
 
-        const isFullyVisible =
-          rect.top >= buffer && rect.bottom <= window.innerHeight - buffer;
-
-        if (!isFullyVisible) {
-          el.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest',
-          });
-        }
-
-        if (onHoverHeightChange) {
-          onHoverHeightChange(entry.id, rect.height);
-        }
+          if (!isFullyVisible) {
+            el.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'nearest',
+            });
+          }
+        });
       });
     }
   }, [hovered]);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures.ts';
-import { Entry } from './Entry.tsx';
+import { Entry } from './entryGeneralComponent/Entry.tsx';
 import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { useCanvasSize } from './CanvasHelpers.ts';
 import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx';

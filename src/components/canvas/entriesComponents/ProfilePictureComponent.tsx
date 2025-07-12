@@ -1,7 +1,7 @@
 // ProfilePictureComponent.tsx
 import React, { useContext } from 'react';
 import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
-import { getShapeStyle } from '../entryStyle';
+import { getShapeStyle } from '../entryGeneralComponent/entryStyle';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import CloudinaryUploadButton from '../../cloud/CloudinaryUploadButton';
 
