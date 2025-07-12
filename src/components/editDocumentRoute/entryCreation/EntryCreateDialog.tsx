@@ -3,6 +3,7 @@ import {
   EntryFieldConfig,
   EntryContainerTypes,
   EntryListItemTypes,
+  matchItemsWithList,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
@@ -57,8 +58,10 @@ export default function EntryCreateDialog({
     restrictedTypes.includes(selectedType) &&
     entries.some((entry) => entry.type === selectedType && !isEditing);
 
-  const isItemAndListDontExist =
-    selectedType && listItemTypes.includes(selectedType);
+  /* const isItemAndListDontExist =
+    selectedType &&
+    listItemTypes.includes(selectedType) &&
+    entries.every((entry) => entry.type != matchItemsWithList[selectedType]); */
 
   const handleTypeChange = (type: string) => {
     //console.log(type);

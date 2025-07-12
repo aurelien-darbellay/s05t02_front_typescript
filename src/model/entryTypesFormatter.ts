@@ -1,10 +1,17 @@
 export class EntryTypesFormatter {
   static fromCamelCaseToDisplay(type: string): string {
+    // Remove "list" prefix if present
+    let processed = type;
+    if (processed.startsWith('list')) {
+      processed = processed.slice(4);
+    }
+
     // Convert camelCase to display format
-    return type
+    return processed
       .replace(/([A-Z])/g, ' $1')
       .replace(/^./, (c) => c.toUpperCase());
   }
+
   static fromDisplayToConstant(type: string): string {
     return type.replace(/\s+/g, '_').toUpperCase();
   }
