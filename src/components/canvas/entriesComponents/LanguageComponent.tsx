@@ -1,4 +1,3 @@
-// LanguageComponent.tsx
 import React from 'react';
 import { Language, Level } from '../../../model/concreteEntries/Language';
 import CloudAccessManager from '../../cloud/CloudAccessManager';
@@ -17,16 +16,31 @@ export const LanguageComponent: React.FC<LanguageComponentProps> = ({
   const hasLevel = language.level !== undefined && language.level !== null;
 
   return (
-    <div className="space-y-1">
-      {(hasName || hasLevel) && (
-        <p>
-          {hasName && language.name}
-          {hasName && hasLevel && ' - '}
-          {hasLevel && Level[language.level]}
-        </p>
-      )}
+    <div
+      className="flex items-start gap-4"
+      style={{
+        width: '100%',
+        alignItems: 'flex-start',
+      }}
+    >
+      {/* Left side: 80% width */}
+      <div style={{ flex: '0 0 70%' }}>
+        {hasName && (
+          <p>
+            <strong>{language.name}</strong>
+          </p>
+        )}
+        {hasLevel && (
+          <p>
+            <i>{Level[language.level]}</i>
+          </p>
+        )}
+      </div>
 
-      <CloudAccessManager entry={language} />
+      {/* Right side: 20% width */}
+      <div style={{ flex: '0 0 30%' }}>
+        <CloudAccessManager entry={language} />
+      </div>
     </div>
   );
 };

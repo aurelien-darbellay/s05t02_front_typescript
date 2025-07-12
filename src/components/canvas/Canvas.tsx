@@ -140,7 +140,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedConnectionIndex, connections, entries]);
-  console.log(layoutVersion);
+
   //console.log(connections);
   return (
     <div
@@ -188,11 +188,9 @@ export const Canvas: React.FC<CanvasProps> = ({
 
         {connections.map((conn, idx) => {
           const pathD = `
-    M ${conn.from?.x ?? 0} ${conn.from?.y ?? 0}
-    C ${conn.from ? conn.from.x + 100 : 0} ${conn.from?.y ?? 0},
-      ${conn.to ? conn.to.x - 100 : 0} ${conn.to?.y ?? 0},
-      ${conn.to?.x ?? 0} ${conn.to?.y ?? 0}
-  `;
+  M ${conn.from?.x ?? 0} ${conn.from?.y ?? 0}
+  L ${conn.to?.x ?? 0} ${conn.to?.y ?? 0}
+`;
 
           return (
             <g key={idx}>

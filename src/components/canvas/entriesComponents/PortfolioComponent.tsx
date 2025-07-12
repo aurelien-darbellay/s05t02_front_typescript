@@ -11,13 +11,14 @@ export const PortfolioComponent: React.FC<PortfolioComponentProps> = ({
 }) => {
   return (
     <div>
-      <p>
-        <strong>Project Name:</strong> {portfolio.projectName}
-      </p>
-      <p>
-        <strong>Project URL:</strong>{' '}
-        <a href={portfolio.projectUrl}>{portfolio.projectUrl}</a>
-      </p>
+      <a
+        href={portfolio.projectUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="purple-link"
+      >
+        {portfolio.projectName}
+      </a>
     </div>
   );
 };

@@ -2,8 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import {
   EntryFieldConfig,
   EntryContainerTypes,
-  EntryListItemTypes,
-  matchItemsWithList,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
@@ -33,7 +31,8 @@ export default function EntryCreateDialog({
   entries,
   entryData,
 }: EntryCreateDialogProps) {
-  const isEditing = !!entryData;
+  const [isEditing, setIsEditing] = useState(!!entryData);
+  console.log(isEditing);
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, any>>({});
@@ -49,7 +48,7 @@ export default function EntryCreateDialog({
   } = useContext(EditEntryContext);
   const onSave = addOrUpdateEntry;
   const restrictedTypes = [...EntryContainerTypes];
-  const listItemTypes = [...EntryListItemTypes];
+  /* const listItemTypes = [...EntryListItemTypes]; */
 
   const fields = EntryFieldConfig[selectedType] || [];
 
@@ -118,6 +117,7 @@ export default function EntryCreateDialog({
     //console.log('Entry data to save:', getEntryPayload());
     try {
       //console.log('Saving entry data:', normalizeEntryData(entryDataToSave));
+      console.log(isEditing);
       if (onSave)
         onSave(normalizeEntryData(getEntryPayload()) as Entry, isEditing);
       handleClose();
@@ -148,6 +148,7 @@ export default function EntryCreateDialog({
   };
 
   useEffect(() => {
+    setIsEditing(!!entryData);
     if (entryData) {
       //console.log(entryData);
       setSelectedType(entryData.type);
@@ -266,6 +267,7 @@ export default function EntryCreateDialog({
                   EntryTypesFormatter.fromListToItem(prev)
                 );
                 setIsListItem(true);
+                setIsEditing(false);
               }}
               value="Add Item"
               color="black"

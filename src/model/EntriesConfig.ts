@@ -64,18 +64,20 @@ export const EntryListItemTypes = [
 export const EntryListTypes = [
   'LIST_EDUCATION',
   'LIST_EXPERIENCE',
-  'LIST_SOFT_SKILL',
+  'LIST_TECHNICAL_SKILL',
   'LIST_SOFT_SKILL',
   'LIST_LANGUAGE',
   'LIST_PORTFOLIO',
 ];
+
+export const EntryListKeyWords = ['LIST_TECHNICAL_SKILL', 'LIST_SOFT_SKILL'];
 export const matchItemsWithList = {
   EDUCATION: 'LIST_EDUCATION',
   EXPERIENCE: 'LIST_EXPERIENCE',
   LANGUAGE: 'LIST_LANGUAGE',
   PORTFOLIO: 'LIST_PORTFOLIO',
   SOFT_SKILL: 'LIST_SOFT_SKILL',
-  TECHNICAL_SKILL: 'LIST_SOFT_SKILL',
+  TECHNICAL_SKILL: 'LIST_TECHNICAL_SKILL',
 };
 
 export const CvEntries = [

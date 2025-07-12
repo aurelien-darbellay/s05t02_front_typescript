@@ -21,8 +21,7 @@ export const ContactComponent: React.FC<ContactComponentProps> = ({
   const isNonEmpty = (value?: any) =>
     value !== undefined && value !== null && value !== '' && value !== 0;
 
-  const linkClass =
-    'text-purple-600 underline hover:text-purple-800 inline-flex items-center gap-2';
+  const linkClass = 'purple-link inline-flex items-center gap-2';
 
   return (
     <div className="space-y-0">

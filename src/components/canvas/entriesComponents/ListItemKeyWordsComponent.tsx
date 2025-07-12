@@ -1,20 +1,27 @@
 import { useContext, useState } from 'react';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
-import ProjectionToggler from '../../editDocumentRoute/ProjectionToggler';
-import { mapEntryToComponent } from '../../../model/mappers/mapEntryToComponent';
 import { ProjectionContext } from '../../../contexts/ProjectionContext';
 
-interface ListItemComponentProps {
+interface ListItemKeyWordsComponentProps {
   entry: Entry;
 }
 
-export const ListItemComponent: React.FC<ListItemComponentProps> = ({
-  entry,
-}) => {
+export const ListItemKeyWordsComponent: React.FC<
+  ListItemKeyWordsComponentProps
+> = ({ entry }) => {
   const { handleEditEntry, setIsListItem } = useContext(EditEntryContext);
   const [hasShadow, setHasShadow] = useState(false);
   const { projected } = useContext(ProjectionContext);
+  const capitalizeWords = (text: string) =>
+    text
+      .split(' ')
+      .map((word) =>
+        word.length > 0
+          ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          : ''
+      )
+      .join(' ');
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -34,7 +41,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
   };
 
   return (
-    <li
+    <span
       onContextMenu={handleContextMenu}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -48,8 +55,7 @@ export const ListItemComponent: React.FC<ListItemComponentProps> = ({
         position: 'relative',
       }}
     >
-      {mapEntryToComponent(entry)}
-      {!entry.projected && <ProjectionToggler entry={entry} />}
-    </li>
+      {capitalizeWords(entry.keyWords)}
+    </span>
   );
 };

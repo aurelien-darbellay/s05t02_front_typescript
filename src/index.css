@@ -36,3 +36,12 @@ body {
   width: 90%;
   overflow: hidden;
 }
+.purple-link {
+  color: #9333ea; /* Tailwind text-purple-600 */
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.purple-link:hover {
+  color: #6b21a8; /* Tailwind text-purple-800 */
+}

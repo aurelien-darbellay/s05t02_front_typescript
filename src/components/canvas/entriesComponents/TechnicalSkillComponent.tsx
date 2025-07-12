@@ -9,11 +9,15 @@ interface TechnicalSkillComponentProps {
 export const TechnicalSkillComponent: React.FC<
   TechnicalSkillComponentProps
 > = ({ technicalSkill }) => {
-  return (
-    <div>
-      <p>
-        <strong>Keywords:</strong> {technicalSkill.keyWords}
-      </p>
-    </div>
-  );
+  // Utility to capitalize each word
+  const capitalizeWords = (text: string) =>
+    text
+      .split(' ')
+      .map((word) =>
+        word.length > 0
+          ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          : ''
+      )
+      .join(' ');
+  return <span>{capitalizeWords(technicalSkill.keyWords)}</span>;
 };
