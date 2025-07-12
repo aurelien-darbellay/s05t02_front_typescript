@@ -5,8 +5,8 @@ import { AddButtonGrid } from './AddButtonGrid.tsx';
 import { useCanvasSize } from './CanvasHelpers.ts';
 import { mapEntryToComponent } from '../../model/mappers/mapEntryToComponent.tsx';
 import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
-import { computeConnectionPoints } from './computeConnectionPoints.ts';
-import { createHandleKeyDown } from './createHandleKeyDown';
+import { computeConnectionPoints } from './entryGeneralComponent/computeConnectionPoints.ts';
+import { createHandleKeyDown } from './entryGeneralComponent/createHandleKeyDown.ts';
 import { PlayButton } from './PlayButton.tsx';
 
 interface CanvasProps {
@@ -53,7 +53,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     number | null
   >(null);
 
-  const { editable } = useContext(EditEntryContext);
+  const { editable, addOrUpdateEntry } = useContext(EditEntryContext);
   const entryOpenHeights = useRef<Map<string, number>>(new Map());
   const handleHoverHeightChange = (id: string, height: number) => {
     const old = entryOpenHeights.current.get(id);
@@ -132,12 +132,10 @@ export const Canvas: React.FC<CanvasProps> = ({
       connections,
       entries,
       setEntries,
-      entryRefs,
-      canvasRef,
-      computeConnectionPoints,
+      addOrUpdateEntry,
     });
 
-    window.addEventListener('keydown', handleKeyDown);
+    if (editable) window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedConnectionIndex, connections, entries]);
 
@@ -223,7 +221,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 }
                 strokeWidth="2"
                 fill="none"
-                //markerEnd="url(#arrow)"
+                markerEnd="url(#arrow)"
                 pointerEvents="auto"
               />
             </g>

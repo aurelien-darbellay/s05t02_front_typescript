@@ -32,7 +32,7 @@ export default function EntryCreateDialog({
   entryData,
 }: EntryCreateDialogProps) {
   const [isEditing, setIsEditing] = useState(!!entryData);
-  console.log(isEditing);
+  //console.log(isEditing);
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, any>>({});

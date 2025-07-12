@@ -1,4 +1,4 @@
-import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
+import { ContainerEntry, Entry } from '../../../model/EntriesGeneralFeatures';
 
 export function createHandleKeyDown({
   selectedConnectionIndex,
@@ -6,9 +6,7 @@ export function createHandleKeyDown({
   connections,
   entries,
   setEntries,
-  entryRefs,
-  canvasRef,
-  computeConnectionPoints,
+  addOrUpdateEntry,
 }: {
   selectedConnectionIndex: number | null;
   setSelectedConnectionIndex: React.Dispatch<
@@ -22,16 +20,7 @@ export function createHandleKeyDown({
   }[];
   entries: ContainerEntry[];
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>;
-  entryRefs: React.MutableRefObject<Map<string, HTMLDivElement | null>>;
-  canvasRef: React.RefObject<HTMLDivElement>;
-  computeConnectionPoints: (
-    entry: ContainerEntry,
-    entryRefs: Map<string, HTMLDivElement | null>,
-    canvasEl: HTMLDivElement | null
-  ) => {
-    from: { x: number; y: number } | null;
-    to: { x: number; y: number } | null;
-  } | null;
+  addOrUpdateEntry: (entry: Entry, isEditing: boolean) => void;
 }) {
   return function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Delete' && selectedConnectionIndex !== null) {
@@ -40,14 +29,23 @@ export function createHandleKeyDown({
 
       const { sourceId, targetId } = connToDelete;
 
+      let updatedSource = null;
+      let updatedTarget = null;
       setEntries((prev) =>
         prev.map((entry) => {
-          if (entry.id === sourceId) return { ...entry, nextEntry: null };
-          if (entry.id === targetId) return { ...entry, previousEntry: null };
+          if (entry.id === sourceId) {
+            updatedSource = { ...entry, nextEntry: null };
+            return { ...entry, nextEntry: null };
+          }
+          if (entry.id === targetId) {
+            updatedTarget = { ...entry, previousEntry: null };
+            return { ...entry, previousEntry: null };
+          }
           return entry;
         })
       );
-
+      if (updatedSource) addOrUpdateEntry(updatedSource, true);
+      if (updatedTarget) addOrUpdateEntry(updatedTarget, true);
       setSelectedConnectionIndex(null);
     }
   };

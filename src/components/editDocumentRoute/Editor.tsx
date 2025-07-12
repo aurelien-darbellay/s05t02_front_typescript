@@ -17,7 +17,7 @@ import { updateDocDataFromEntries } from '../../model/mappers/updateDocDataFromE
 import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
 import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
-import { createAddConnection } from './createAddConnection';
+import { createAddConnection } from '../canvas/entryGeneralComponent/createAddConnection';
 import { playDocument } from '../canvas/playDocument';
 
 interface EditorProps {
@@ -107,9 +107,10 @@ const Editor: React.FC<EditorProps> = ({
   };
 
   const addConnection = createAddConnection(
-    setEntries,
+    entries,
     setUpdateUser,
-    setUpdateUserMessage
+    setUpdateUserMessage,
+    addOrUpdateEntry
   );
 
   /* useEffect(() => {

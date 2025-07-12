@@ -1,4 +1,4 @@
-import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
+import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 
 export interface Point {
   x: number;
