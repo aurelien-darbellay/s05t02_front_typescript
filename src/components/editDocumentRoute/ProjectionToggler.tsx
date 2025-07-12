@@ -19,8 +19,14 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   size = 20,
   onClick,
 }) => {
-  const { addOrUpdateEntry, dialogOpen, isListItem, editable } =
-    useContext(EditEntryContext);
+  const {
+    addOrUpdateEntry,
+    dialogOpen,
+    isListItem,
+    editable,
+    setUpdateUser,
+    setUpdateUserMessage,
+  } = useContext(EditEntryContext);
 
   const ensureConsistentProjectionInListEntries = (
     entry: ListEntries
@@ -38,6 +44,13 @@ const ProjectionToggler: React.FC<ProjectionTogglerProps> = ({
   const handleClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
     if (!editable) return;
+    if (entry.nextEntry || entry.previousEntry) {
+      setUpdateUser(true);
+      setUpdateUserMessage(
+        "You can't hide an entry that belongs to a graph. Edit graph edges first."
+      );
+      return;
+    }
     //console.log(editable);
     const updatedEntry = { ...entry, projected: !entry.projected };
     const consistentEntry = EntryListTypes.includes(entry.type)

@@ -131,7 +131,7 @@ export const Canvas: React.FC<CanvasProps> = ({
       style={{
         position: 'relative',
         height: canvasHeight,
-        pointerEvents: isPlaying ? 'none' : 'auto',
+        //pointerEvents: isPlaying ? 'none' : 'auto',
       }}
     >
       <PlayButton setIsPlaying={setIsPlaying} />
@@ -143,7 +143,6 @@ export const Canvas: React.FC<CanvasProps> = ({
         canvasRef={canvasRef}
         editable={editable}
       />
-
       {/* Lines SVG overlay */}
       <svg
         style={{
@@ -152,6 +151,7 @@ export const Canvas: React.FC<CanvasProps> = ({
           left: 0,
           width: '100%',
           height: canvasHeight,
+          pointerEvents: 'none',
         }}
       >
         <defs>
@@ -184,6 +184,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                 stroke="transparent"
                 strokeWidth="20"
                 fill="none"
+                pointerEvents="auto"
                 style={{ cursor: 'pointer' }}
                 onMouseEnter={() => setHoveredConnectionIndex(idx)}
                 onMouseLeave={() => setHoveredConnectionIndex(null)}
@@ -207,12 +208,12 @@ export const Canvas: React.FC<CanvasProps> = ({
                 strokeWidth="2"
                 fill="none"
                 markerEnd="url(#arrow)"
+                pointerEvents="auto"
               />
             </g>
           );
         })}
       </svg>
-
       {!canvasReady ? (
         <div className="text-center py-10 text-gray-600 text-lg">
           Adjusting positions...

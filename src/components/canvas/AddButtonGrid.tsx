@@ -54,7 +54,7 @@ export const AddButtonGrid: React.FC<AddButtonGridProps> = ({
 
   return (
     <div
-      className="grid gap-4 p-4 z-0 pointer-events-none"
+      className="grid gap-4 p-4 z-0"
       style={{
         gridTemplateColumns: `repeat(6, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${gridLines}, 100px)`,
