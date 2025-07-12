@@ -91,7 +91,10 @@ const Editor: React.FC<EditorProps> = ({
     setDialogOpen(true);
   };
 
-  const updatePosition = (entry: ContainerEntry, newPos: Position) => {
+  const updatePosition = (
+    entry: ContainerEntry,
+    newPos: Position
+  ): ContainerEntry => {
     const updated = Object.assign(
       Object.create(Object.getPrototypeOf(entry)),
       entry,
@@ -100,6 +103,7 @@ const Editor: React.FC<EditorProps> = ({
     setEntries((prevEntries) =>
       prevEntries.map((e) => (e.type === entry.type ? updated : e))
     );
+    return updated;
   };
 
   const addConnection = createAddConnection(

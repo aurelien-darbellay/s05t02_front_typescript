@@ -48,6 +48,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       determineIfList,
       handleEditEntry,
       updatePosition,
+      addOrUpdateEntry,
     } = useContext(EditEntryContext);
 
     // Use hover hook
@@ -70,6 +71,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
         width,
         setHovered,
         setExistOpenEntry,
+        addOrUpdateEntry,
       });
 
     // Resize observer for notifying parent

@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import {
   createHandleMouseDown,
   createHandleMouseMove,
-} from '../entryInteractionHandlers';
-import { Position } from '../../../model/EntriesGeneralFeatures';
+} from './entryInteractionHandlers';
+import { Entry, Position } from '../../../model/EntriesGeneralFeatures';
 
 export function useEntryInteractions({
   entry,
@@ -11,12 +11,14 @@ export function useEntryInteractions({
   width,
   setHovered,
   setExistOpenEntry,
+  addOrUpdateEntry,
 }: {
   entry: any;
   updatePosition: any;
   width: number;
   setHovered: (v: boolean) => void;
   setExistOpenEntry: (v: boolean) => void;
+  addOrUpdateEntry: (entry: Entry, isEditing: boolean) => void;
 }) {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
@@ -25,6 +27,7 @@ export function useEntryInteractions({
   const originMouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const originPos = useRef<Position>({ xCord: 0, yCord: 0 });
   const originScale = useRef<number>(1);
+  const latestEntryRef = useRef(entry);
 
   const handleMouseDown = createHandleMouseDown(
     entry,
@@ -51,17 +54,28 @@ export function useEntryInteractions({
     setScaleFactor
   );
 
+  const handlePositionChange = (e) => {
+    const updated = handleMouseMove(e);
+    if (updated) {
+      latestEntryRef.current = updated;
+    }
+  };
+
   const handleMouseUp = () => {
     if (dragging) setDragging(false);
     if (resizing) setResizing(false);
+    const updatedEntry = latestEntryRef.current;
+    if (updatedEntry) {
+      addOrUpdateEntry(updatedEntry, true);
+    }
   };
 
   useEffect(() => {
     if (dragging || resizing) {
-      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mousemove', handlePositionChange);
       document.addEventListener('mouseup', handleMouseUp);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mousemove', handlePositionChange);
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }

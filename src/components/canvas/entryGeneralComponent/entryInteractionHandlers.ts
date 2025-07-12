@@ -1,6 +1,9 @@
 // src/components/canvas/entryInteractionHandlers.ts
 import { RefObject } from 'react';
-import { ContainerEntry, Position } from '../../model/EntriesGeneralFeatures';
+import {
+  ContainerEntry,
+  Position,
+} from '../../../model/EntriesGeneralFeatures';
 
 export const createHandleMouseDown = (
   entry: ContainerEntry,
@@ -38,14 +41,16 @@ export const createHandleMouseMove = (
   setExistOpenEntry: (e: boolean) => void,
   dragging: boolean,
   resizing: boolean,
-  onPositionChange: ((entry: ContainerEntry, newPos: Position) => void) | null,
+  onPositionChange:
+    | ((entry: ContainerEntry, newPos: Position) => ContainerEntry)
+    | null,
   width: number,
   originMouse: RefObject<{ x: number; y: number }>,
   originPos: RefObject<Position>,
   originScale: RefObject<number>,
   setScaleFactor: (scale: number) => void
 ) => {
-  return (e: MouseEvent) => {
+  return (e: MouseEvent): ContainerEntry => {
     e.preventDefault();
     setHovered(true);
     setExistOpenEntry(true);
@@ -57,11 +62,12 @@ export const createHandleMouseMove = (
         xCord: originPos.current.xCord + deltaX,
         yCord: originPos.current.yCord + deltaY,
       };
-      if (onPositionChange) onPositionChange(entry, newPos);
+      if (onPositionChange) return onPositionChange(entry, newPos);
     } else if (resizing) {
       const delta = e.clientX - originMouse.current.x;
       const newScale = Math.max(0.5, originScale.current + delta / 250);
       setScaleFactor(newScale);
+      return { ...entry, size: newScale };
     }
   };
 };
