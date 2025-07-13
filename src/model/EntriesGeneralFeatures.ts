@@ -66,8 +66,6 @@ export class ListEntries implements ContainerEntry {
     previous?: string,
     next?: string
   ) {
-    console.log(entries[0]);
-    console.log(entries);
     this.type = type ? 'LIST_' + type : 'LIST_' + entries[0].type;
     this.displayedType = type
       ? EntryTypesFormatter.fromConstantToDisplay(type)
