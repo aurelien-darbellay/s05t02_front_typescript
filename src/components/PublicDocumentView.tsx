@@ -75,7 +75,7 @@ const PublicDocumentView: React.FC = () => {
         playDocument,
       }}
     >
-      <div className="w-full bg-gray-100">
+      <div className="w-full bg-gray-100 mt-30">
         <Canvas entries={entries} setEntries={null} />
         <UserUpdateDialog
           open={updateUser}

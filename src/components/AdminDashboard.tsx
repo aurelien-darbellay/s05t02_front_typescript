@@ -52,7 +52,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <h2>Admin Dashboard</h2>
+      <h2 className="dashboard-header">Admin Dashboard</h2>
 
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}

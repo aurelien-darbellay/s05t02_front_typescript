@@ -67,3 +67,9 @@ body {
   font-weight: 700;
   margin-bottom: 1rem;
 }
+.user-preview-headers {
+  margin-bottom: 0.5rem;
+  white-space: 'nowrap';
+  overflow: 'hidden';
+  text-overflow: 'ellipsis';
+}

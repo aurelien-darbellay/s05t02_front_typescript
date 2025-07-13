@@ -1,7 +1,7 @@
 const BackgroundOverlay = ({ route }) => {
   let overlayStyle = {};
 
-  if (route === '/user') {
+  if (route === '/user' || route === '/admin') {
     overlayStyle = { backgroundColor: 'rgba(255, 255, 255, 0.6)' };
   } else if (route === '/home') {
     overlayStyle = { backgroundColor: 'rgba(255, 255, 255, 0)' };
@@ -18,7 +18,7 @@ const BackgroundOverlay = ({ route }) => {
         width: '100vw',
         height: '100vh',
         pointerEvents: 'none', // important! so it doesn't block clicks
-        zIndex: 0,
+        zIndex: -1,
         ...overlayStyle,
       }}
     />

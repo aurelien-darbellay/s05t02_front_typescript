@@ -18,7 +18,7 @@ export const createHandleMouseDown = (
   return (e: React.MouseEvent) => {
     if (e.button === 2) return;
     setHovered(true);
-    if ((e.target as HTMLElement).classList.contains('target')) return;
+    if ((e.target as HTMLElement).closest('.target')) return;
     //console.log('MouseDown');
     if ((e.target as HTMLElement).classList.contains('resize-handle')) {
       //console.log('resizing');
