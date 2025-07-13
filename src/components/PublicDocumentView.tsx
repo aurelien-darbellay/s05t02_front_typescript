@@ -8,6 +8,7 @@ import { Canvas } from '../components/canvas/Canvas';
 import { UserUpdateDialog } from '../utils/UserUpdateDialog';
 import { EditEntryContext } from '../contexts/EditEntryContext';
 import { playDocument } from './canvas/playDocument';
+import { isTotallyOrdered } from './canvas/isTotallyOrdered';
 
 const PublicDocumentView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,6 +50,23 @@ const PublicDocumentView: React.FC = () => {
 
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    const firstRun = async () => {
+      if (!loading && entries.length > 0 && isTotallyOrdered(entries)) {
+        setTimeout(async () => {
+          await playDocument(
+            entries,
+            setEntries,
+            setUpdateUser,
+            setUpdateUserMessage,
+            { shouldStop: false }
+          );
+        }, 1500);
+      }
+    };
+    firstRun();
+  }, [loading]);
 
   if (loading) {
     return (

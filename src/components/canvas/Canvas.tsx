@@ -8,6 +8,7 @@ import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { computeConnectionPoints } from './entryGeneralComponent/computeConnectionPoints.ts';
 import { createHandleKeyDown } from './entryGeneralComponent/createHandleKeyDown.ts';
 import { PlayButton } from './PlayButton.tsx';
+import { PlaybackController } from './PlaybackController.ts';
 
 interface CanvasProps {
   entries: ContainerEntry[];
@@ -20,6 +21,7 @@ interface CanvasProps {
     } | null>
   >;
 }
+
 // ... your existing imports
 
 export const Canvas: React.FC<CanvasProps> = ({

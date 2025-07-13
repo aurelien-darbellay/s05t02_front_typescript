@@ -1,16 +1,25 @@
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
 import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
 import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
+import { PlaybackController } from './PlaybackController';
+import { getEntryReferenceNumberForPlayback } from './getEntryReferenceNumberForPlayback';
 
 export async function playDocument(
   entries: ContainerEntry[],
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
   setUserUpdate: React.Dispatch<React.SetStateAction<boolean>>,
-  setUserUpdateMessage: React.Dispatch<React.SetStateAction<string>>
+  setUserUpdateMessage: React.Dispatch<React.SetStateAction<string>>,
+  controller: PlaybackController
 ) {
   if (!entries || entries.length === 0) {
     setUserUpdate(true);
     setUserUpdateMessage('No entries to play.');
+    return;
+  }
+
+  if (controller.shouldStop) {
+    setUserUpdate(true);
+    setUserUpdateMessage('Playback stopped.');
     return;
   }
 
@@ -64,6 +73,12 @@ export async function playDocument(
   for (const entry of ordered) {
     //console.log(entry.type);
     // Mark only this entry as opened
+    if (controller.shouldStop) {
+      setUserUpdate(true);
+      setUserUpdateMessage('Playback stopped.');
+      return;
+    }
+
     setEntries((prev) =>
       prev.map((e) =>
         e.id === entry.id
@@ -73,16 +88,13 @@ export async function playDocument(
     );
 
     // Determine if it's a list type
-    const typeConstant = EntryTypesFormatter.fromDisplayToConstant(entry.type);
-    const isList =
-      EntryListItemTypes.concat(EntryListTypes).includes(typeConstant);
 
-    let delay = 3000;
-    if (isList) {
-      const count = entry.entries ? entry.entries.length : 0;
-      delay = Math.max(2000, count * 2000);
-    }
+    const delay = Math.max(
+      1800,
+      33 * getEntryReferenceNumberForPlayback(entry)
+    );
 
+    console.log(delay);
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
 

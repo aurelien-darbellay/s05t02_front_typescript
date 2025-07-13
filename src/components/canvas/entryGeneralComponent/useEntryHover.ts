@@ -40,19 +40,40 @@ export function useEntryHover({
       // Wait for next frame (layout update) before scrolling
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          const buffer = 20;
-          const updatedRect = el.getBoundingClientRect();
-          const isFullyVisible =
-            updatedRect.top >= buffer &&
-            updatedRect.bottom <= window.innerHeight - buffer;
+          const bottomMargin = 50; // distance from bottom of viewport
+          const topMargin = 20; // optional margin at top
 
-          if (!isFullyVisible) {
-            el.scrollIntoView({
-              behavior: 'smooth',
-              block: 'nearest',
-              inline: 'nearest',
-            });
+          const el = entryRef.current;
+          const rect = el.getBoundingClientRect();
+
+          // How much space is available in viewport
+          const viewportHeight = window.innerHeight;
+
+          // If it's already fully in view with margins, do nothing
+          if (
+            rect.top >= topMargin &&
+            rect.bottom <= viewportHeight - bottomMargin
+          ) {
+            return;
           }
+
+          // Now compute the ideal target scroll position
+          const absoluteElementBottom = window.pageYOffset + rect.bottom;
+          let targetScrollY =
+            absoluteElementBottom - viewportHeight + bottomMargin;
+
+          // Clamp so that top doesn't go offscreen
+          const absoluteElementTop = window.pageYOffset + rect.top;
+          targetScrollY = Math.min(
+            targetScrollY,
+            absoluteElementTop - topMargin
+          );
+
+          // Scroll!
+          window.scrollTo({
+            top: targetScrollY,
+            behavior: 'smooth',
+          });
         });
       });
     }

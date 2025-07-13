@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
-import { Play } from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { Play, StopCircle } from 'lucide-react';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
+import { PlaybackController } from './PlaybackController';
 
 interface PlayButtonProps {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,9 @@ export const PlayButton: React.FC<PlayButtonProps> = ({ setIsPlaying }) => {
     setUpdateUser,
     setUpdateUserMessage,
   } = useContext(EditEntryContext);
+  const [controller] = useState<PlaybackController>({
+    shouldStop: false,
+  });
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,11 +31,14 @@ export const PlayButton: React.FC<PlayButtonProps> = ({ setIsPlaying }) => {
     ) {
       setIsPlaying(true);
 
+      const playableEntries = entries.filter((e) => e.projected);
+      controller.shouldStop = false;
       await playDocument(
-        entries,
+        playableEntries,
         setEntries,
         setUpdateUser,
-        setUpdateUserMessage
+        setUpdateUserMessage,
+        controller
       );
 
       setIsPlaying(false);
@@ -40,7 +47,7 @@ export const PlayButton: React.FC<PlayButtonProps> = ({ setIsPlaying }) => {
 
   return (
     <div
-      onClick={handleClick}
+      className="flex gap-4"
       style={{
         position: 'absolute',
         top: '20px',
@@ -50,7 +57,12 @@ export const PlayButton: React.FC<PlayButtonProps> = ({ setIsPlaying }) => {
         zIndex: 9999,
       }}
     >
-      <Play size={40} color="green" />
+      <div onClick={handleClick}>
+        <Play size={40} color="green" />
+      </div>
+      <div onClick={() => (controller.shouldStop = true)}>
+        <StopCircle size={40} color="red" />
+      </div>
     </div>
   );
 };
