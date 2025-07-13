@@ -202,14 +202,19 @@ export const Canvas: React.FC<CanvasProps> = ({
                 strokeWidth="20"
                 fill="none"
                 pointerEvents="auto"
-                style={{ cursor: 'pointer' }}
-                onMouseEnter={() => setHoveredConnectionIndex(idx)}
-                onMouseLeave={() => setHoveredConnectionIndex(null)}
-                onClick={() =>
-                  setSelectedConnectionIndex((prev) =>
-                    prev === idx ? null : idx
-                  )
-                }
+                style={{ cursor: editable ? 'pointer' : 'auto' }}
+                onMouseEnter={() => {
+                  if (editable) setHoveredConnectionIndex(idx);
+                }}
+                onMouseLeave={() => {
+                  if (editable) setHoveredConnectionIndex(null);
+                }}
+                onClick={() => {
+                  if (editable)
+                    setSelectedConnectionIndex((prev) =>
+                      prev === idx ? null : idx
+                    );
+                }}
               />
 
               {/* Visible thin path */}
