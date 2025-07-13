@@ -135,7 +135,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
             else if (connectOriginId !== entry.id) {
               addConnection(connectOriginId, entry.id);
               setConnectOriginId(null);
-              setConnectMode(false);
+              //setConnectMode(false);
             }
           } else {
             handleMouseDown(e);
