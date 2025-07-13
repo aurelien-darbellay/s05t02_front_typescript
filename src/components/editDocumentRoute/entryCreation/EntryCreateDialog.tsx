@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from 'react';
 import {
   EntryFieldConfig,
   EntryContainerTypes,
+  EntryListTypes,
+  matchItemsWithList,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
 import { Entry } from '../../../model/EntriesGeneralFeatures';
@@ -48,7 +50,7 @@ export default function EntryCreateDialog({
   } = useContext(EditEntryContext);
   const onSave = addOrUpdateEntry;
   const restrictedTypes = [...EntryContainerTypes];
-  /* const listItemTypes = [...EntryListItemTypes]; */
+  const listTypes = [...EntryListTypes];
 
   const fields = EntryFieldConfig[selectedType] || [];
 
@@ -57,10 +59,12 @@ export default function EntryCreateDialog({
     restrictedTypes.includes(selectedType) &&
     entries.some((entry) => entry.type === selectedType && !isEditing);
 
-  /* const isItemAndListDontExist =
+  const isItemAndListDontExist =
     selectedType &&
-    listItemTypes.includes(selectedType) &&
-    entries.every((entry) => entry.type != matchItemsWithList[selectedType]); */
+    listTypes.includes(selectedType) &&
+    entries.every((entry) => entry.type != selectedType);
+
+  console.log(isItemAndListDontExist);
 
   const handleTypeChange = (type: string) => {
     //console.log(type);
@@ -271,6 +275,7 @@ export default function EntryCreateDialog({
               }}
               value="Add Item"
               color="black"
+              disabled={isItemAndListDontExist}
             />
           )}
         </div>
