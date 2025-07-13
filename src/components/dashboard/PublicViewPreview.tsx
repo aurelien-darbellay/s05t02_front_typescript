@@ -23,9 +23,9 @@ const PublicViewPreview: React.FC<PublicViewPreviewProps> = ({ id, title }) => {
         padding: '1rem',
         cursor: 'pointer',
         backgroundColor: '#fff',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         textAlign: 'center',
       }}
+      className="shadow hover:shadow-lg"
     >
       <h4
         style={{
@@ -35,7 +35,7 @@ const PublicViewPreview: React.FC<PublicViewPreviewProps> = ({ id, title }) => {
           textOverflow: 'ellipsis',
         }}
       >
-        Document : {title}
+        <i>Document</i> : <span className="uppercase font-medium">{title}</span>
       </h4>
       <h5
         style={{
@@ -45,7 +45,7 @@ const PublicViewPreview: React.FC<PublicViewPreviewProps> = ({ id, title }) => {
           textOverflow: 'ellipsis',
         }}
       >
-        Public View : {displayedId}
+        <i>Public View</i> : {displayedId}
       </h5>
     </div>
   );

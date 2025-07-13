@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Home from './components/Home';
 import AdminDashboard from './components/AdminDashboard.tsx';
@@ -7,11 +7,14 @@ import PublicDocumentView from './components/PublicDocumentView.tsx';
 import UserDashboard from './components/UserDashboard.tsx';
 import UserDetails from './components/UserDetails.tsx';
 import AuthPlugin from './components/authPlugin/AuthPlugin.tsx';
+import BackgroundOverlay from './components/BackgroundOverlay.tsx';
 
 function App() {
+  const location = useLocation();
   return (
-    <Router>
+    <>
       <AuthPlugin top={35} right={35} />
+      <BackgroundOverlay route={location.pathname} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<AdminDashboard />} />
@@ -22,7 +25,7 @@ function App() {
         {/* Fallback to Home for unmatched routes */}
         <Route path="*" element={<Home />} />
       </Routes>
-    </Router>
+    </>
   );
 }
 

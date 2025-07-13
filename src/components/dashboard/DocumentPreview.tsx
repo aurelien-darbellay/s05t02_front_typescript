@@ -31,11 +31,12 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({
         width: '150px',
         cursor: 'pointer',
         backgroundColor: '#fff',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        //boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         textAlign: 'center',
       }}
+      className="shadow hover:shadow-lg"
     >
-      <h4>{document.docTitle}</h4>
+      <h4 className="uppercase font-medium">{document.docTitle}</h4>
     </div>
   );
 };

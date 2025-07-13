@@ -57,16 +57,20 @@ const UserDashboard = () => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1rem',
+          gap: '3rem',
           marginBottom: '1.5rem',
         }}
       >
         {isAdminInSomeoneElseSpace ? (
-          <h2>This is {username}'s dashboard</h2>
+          <h2 className="dashboard-header">This is {username}'s dashboard</h2>
         ) : (
-          <h2>Welcome {username}</h2>
+          <h2 className="dashboard-header">Welcome {username}</h2>
         )}
-        <ActionButton value="User Details" color="blue" onClick={() => {}} />
+        <ActionButton
+          value="User Details"
+          color="rgb(241, 6, 175)"
+          onClick={() => {}}
+        />
         {actingUser ? (
           <ActionButton
             value="Admin Dashboard"

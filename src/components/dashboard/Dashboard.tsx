@@ -28,16 +28,20 @@ const Dashboard: React.FC<DashboardProps> = ({
     <div
       style={{
         backgroundColor: '#f0f0f0',
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
         position: 'fixed',
         bottom: 0,
         width: '100%',
-        height: '50vh',
+        height: '55vh',
         overflowY: 'auto',
-        padding: '1rem',
-        borderTop: '1px solid #ccc',
+        paddingTop: '2rem',
+        paddingLeft: '3rem',
+        paddingRight: '3rem',
+        paddingBottom: '2rem',
+        border: '1px solid #ccc',
       }}
     >
-      <h2>Documents</h2>
+      <h2 className="secondary-h-dashboard">Documents</h2>
       <div
         style={{
           display: 'flex',
@@ -82,7 +86,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           +
         </div>
       </div>
-      <h2>Public Views</h2>
+      <h2 className="secondary-h-dashboard">Public Views</h2>
       <div
         style={{
           display: 'flex',
