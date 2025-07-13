@@ -1,5 +1,6 @@
 export const EntryFieldConfig: Record<string, string[]> = {
   CONTACT: [
+    'header',
     'phoneNumber',
     'email',
     'linkedInAccount',
@@ -29,15 +30,20 @@ export const EntryFieldConfig: Record<string, string[]> = {
     'cloudDocumentName',
     'documentCloudMetadata',
   ],
-
-  IDENTITY: ['names', 'lastNames'],
+  IDENTITY: ['header', 'names', 'lastNames'],
   LANGUAGE: ['name', 'level', 'cloudDocumentName', 'documentCloudMetadata'],
   PORTFOLIO: ['projectName', 'projectUrl'],
-  PROFESSION: ['generalTitle', 'specificTitle'],
-  PROFILE_PICTURE: ['documentCloudMetadata', 'shape'],
+  PROFESSION: ['header', 'generalTitle', 'specificTitle'],
+  PROFILE_PICTURE: ['header', 'documentCloudMetadata', 'shape'],
   SOFT_SKILL: ['keyWords'],
-  SUMMARY: ['title', 'text'],
+  SUMMARY: ['header', 'title', 'text'],
   TECHNICAL_SKILL: ['keyWords'],
+  LIST_EDUCATION: ['header'],
+  LIST_TECHNICAL_SKILL: ['header'],
+  LIST_LANGUAGE: ['header'],
+  LIST_PORTFOLIO: ['header'],
+  LIST_EXPERIENCE: ['header'],
+  LIST_SOFT_SKILL: ['header'],
 };
 
 export const EntryContainerTypes = [

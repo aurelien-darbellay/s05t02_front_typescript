@@ -1,4 +1,4 @@
-import { ContainerEntry, Position, Entry } from '../EntriesGeneralFeatures';
+import { ContainerEntry, Position } from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
 export class Identity implements ContainerEntry {
   // From Entry (via ContainerEntry)
@@ -7,6 +7,7 @@ export class Identity implements ContainerEntry {
   public codeName: string = 'identity';
   public projected: boolean;
   public highlighted: boolean;
+  public header: string;
 
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;
@@ -23,6 +24,7 @@ export class Identity implements ContainerEntry {
   public id: string | null;
 
   constructor(
+    header: string,
     position: Position,
     color: string,
     size: number,
@@ -44,6 +46,7 @@ export class Identity implements ContainerEntry {
     this.lastNames = lastNames ? [...lastNames] : [];
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
+    this.header = header;
     // names and lastNames default to empty arrays
   }
 }

@@ -13,6 +13,7 @@ export class Contact implements ContainerEntry {
   public previousEntry: string | null;
   public nextEntry: string | null;
   public id: string | null;
+  public header: string;
 
   // Contact‐specific properties
   public phoneNumber: string;
@@ -26,7 +27,7 @@ export class Contact implements ContainerEntry {
 
   constructor(
     // Entry / ContainerEntry fields
-
+    header: string,
     position: Position,
     color: string,
     size: number,
@@ -40,9 +41,9 @@ export class Contact implements ContainerEntry {
     facebookAccount: string,
     cityOfResidence: string,
     zipCode: number,
-
     projected: boolean = true,
     highlighted: boolean = false,
+
     id?: string,
     // Optional previous/next entries
     previousEntry?: string,
@@ -57,6 +58,7 @@ export class Contact implements ContainerEntry {
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
     this.id = id ?? uuidv4();
+    this.header = header;
 
     // Initialize Contact‐specific properties
     this.phoneNumber = phoneNumber;

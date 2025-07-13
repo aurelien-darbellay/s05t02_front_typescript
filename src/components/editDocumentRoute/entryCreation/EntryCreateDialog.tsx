@@ -64,7 +64,7 @@ export default function EntryCreateDialog({
     listTypes.includes(selectedType) &&
     entries.every((entry) => entry.type != selectedType);
 
-  console.log(isItemAndListDontExist);
+  //console.log(isItemAndListDontExist);
 
   const handleTypeChange = (type: string) => {
     //console.log(type);

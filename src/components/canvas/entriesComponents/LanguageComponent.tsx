@@ -19,6 +19,7 @@ export const LanguageComponent: React.FC<LanguageComponentProps> = ({
     <div
       className="flex items-start gap-4"
       style={{
+        minWidth: '190px',
         width: '100%',
         alignItems: 'flex-start',
       }}

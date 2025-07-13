@@ -6,8 +6,8 @@ export function isTotallyOrdered(entries: ContainerEntry[]): boolean {
   // 1️⃣ Find start and end nodes
   const starts = entries.filter((e) => !e.previousEntry);
   const ends = entries.filter((e) => !e.nextEntry);
-  console.log(starts);
-  console.log(ends);
+  //console.log(starts);
+  //console.log(ends);
 
   if (starts.length !== 1 || ends.length !== 1) {
     return false;

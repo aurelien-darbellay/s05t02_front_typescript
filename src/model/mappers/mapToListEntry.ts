@@ -21,6 +21,7 @@ export const mapToListEntry = (entryData: any): ListEntries | null => {
     type = EntryTypesFormatter.fromListToItem(type);
   }
   const list = new ListEntries(
+    entryData.header,
     mappedEntries,
     entryData.projected,
     entryData.highlighted,

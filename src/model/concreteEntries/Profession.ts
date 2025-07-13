@@ -7,6 +7,7 @@ export class Profession implements ContainerEntry {
   public codeName: string = 'profession';
   public projected: boolean;
   public highlighted: boolean;
+  public header: string;
 
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;
@@ -23,6 +24,7 @@ export class Profession implements ContainerEntry {
   public specificTitle: string;
 
   constructor(
+    header: string,
     // Profession fields
     generalTitle: string,
     specificTitle: string,
@@ -54,7 +56,7 @@ export class Profession implements ContainerEntry {
     this.projected = projected;
     this.highlighted = highlighted;
     this.id = id ?? uuidv4();
-
+    this.header = header;
     // Initialize ContainerEntry links
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;

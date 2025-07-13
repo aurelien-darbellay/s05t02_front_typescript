@@ -17,6 +17,7 @@ export function mapSingleEntryDataToInstance(
   switch (type) {
     case 'PROFESSION':
       return new Profession(
+        entryData.header,
         entryData.generalTitle,
         entryData.specificTitle,
         entryData.position || { xCord: 0, yCord: 0 },
@@ -31,6 +32,7 @@ export function mapSingleEntryDataToInstance(
 
     case 'IDENTITY':
       return new Identity(
+        entryData.header,
         entryData.position || { xCord: 0, yCord: 0 },
         entryData.color,
         entryData.size,
@@ -45,6 +47,7 @@ export function mapSingleEntryDataToInstance(
 
     case 'PROFILE_PICTURE':
       return new ProfilePicture(
+        entryData.header,
         entryData.documentCloudMetadata,
         entryData.shape,
         entryData.position || { xCord: 0, yCord: 0 },
@@ -59,6 +62,7 @@ export function mapSingleEntryDataToInstance(
 
     case 'CONTACT':
       return new Contact(
+        entryData.header,
         entryData.position || { xCord: 0, yCord: 0 },
         entryData.color,
         entryData.size,
@@ -79,6 +83,7 @@ export function mapSingleEntryDataToInstance(
 
     case 'SUMMARY':
       return new Summary(
+        entryData.header,
         entryData.title,
         entryData.text,
         entryData.position || { xCord: 0, yCord: 0 },

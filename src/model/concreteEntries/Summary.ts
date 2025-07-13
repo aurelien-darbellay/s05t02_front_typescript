@@ -7,7 +7,7 @@ export class Summary implements ContainerEntry {
   public codeName: string = 'summary';
   public projected: boolean;
   public highlighted: boolean;
-
+  public header: string;
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;
   public color: string;
@@ -23,6 +23,7 @@ export class Summary implements ContainerEntry {
   public text: string;
 
   constructor(
+    header: string,
     // Summary fields
     title: string,
     text: string,
@@ -58,5 +59,6 @@ export class Summary implements ContainerEntry {
     // Initialize ContainerEntry links
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
+    this.header = header;
   }
 }

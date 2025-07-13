@@ -43,7 +43,6 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       connectMode,
       connectOriginId,
       setConnectOriginId,
-      setConnectMode,
       addConnection,
       determineIfList,
       handleEditEntry,
@@ -106,7 +105,12 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
       return () => observer.disconnect();
     }, [entryRef.current, onSizeChange]);
 
-    const displayLabel = entry.displayedType;
+    //console.log(entry.header);
+
+    const displayLabel =
+      entry.header != '' && entry.header != undefined
+        ? entry.header
+        : entry.displayedType;
 
     // Click (context menu) handler for editing
     const handleClick = (e: React.MouseEvent) => {

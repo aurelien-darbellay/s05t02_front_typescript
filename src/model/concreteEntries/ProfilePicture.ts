@@ -1,7 +1,6 @@
 import {
   ContainerEntry,
   Position,
-  Entry,
   CloudMetaData,
 } from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,6 +19,7 @@ export class ProfilePicture implements ContainerEntry {
   public codeName: string = 'profilePicture';
   public projected: boolean;
   public highlighted: boolean;
+  public header: string;
 
   // From Positioned, Colored, Sized (via ContainerEntry)
   public position: Position;
@@ -36,6 +36,7 @@ export class ProfilePicture implements ContainerEntry {
   public shape: Shape;
 
   constructor(
+    header: string,
     // ProfilePicture fields
     documentCloudMetadata: CloudMetaData,
     shape: Shape = Shape.ROUND,
@@ -71,5 +72,6 @@ export class ProfilePicture implements ContainerEntry {
     // Initialize ContainerEntry links
     this.previousEntry = previousEntry ?? null;
     this.nextEntry = nextEntry ?? null;
+    this.header = header;
   }
 }
