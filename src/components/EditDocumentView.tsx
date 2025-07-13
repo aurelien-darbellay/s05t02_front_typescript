@@ -158,7 +158,7 @@ const EditDocumentView: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen">
       {/* Header stays scrollable with content */}
-      <div className="relative bg-white border-b border-gray-300 flex p-6 gap-4">
+      <div className="relative bg-white border-b border-gray-300 flex p-6 gap-4 mt-3 mb-3 shadow-md rounded-sm">
         <ActionButton
           onClick={() => navigate('/user')}
           value="Back to Dashboard"

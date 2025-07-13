@@ -62,9 +62,11 @@ const UserDashboard = () => {
         }}
       >
         {isAdminInSomeoneElseSpace ? (
-          <h2 className="dashboard-header">This is {username}'s dashboard</h2>
+          <h2 className="dashboard-header z-4">
+            This is {username}'s dashboard
+          </h2>
         ) : (
-          <h2 className="dashboard-header">Welcome {username}</h2>
+          <h2 className="dashboard-header z-4">Welcome {username}</h2>
         )}
         <ActionButton
           value="User Details"

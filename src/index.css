@@ -37,9 +37,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-body * {
-  z-index: 2;
-}
 
 #root {
   min-width: 600px;
