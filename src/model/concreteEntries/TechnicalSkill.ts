@@ -1,7 +1,7 @@
-import { ContainedEntry } from '../EntriesGeneralFeatures';
+import { ItemKeyWords } from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
 
-export class TechnicalSkill implements ContainedEntry {
+export class TechnicalSkill implements ItemKeyWords {
   // From Entry (via ContainedEntry)
   public type: string = 'TECHNICAL_SKILL';
   public displayedType: string = 'Technical Skill';

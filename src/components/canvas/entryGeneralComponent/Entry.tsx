@@ -9,6 +9,7 @@ import './EntryTransitions.css';
 
 import { useEntryHover } from './useEntryHover';
 import { useEntryInteractions } from './useEntryInteractions';
+import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
 
 interface EntryProps {
   entry: ContainerEntry;
@@ -78,9 +79,9 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
 
     const hasPicture =
       entry.type === 'PROFILE_PICTURE' &&
-      entry.documentCloudMetadata &&
-      entry.documentCloudMetadata.publicUrl &&
-      entry.documentCloudMetadata.publicUrl != '';
+      (entry as ProfilePicture).documentCloudMetadata &&
+      (entry as ProfilePicture).documentCloudMetadata.publicUrl &&
+      (entry as ProfilePicture).documentCloudMetadata.publicUrl != '';
 
     useEffect(() => {
       if (!entryRef.current || !onSizeChange) return;
@@ -116,7 +117,7 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       determineIfList(entry.type);
-      handleEditEntry(entry);
+      if (handleEditEntry) handleEditEntry(entry);
     };
 
     return (
@@ -135,10 +136,11 @@ export const Entry = forwardRef<HTMLDivElement, EntryProps>(
           if (connectMode) {
             e.preventDefault();
             e.stopPropagation();
-            if (!connectOriginId) setConnectOriginId(entry.id);
+            if (!connectOriginId && setConnectOriginId)
+              setConnectOriginId(entry.id);
             else if (connectOriginId !== entry.id) {
-              addConnection(connectOriginId, entry.id);
-              setConnectOriginId(null);
+              if (addConnection) addConnection(connectOriginId, entry.id);
+              if (setConnectOriginId) setConnectOriginId(null);
               //setConnectMode(false);
             }
           } else {

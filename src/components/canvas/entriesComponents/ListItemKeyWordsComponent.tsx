@@ -1,7 +1,9 @@
 import { useContext, useState } from 'react';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
-import { Entry } from '../../../model/EntriesGeneralFeatures';
+import { Entry, ItemKeyWords } from '../../../model/EntriesGeneralFeatures';
 import { ProjectionContext } from '../../../contexts/ProjectionContext';
+import { SoftSkill } from '../../../model/concreteEntries/SoftSkill';
+import { TechnicalSkill } from '../../../model/concreteEntries/TechnicalSkill';
 
 interface ListItemKeyWordsComponentProps {
   entry: Entry;
@@ -56,7 +58,7 @@ export const ListItemKeyWordsComponent: React.FC<
         whiteSpace: 'nowrap',
       }}
     >
-      {capitalizeWords(entry.keyWords)}
+      {capitalizeWords((entry as ItemKeyWords).keyWords)}
     </span>
   );
 };

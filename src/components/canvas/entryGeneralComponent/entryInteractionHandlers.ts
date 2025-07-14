@@ -63,11 +63,12 @@ export const createHandleMouseMove = (
         yCord: originPos.current.yCord + deltaY,
       };
       if (onPositionChange) return onPositionChange(entry, newPos);
+      else return entry;
     } else if (resizing) {
       const delta = e.clientX - originMouse.current.x;
       const newScale = Math.max(0.5, originScale.current + delta / 250);
       setScaleFactor(newScale);
       return { ...entry, size: newScale };
-    }
+    } else return entry;
   };
 };

@@ -1,6 +1,9 @@
 // src/components/canvas/getEntryStyle.ts
 
-import { Shape } from '../../../model/concreteEntries/ProfilePicture';
+import {
+  ProfilePicture,
+  Shape,
+} from '../../../model/concreteEntries/ProfilePicture';
 import { ContainerEntry } from '../../../model/EntriesGeneralFeatures';
 
 export const getEntryStyle = (
@@ -13,9 +16,9 @@ export const getEntryStyle = (
 ): React.CSSProperties => {
   const hasPicture = Boolean(
     entry.type === 'PROFILE_PICTURE' &&
-      entry.documentCloudMetadata &&
-      entry.documentCloudMetadata.publicUrl &&
-      entry.documentCloudMetadata.publicUrl.trim() !== ''
+      (entry as ProfilePicture).documentCloudMetadata &&
+      (entry as ProfilePicture).documentCloudMetadata.publicUrl &&
+      (entry as ProfilePicture).documentCloudMetadata.publicUrl.trim() !== ''
   );
 
   const baseColor = entry.color ?? '#ccc';

@@ -1,7 +1,7 @@
-import { ContainedEntry } from '../EntriesGeneralFeatures';
+import { ItemKeyWords } from '../EntriesGeneralFeatures';
 import { v4 as uuidv4 } from 'uuid';
 
-export class SoftSkill implements ContainedEntry {
+export class SoftSkill implements ItemKeyWords {
   // From Entry (via ContainedEntry)
   public type: string = 'SOFT_SKILL';
   public displayedType: string = 'Soft Skill';

@@ -8,7 +8,6 @@ import { EditEntryContext } from '../../contexts/EditEntryContext.ts';
 import { computeConnectionPoints } from './entryGeneralComponent/computeConnectionPoints.ts';
 import { createHandleKeyDown } from './entryGeneralComponent/createHandleKeyDown.ts';
 import { PlayButton } from './PlayButton.tsx';
-import { PlaybackController } from './PlaybackController.ts';
 
 interface CanvasProps {
   entries: ContainerEntry[];
@@ -39,8 +38,8 @@ export const Canvas: React.FC<CanvasProps> = ({
   const [existOpenEntry, setExistOpenEntry] = useState(false);
   const [connections, setConnections] = useState<
     {
-      sourceId: string;
-      targetId: string;
+      sourceId: string | null;
+      targetId: string | null;
       from: { x: number; y: number } | null;
       to: { x: number; y: number } | null;
     }[]
@@ -72,6 +71,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     let maxY = window.innerHeight - 250;
 
     entries.forEach((entry) => {
+      if (entry.id === null) return;
       const ref = entryRefs.current.get(entry.id);
       if (!ref) return;
 
@@ -115,7 +115,8 @@ export const Canvas: React.FC<CanvasProps> = ({
           to: points.to,
         };
       })
-      .filter(Boolean);
+      .filter(Boolean)
+      .filter((conn): conn is NonNullable<typeof conn> => conn !== null);
 
     setConnections(newConnections);
   }, [
@@ -132,7 +133,6 @@ export const Canvas: React.FC<CanvasProps> = ({
       selectedConnectionIndex,
       setSelectedConnectionIndex,
       connections,
-      entries,
       setEntries,
       addOrUpdateEntry,
     });

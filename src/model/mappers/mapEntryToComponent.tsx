@@ -8,8 +8,6 @@ import { LanguageComponent } from '../../components/canvas/entriesComponents/Lan
 import { ExperienceComponent } from '../../components/canvas/entriesComponents/ExperienceComponent';
 import { EducationComponent } from '../../components/canvas/entriesComponents/EducationComponent';
 import { PortfolioComponent } from '../../components/canvas/entriesComponents/PortfolioComponent';
-import { SoftSkillComponent } from '../../components/canvas/entriesComponents/SoftSkillComponent';
-import { TechnicalSkillComponent } from '../../components/canvas/entriesComponents/TechnicalSkillComponent';
 import { Identity } from '../concreteEntries/Identity';
 import { Profession } from '../concreteEntries/Profession';
 import { ProfilePicture } from '../concreteEntries/ProfilePicture';
@@ -18,8 +16,6 @@ import { Language } from '../concreteEntries/Language';
 import { Experience } from '../concreteEntries/Experience';
 import { Education } from '../concreteEntries/Education';
 import { Portfolio } from '../concreteEntries/Portfolio';
-import { SoftSkill } from '../concreteEntries/SoftSkill';
-import { TechnicalSkill } from '../concreteEntries/TechnicalSkill';
 import { Contact } from '../concreteEntries/Contact';
 import { JSX } from 'react';
 import { ListEntriesComponent } from '../../components/canvas/entriesComponents/ListEntriesComponent';
@@ -47,12 +43,6 @@ export const mapEntryToComponent = (entry: Entry): JSX.Element | null => {
       return <EducationComponent education={entry as Education} />;
     case 'PORTFOLIO':
       return <PortfolioComponent portfolio={entry as Portfolio} />;
-    case 'SOFT_SKILL':
-      return <SoftSkillComponent softSkill={entry as SoftSkill} />;
-    case 'TECHNICAL_SKILL':
-      return (
-        <TechnicalSkillComponent technicalSkill={entry as TechnicalSkill} />
-      );
     default:
       if (EntryListTypes.includes(entry.type))
         return <ListEntriesComponent listEntries={entry as ListEntries} />;

@@ -17,6 +17,6 @@ export default {
     react: { version: 'detect' },
   },
   rules: {
-    // any custom rules you want
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 };

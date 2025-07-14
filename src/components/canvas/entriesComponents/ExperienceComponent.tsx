@@ -56,7 +56,7 @@ export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({
         )}
 
         {experience.keywords && experience.keywords.length > 0 && (
-          <p>{experience.keywords.join(', ')}</p>
+          <p>{experience.keywords}</p>
         )}
 
         {isNonEmpty(experience.nameLink) && isNonEmpty(experience.linkUrl) && (

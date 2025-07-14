@@ -23,7 +23,7 @@ const Logout = ({ authStateSetters, pluginCfg }) => {
       sessionStorage.removeItem('actingUser');
       localStorage.removeItem('username');
       window.location.href = '/'; // Redirect after logout
-    } catch (err) {
+    } catch {
       //console.error("Logout failed", err);
       setError('Logout failed. Try again.');
     }

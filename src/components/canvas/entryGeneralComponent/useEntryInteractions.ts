@@ -18,7 +18,7 @@ export function useEntryInteractions({
   width: number;
   setHovered: (v: boolean) => void;
   setExistOpenEntry: (v: boolean) => void;
-  addOrUpdateEntry: (entry: Entry, isEditing: boolean) => void;
+  addOrUpdateEntry: ((entry: Entry, isEditing: boolean) => void) | null;
 }) {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(false);
@@ -66,7 +66,7 @@ export function useEntryInteractions({
     if (resizing) setResizing(false);
     const updatedEntry = latestEntryRef.current;
     if (updatedEntry) {
-      addOrUpdateEntry(updatedEntry, true);
+      if (addOrUpdateEntry) addOrUpdateEntry(updatedEntry, true);
     }
   };
 

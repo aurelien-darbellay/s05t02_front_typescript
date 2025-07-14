@@ -10,7 +10,7 @@ export function useEntryHover({
   onHoverHeightChange,
 }: {
   entry: any;
-  entryRef: RefObject<HTMLDivElement>;
+  entryRef: RefObject<HTMLDivElement | null>;
   dialogOpen: boolean;
   existOpenEntry: boolean;
   connectMode: boolean;
@@ -44,13 +44,14 @@ export function useEntryHover({
           const topMargin = 20; // optional margin at top
 
           const el = entryRef.current;
-          const rect = el.getBoundingClientRect();
+          const rect = el?.getBoundingClientRect();
 
           // How much space is available in viewport
           const viewportHeight = window.innerHeight;
 
           // If it's already fully in view with margins, do nothing
           if (
+            rect &&
             rect.top >= topMargin &&
             rect.bottom <= viewportHeight - bottomMargin
           ) {
@@ -58,12 +59,13 @@ export function useEntryHover({
           }
 
           // Now compute the ideal target scroll position
-          const absoluteElementBottom = window.pageYOffset + rect.bottom;
+          const absoluteElementBottom =
+            window.pageYOffset + (rect ? rect.bottom : 0);
           let targetScrollY =
             absoluteElementBottom - viewportHeight + bottomMargin;
 
           // Clamp so that top doesn't go offscreen
-          const absoluteElementTop = window.pageYOffset + rect.top;
+          const absoluteElementTop = window.pageYOffset + (rect ? rect.top : 0);
           targetScrollY = Math.min(
             targetScrollY,
             absoluteElementTop - topMargin

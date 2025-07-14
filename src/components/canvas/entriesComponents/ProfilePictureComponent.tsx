@@ -1,8 +1,6 @@
 // ProfilePictureComponent.tsx
-import React, { useContext } from 'react';
 import { ProfilePicture } from '../../../model/concreteEntries/ProfilePicture';
 import { getShapeStyle } from '../entryGeneralComponent/entryStyle';
-import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import CloudinaryUploadButton from '../../cloud/CloudinaryUploadButton';
 
 interface ProfilePictureComponentProps {
@@ -14,7 +12,6 @@ interface ProfilePictureComponentProps {
 export const ProfilePictureComponent: React.FC<
   ProfilePictureComponentProps
 > = ({ profilePicture }) => {
-  const { editable } = useContext(EditEntryContext);
   const hasPicture = Boolean(
     profilePicture.documentCloudMetadata &&
       profilePicture.documentCloudMetadata.publicUrl &&

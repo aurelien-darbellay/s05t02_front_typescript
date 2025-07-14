@@ -32,6 +32,9 @@ export interface ContainerEntry extends Entry, Positioned, Colored, Sized {
   header: string;
 }
 export interface ContainedEntry extends Entry {}
+export interface ItemKeyWords extends ContainedEntry {
+  keyWords: string;
+}
 
 export interface PointsToFileInCloud extends Entry {
   cloudDocumentName: string;

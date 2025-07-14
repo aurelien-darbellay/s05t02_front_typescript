@@ -1,7 +1,6 @@
 // ProfessionComponent.tsx
 import React from 'react';
 import { Profession } from '../../../model/concreteEntries/Profession';
-import { AlignCenter } from 'lucide-react';
 
 interface ProfessionComponentProps {
   profession: Profession;

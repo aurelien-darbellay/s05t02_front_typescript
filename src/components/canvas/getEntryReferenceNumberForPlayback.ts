@@ -1,4 +1,5 @@
 import { EntryListTypes } from '../../model/EntriesConfig';
+import { Entry, ListEntries } from '../../model/EntriesGeneralFeatures';
 
 const ENTRY_TEXT_FIELDS = [
   'phoneNumber',
@@ -32,8 +33,8 @@ export function getEntryReferenceNumberForPlayback(entry: Entry): number {
   let result = 0;
 
   if (EntryListTypes.includes(entry.type)) {
-    if (Array.isArray(entry.entries)) {
-      for (const e of entry.entries) {
+    if (Array.isArray((entry as ListEntries).entries)) {
+      for (const e of (entry as ListEntries).entries) {
         result += getEntryReferenceNumberForPlayback(e);
       }
     }

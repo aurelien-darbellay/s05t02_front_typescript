@@ -4,7 +4,7 @@ export const createAddConnection = (
   setUpdateUserMessage,
   addOrUpdateEntry
 ) => {
-  return (sourceId: string, targetId: string) => {
+  return (sourceId: string | null, targetId: string | null) => {
     const sourceEntry = entries.find((e) => e.id === sourceId);
     const targetEntry = entries.find((e) => e.id === targetId);
     //console.log(targetEntry);
