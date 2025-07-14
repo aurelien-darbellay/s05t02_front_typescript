@@ -22,7 +22,14 @@ axios.interceptors.request.use(
     const riskyMethods = ['post', 'put', 'patch', 'delete'];
     const method = (config.method || '').toLowerCase();
     console.log(config.url);
-    const isOwnApi = config.baseURL?.startsWith(ApiPaths.BACK_ORIGIN);
+    let requestOrigin = '';
+    try {
+      const fullUrl = new URL(config.url as string, config.baseURL);
+      requestOrigin = fullUrl.origin;
+    } catch {
+      console.warn('Could not parse request URL for CSRF check:', config.url);
+    }
+    const isOwnApi = requestOrigin === ApiPaths.BACK_ORIGIN;
     console.log(isOwnApi);
     if (riskyMethods.includes(method) && isOwnApi) {
       if (!csrfToken) {
