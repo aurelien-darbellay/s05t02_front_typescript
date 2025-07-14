@@ -11,7 +11,7 @@ const PVS_URL = ApiPaths.PVs_PATH;
 const UserDashboard = () => {
   const [documentsData, setDocumentsData] = useState<any>(null);
   const username = documentsData?.username;
-  const [actingUser, setActingUser] = useState<string | null>(() => {
+  const [actingUser] = useState<string | null>(() => {
     return sessionStorage.getItem('actingUser');
   });
   const [documents, setDocuments] = useState<any[]>([]);

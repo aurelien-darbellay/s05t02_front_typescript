@@ -43,8 +43,10 @@ export function createHandleKeyDown({
             return entry;
           })
         );
-      if (updatedSource) addOrUpdateEntry(updatedSource, true);
-      if (updatedTarget) addOrUpdateEntry(updatedTarget, true);
+      if (updatedSource && addOrUpdateEntry)
+        addOrUpdateEntry(updatedSource, true);
+      if (updatedTarget && addOrUpdateEntry)
+        addOrUpdateEntry(updatedTarget, true);
       setSelectedConnectionIndex(null);
     }
   };

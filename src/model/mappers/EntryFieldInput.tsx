@@ -4,7 +4,6 @@ import { useGetInputType } from './getInputType';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
 import CloudAccessManager from '../../components/cloud/CloudAccessManager';
 import { PointsToFileInCloud } from '../EntriesGeneralFeatures';
-import { Point } from '../../components/canvas/entryGeneralComponent/computeConnectionPoints';
 
 interface EntryFieldInputProps {
   field: string;

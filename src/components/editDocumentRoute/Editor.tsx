@@ -123,7 +123,7 @@ const Editor: React.FC<EditorProps> = ({
   }, [entries]);
 
   useEffect(() => {
-    setEntries((prev) => mapDocDataToEntries(docData));
+    setEntries(() => mapDocDataToEntries(docData));
   }, [docData]);
 
   return (
