@@ -7,13 +7,13 @@ export default function CloudinaryUploadButton({
   size = 1,
   entry,
   value = 'Add file',
-  isPicture = false,
+  isPicture,
 }) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
   const { addOrUpdateEntry, setUpdateUser, setUpdateUserMessage } =
     useContext(EditEntryContext);
-
+  console.log(isPicture);
   const handleButtonClick = () => {
     if (uploading) return;
     if (fileInputRef.current) {

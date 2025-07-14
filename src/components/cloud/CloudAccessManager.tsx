@@ -23,6 +23,8 @@ export default function CloudAccessManager({
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
   const isPicture = entry.type === 'PROFILE_PICTURE';
+  /* console.log(entry.type);
+  console.log(isPicture); */
   const isEmptyMeta =
     !documentCloudMetadata || !documentCloudMetadata.publicUrl;
   //console.log('Empty: ', isEmptyMeta);
@@ -66,7 +68,7 @@ export default function CloudAccessManager({
     }
     window.open(url, '_blank', 'noopener,noreferrer');
   }
-
+  console.log(isPicture);
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       {(editable || !isEmptyMeta) && (
@@ -100,7 +102,7 @@ export default function CloudAccessManager({
                     size={size}
                     entry={entry}
                     value={textUpload}
-                    isPicture
+                    isPicture={isPicture}
                   />
                 ) : null
               ) : (
