@@ -8,6 +8,7 @@ import axios from '../../axiosConfig.ts';
 import { ApiPaths } from '../../apiPaths.ts';
 import { EntryContainerTypes } from '../../model/EntriesConfig.ts';
 import { mapSingleEntryDataToInstance } from '../../model/mappers/mapSingleEntryDataToInstance.ts';
+import { deleteFileInCloudinary } from '../cloud/deleteFileInCloudinary.ts';
 
 const updateEntriesInState = (
   entries: ContainerEntry[],
@@ -76,12 +77,49 @@ const removeEntryFromState = (
   });
   return updatedEntries;
 };
+function removeAdjacentConnection(entry, setEntries, addOrUpdateEntry) {
+  if (
+    (!entry.nextEntry || entry.nextEntry.trim() === '') &&
+    (!entry.previousEntry || entry.previousEntry.trim() === '')
+  ) {
+    // Nothing to do
+    return;
+  }
+  setEntries((prevEntries) => {
+    const updatedEntries = prevEntries.map((e) => {
+      if (entry.nextEntry && e.id === entry.nextEntry) {
+        // Remove backward link
+        const updated = { ...e, previousEntry: null };
+        addOrUpdateEntry(updated, true);
+        return updated;
+      } else if (entry.previousEntry && e.id === entry.previousEntry) {
+        // Remove forward link
+        const updated = { ...e, nextEntry: null };
+        addOrUpdateEntry(updated, true);
+        return updated;
+      } else {
+        return e;
+      }
+    });
+    return updatedEntries;
+  });
+}
+
+function removeAttachedFiles(entry) {
+  if (
+    entry.documentCloudMetadata &&
+    entry.documentCloudMetadata.publicUrl.trim() != '' &&
+    entry.documentCloudMetadata.id.trim() != ''
+  )
+    deleteFileInCloudinary(entry.documentCloudMetadata.id);
+}
 
 export const createHandleDeleteEntry = (
   docId: string,
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
   exposeError: React.Dispatch<React.SetStateAction<boolean>>,
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
+  addOrUpdateEntry: ((entry: Entry, isEditing: boolean) => void) | null
 ) => {
   return async (entryData: Entry) => {
     try {
@@ -95,6 +133,8 @@ export const createHandleDeleteEntry = (
 
       await axios.post(url, payload);
       setEntries((prev) => removeEntryFromState(prev, entryData));
+      removeAdjacentConnection(payload, setEntries, addOrUpdateEntry);
+      removeAttachedFiles(payload);
     } catch (error) {
       exposeError(true);
       setErrorMessage('Failed to delete entry: ' + (error as Error).message);

@@ -82,7 +82,8 @@ const Editor: React.FC<EditorProps> = ({
     docData?.id,
     setEntries,
     setUpdateUser,
-    setUpdateUserMessage
+    setUpdateUserMessage,
+    addOrUpdateEntry
   );
 
   const handleEditEntry = (entry: Entry) => {
@@ -149,6 +150,7 @@ const Editor: React.FC<EditorProps> = ({
         entries,
         setEntries,
         playDocument,
+        setEntryDataInModif,
       }}
     >
       <div className="w-full flex">

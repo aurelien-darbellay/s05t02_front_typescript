@@ -43,6 +43,16 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
   if (normalized.shape === '') {
     normalized.shape = 'MATCH';
   }
+  for (const key in normalized) {
+    if (
+      key.includes('Url') &&
+      typeof normalized[key] === 'string' &&
+      !normalized[key].startsWith('http://') &&
+      !normalized[key].startsWith('https://')
+    ) {
+      normalized[key] = 'https://' + normalized[key];
+    }
+  }
 
   return normalized;
 };

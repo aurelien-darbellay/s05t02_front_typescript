@@ -3,16 +3,24 @@ import { ActionButton } from '../../utils/ActionButton';
 import { createCloudinaryUploadHandler } from './createCloudinaryUploadHandler';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 
+const noopSetEditing: React.Dispatch<React.SetStateAction<boolean>> = () => {};
+
 export default function CloudinaryUploadButton({
   size = 1,
   entry,
   value = 'Add file',
   isPicture,
+  setIsEditing = noopSetEditing,
+  setIsEmptyMeta = noopSetEditing,
 }) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
-  const { addOrUpdateEntry, setUpdateUser, setUpdateUserMessage } =
-    useContext(EditEntryContext);
+  const {
+    addOrUpdateEntry,
+    setUpdateUser,
+    setUpdateUserMessage,
+    setEntryDataInModif,
+  } = useContext(EditEntryContext);
   console.log(isPicture);
   const handleButtonClick = () => {
     if (uploading) return;
@@ -27,6 +35,9 @@ export default function CloudinaryUploadButton({
     exposeError: setUpdateUser,
     setErrorMessage: setUpdateUserMessage,
     isPicture,
+    setIsEditing,
+    setIsEmptyMeta,
+    setEntryDataInModif,
   });
 
   return (

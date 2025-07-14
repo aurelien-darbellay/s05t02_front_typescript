@@ -105,6 +105,7 @@ const PublicDocumentView: React.FC = () => {
         connectOriginId: null,
         setConnectOriginId: null,
         addConnection: null,
+        setEntryDataInModif: () => {},
       }}
     >
       <div className="w-full bg-gray-100 mt-30">

@@ -5,20 +5,25 @@ import { ActionButton } from '../../utils/ActionButton';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 import { normalizeEntryData } from '../editDocumentRoute/entryCreation/normalizeEntryData';
 import { Entry } from '../../model/EntriesGeneralFeatures';
+import { deleteFileInCloudinary } from './deleteFileInCloudinary';
 
-const CloudinaryDeleteButton = ({ entry, size = 1, onClose }) => {
+const CloudinaryDeleteButton = ({
+  entry,
+  size = 1,
+  onClose,
+  setIsEmptyMeta,
+}) => {
   const {
     addOrUpdateEntry,
     setUpdateUser: exposeError,
     setUpdateUserMessage: setErrorMessage,
+    setEntryDataInModif,
   } = useContext(EditEntryContext);
   const publicId = entry.documentCloudMetadata.id;
   //console.log(entry);
   const handleDelete = async () => {
     try {
-      await axios.post(ApiPaths.CLOUD_DELETE_PATH, {
-        publicId,
-      });
+      await deleteFileInCloudinary(publicId);
       const updatedEntry = {
         ...entry,
         cloudDocumentName: '',
@@ -29,6 +34,8 @@ const CloudinaryDeleteButton = ({ entry, size = 1, onClose }) => {
       exposeError(true);
       setErrorMessage('File sucessfully deleted');
       onClose();
+      setIsEmptyMeta(true);
+      setEntryDataInModif(updatedEntry);
     } catch (e) {
       exposeError(true);
       setErrorMessage('Error deleting document: ' + (e as Error).message);

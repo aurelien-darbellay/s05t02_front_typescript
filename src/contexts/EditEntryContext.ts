@@ -25,6 +25,7 @@ export const EditEntryContext = React.createContext<{
   connectOriginId: string | null;
   entries: ContainerEntry[];
   setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>;
+  setEntryDataInModif: React.Dispatch<React.SetStateAction<Entry | null>>;
   setConnectOriginId: React.Dispatch<
     React.SetStateAction<string | null>
   > | null;
@@ -58,5 +59,6 @@ export const EditEntryContext = React.createContext<{
   addConnection: null,
   entries: [],
   setEntries: () => {},
+  setEntryDataInModif: () => {},
   playDocument,
 });

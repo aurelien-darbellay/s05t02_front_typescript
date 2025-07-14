@@ -8,11 +8,13 @@ import { PointsToFileInCloud } from '../../model/EntriesGeneralFeatures';
 type CloudAccessManagerProps = {
   entry: PointsToFileInCloud;
   size?: number;
+  setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function CloudAccessManager({
   entry,
   size = 1,
+  setIsEditing,
 }: CloudAccessManagerProps) {
   const [open, setOpen] = useState(false);
   const icon = `<svg class="target" width="20" height="20" viewBox="0 0 24 24" fill="grey" xmlns="http://www.w3.org/2000/svg">
@@ -20,13 +22,14 @@ export default function CloudAccessManager({
   </svg>`;
   //console.log(entry);
   const { documentCloudMetadata, cloudDocumentName } = entry ?? {};
+  const [isEmptyMeta, setIsEmptyMeta] = useState(
+    !documentCloudMetadata || !documentCloudMetadata.publicUrl
+  );
   const { editable } = useContext(EditEntryContext);
   // Decide if we treat the metadata as "empty"
   const isPicture = entry.type === 'PROFILE_PICTURE';
   /* console.log(entry.type);
   console.log(isPicture); */
-  const isEmptyMeta =
-    !documentCloudMetadata || !documentCloudMetadata.publicUrl;
   //console.log('Empty: ', isEmptyMeta);
   const targetUrl = documentCloudMetadata?.publicUrl;
 
@@ -103,6 +106,8 @@ export default function CloudAccessManager({
                     entry={entry}
                     value={textUpload}
                     isPicture={isPicture}
+                    setIsEditing={setIsEditing}
+                    setIsEmptyMeta={setIsEmptyMeta}
                   />
                 ) : null
               ) : (
@@ -127,6 +132,7 @@ export default function CloudAccessManager({
                       entry={entry}
                       size={size}
                       onClose={toggleOpen}
+                      setIsEmptyMeta={setIsEmptyMeta}
                     />
                   )}
                 </>

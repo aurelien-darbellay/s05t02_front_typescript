@@ -245,6 +245,7 @@ export default function EntryCreateDialog({
               entryData={
                 field === 'documentCloudMetadata' ? getEntryPayload() : null
               }
+              setIsEditing={setIsEditing}
             />
           </div>
         ))}

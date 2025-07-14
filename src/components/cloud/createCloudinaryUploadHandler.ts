@@ -9,6 +9,9 @@ export function createCloudinaryUploadHandler({
   exposeError,
   setErrorMessage,
   isPicture = false,
+  setIsEditing,
+  setIsEmptyMeta,
+  setEntryDataInModif,
 }) {
   return async function handleFileChange(event, entry) {
     const file = event.target.files[0];
@@ -63,6 +66,9 @@ export function createCloudinaryUploadHandler({
 
       //console.log(updatedEntry);
       addOrUpdateEntry(normalizeEntryData(updatedEntry), true);
+      setIsEditing(true);
+      setIsEmptyMeta(false);
+      setEntryDataInModif(updatedEntry);
     } catch (error) {
       exposeError(true);
       setErrorMessage('Upload failed: ' + error);
