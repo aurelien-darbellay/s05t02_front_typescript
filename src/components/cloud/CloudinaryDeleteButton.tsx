@@ -1,6 +1,4 @@
 import { useContext } from 'react';
-import { ApiPaths } from '../../apiPaths';
-import axios from '../../axiosConfig';
 import { ActionButton } from '../../utils/ActionButton';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 import { normalizeEntryData } from '../editDocumentRoute/entryCreation/normalizeEntryData';
