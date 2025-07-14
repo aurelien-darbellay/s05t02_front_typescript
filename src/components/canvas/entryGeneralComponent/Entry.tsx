@@ -5,7 +5,7 @@ import { getEntryStyle } from './entryStyle';
 import { EditEntryContext } from '../../../contexts/EditEntryContext';
 import ProjectionToggler from '../../editDocumentRoute/ProjectionToggler';
 import { CSSTransition } from 'react-transition-group';
-import './EntryTransitions.css';
+import './entryTransitions.css';
 
 import { useEntryHover } from './useEntryHover';
 import { useEntryInteractions } from './useEntryInteractions';
