@@ -54,7 +54,7 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
           <form
             onSubmit={async (e) => {
-              console.log('Logging in');
+              //console.log('Logging in');
               await handleAuth(e);
             }}
             className="flex flex-col gap-4 mt-4 mb-4"
