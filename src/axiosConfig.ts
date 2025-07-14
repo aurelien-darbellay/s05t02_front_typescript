@@ -1,8 +1,12 @@
-// axiosConfig.ts
-import axios from 'axios';
 import { ApiPaths } from './apiPaths';
+// axiosConfig.js
+import axios from 'axios';
 
+// ─── 1) Standard defaults ───────────────────────────────────────────────────
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = ApiPaths.BACK_ORIGIN;
+axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+axios.defaults.timeout = 10000; // optional
 
 let csrfToken: string | null = null;
 
