@@ -13,11 +13,11 @@ export function createCloudinaryUploadHandler({
   return async function handleFileChange(event, entry) {
     const file = event.target.files[0];
     if (!file) return;
-
     try {
       setUploading(true);
       // 1️⃣ Validate file type
       console.log(file.type);
+      console.log(isPicture);
       if (
         !(file.type.startsWith('image/') || file.type === 'application/pdf') ||
         (isPicture && !file.type.startsWith('image/'))
