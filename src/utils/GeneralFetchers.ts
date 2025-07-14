@@ -21,7 +21,7 @@ export async function getTypesConfig(): Promise<TypesConfig> {
   try {
     localStorage.setItem('typesconfig', JSON.stringify(config));
   } catch (e) {
-    //console.warn('Could not persist typesconfig to localStorage', e);
+    console.warn('Could not persist typesconfig to localStorage', e);
   }
 
   return config;
@@ -29,7 +29,7 @@ export async function getTypesConfig(): Promise<TypesConfig> {
 
 export async function fetchDocData(
   id: string,
-  actingUser: string
+  actingUser: string | null
 ): Promise<any> {
   const url = actingUser
     ? ApiPaths.DOC_ID_PATH.replace('{docId}', id || '') +

@@ -8,7 +8,7 @@ export const createDeleteDocument = (onDelete: () => void) => {
       await axios.post(url, {});
       onDelete();
     } catch (err) {
-      // console.error("Failed to delete document", err);
+      console.error('Failed to delete document', err);
     }
   };
 };
@@ -20,7 +20,7 @@ export const createDeletePublicView = (onDelete: () => void) => {
       await axios.post(url, {});
       onDelete();
     } catch (err) {
-      // console.error("Failed to delete document", err);
+      console.error('Failed to delete document', err);
     }
   };
 };

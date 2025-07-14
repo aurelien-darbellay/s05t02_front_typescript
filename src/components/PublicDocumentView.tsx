@@ -40,7 +40,7 @@ const PublicDocumentView: React.FC = () => {
         const mappedEntries = mapDocDataToEntries(response.data.document);
         //console.log(mappedEntries);
         setEntries(mappedEntries);
-      } catch (err) {
+      } catch {
         //console.error(err);
         setError('Failed to load document.');
       } finally {
@@ -91,6 +91,20 @@ const PublicDocumentView: React.FC = () => {
         entries,
         setEntries,
         playDocument,
+        addOrUpdateEntry: null,
+        handleEditEntry: null,
+        updatePosition: null,
+        dialogOpen: false,
+        isList: false,
+        setIsList: () => {},
+        isListItem: false,
+        setIsListItem: () => {},
+        determineIfList: () => false,
+        connectMode: false,
+        setConnectMode: null,
+        connectOriginId: null,
+        setConnectOriginId: null,
+        addConnection: null,
       }}
     >
       <div className="w-full bg-gray-100 mt-30">

@@ -36,7 +36,7 @@ export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({
       }}
     >
       {/* Left side: 80% width */}
-      <div style={{ flex: '0 0 80%' }}>
+      <div style={{ flex: '0 0 70%' }}>
         {isNonEmpty(experience.role) && (
           <p>
             <strong>{experience.role}</strong>
@@ -74,7 +74,7 @@ export const ExperienceComponent: React.FC<ExperienceComponentProps> = ({
       </div>
 
       {/* Right side: 20% width */}
-      <div style={{ flex: '0 0 20%' }}>
+      <div style={{ flex: '0 0 30%' }}>
         <CloudAccessManager entry={experience} />
       </div>
     </div>

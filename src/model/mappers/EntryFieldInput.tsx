@@ -3,6 +3,8 @@ import React from 'react';
 import { useGetInputType } from './getInputType';
 import { EntryTypesFormatter } from '../entryTypesFormatter';
 import CloudAccessManager from '../../components/cloud/CloudAccessManager';
+import { PointsToFileInCloud } from '../EntriesGeneralFeatures';
+import { Point } from '../../components/canvas/entryGeneralComponent/computeConnectionPoints';
 
 interface EntryFieldInputProps {
   field: string;
@@ -63,12 +65,18 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
       )}
 
       {inputType.kind === 'cloudMetadata' && inputType.type === 'else' && (
-        <CloudAccessManager entry={entryData} size={1.2} />
+        <CloudAccessManager
+          entry={entryData as PointsToFileInCloud}
+          size={1.2}
+        />
       )}
 
       {inputType.kind === 'cloudMetadata' &&
         inputType.type === 'profile_picture' && (
-          <CloudAccessManager entry={entryData} size={1.2} />
+          <CloudAccessManager
+            entry={entryData as PointsToFileInCloud}
+            size={1.2}
+          />
         )}
 
       {inputType.kind !== 'textarea' &&
@@ -86,15 +94,3 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
     </div>
   );
 };
-
-function extractBaseName(path) {
-  if (!path) return '';
-
-  // 1️⃣ Get last segment after "/"
-  const filename = path.split('/').pop() || '';
-
-  // 2️⃣ Remove extension
-  const nameWithoutExtension = filename.replace(/\.[^/.]+$/, '');
-
-  return nameWithoutExtension;
-}

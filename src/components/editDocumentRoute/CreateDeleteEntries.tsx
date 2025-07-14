@@ -48,7 +48,7 @@ export const createAddOrUpdateEntry = (
       //console.log(response.data);
       const newEntry = mapSingleEntryDataToInstance(response.data);
       //console.log(newEntry);
-      setEntries((prev) => updateEntriesInState(prev, newEntry));
+      if (newEntry) setEntries((prev) => updateEntriesInState(prev, newEntry));
     } catch (error) {
       exposeError(true);
       setErrorMessage(

@@ -14,14 +14,14 @@ export const EducationComponent: React.FC<EducationComponentProps> = ({
 
   return (
     <div
-      className="flex items-start gap-4 space-y-0"
+      className="flex items-start gap-4 space-y-0 min-w-[210px]"
       style={{
         width: '100%',
         alignItems: 'flex-start',
       }}
     >
       {/* Left side: text content (90%) */}
-      <div style={{ flex: '0 0 80%' }}>
+      <div style={{ flex: '0 0 75%' }}>
         {isNonEmpty(education.title) && (
           <p>
             <strong>{education.title}</strong>
@@ -42,7 +42,7 @@ export const EducationComponent: React.FC<EducationComponentProps> = ({
       </div>
 
       {/* Right side: Cloud Manager (10%) */}
-      <div style={{ flex: '0 0 20%' }}>
+      <div style={{ flex: '0 0 25%' }}>
         <CloudAccessManager entry={education} />
       </div>
     </div>

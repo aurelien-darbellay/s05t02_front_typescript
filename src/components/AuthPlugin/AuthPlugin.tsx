@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
-import axios from '../../axiosConfig'; // Make sure this is the custom config
+import axios from '../../axiosConfig';
 import Logout from './Logout';
 import LoginRegister from './LoginRegister';
 import { ApiPaths } from '../../apiPaths';
 import { useLocation } from 'react-router-dom';
 
-const AuthPlugin = ({ right, left, top }) => {
+type AuthPluginProps = {
+  right?: string | number;
+  left?: string | number;
+  top?: string | number;
+};
+
+const AuthPlugin: React.FC<AuthPluginProps> = ({ right, left, top }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,6 +19,7 @@ const AuthPlugin = ({ right, left, top }) => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [error, setError] = useState<string | null>(null);
+
   const authStateSetters = {
     setIsVisible,
     setIsAuthenticated,
@@ -22,6 +29,7 @@ const AuthPlugin = ({ right, left, top }) => {
     setError,
     setIsRegister,
   };
+
   const authState = {
     isVisible,
     isRegister,
@@ -31,40 +39,30 @@ const AuthPlugin = ({ right, left, top }) => {
     password2,
     error,
   };
-  const location = useLocation();
 
-  // Check if we're on the public view route
+  const location = useLocation();
   const hideAuthPlugin = location.pathname.startsWith('/public/');
 
-  // On mount, try to check if already logged in
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await axios.get(ApiPaths.AUTHENTICATION_CHECK_PATH);
-        if (res.status === 200) {
-          //console.log("User is authenticated");
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
+        setIsAuthenticated(res.status === 200);
       } catch {
         setIsAuthenticated(false);
       }
     };
     checkAuth();
   }, []);
-  if (hideAuthPlugin) return null;
-  if (isAuthenticated) {
-    return (
-      <Logout
-        authStateSetters={authStateSetters}
-        pluginCfg={{ right, left, top }}
-      />
-    );
-  }
 
-  // --- Unauthenticated state (login/register)
-  return (
+  if (hideAuthPlugin) return null;
+
+  return isAuthenticated ? (
+    <Logout
+      authStateSetters={authStateSetters}
+      pluginCfg={{ right, left, top }}
+    />
+  ) : (
     <LoginRegister
       authStateSetters={authStateSetters}
       authState={authState}

@@ -21,8 +21,9 @@ const UserDashboard = () => {
   const navigate = useNavigate();
 
   const loggedInUser = localStorage.getItem('username');
-  const isAdminInSomeoneElseSpace =
-    actingUser && !(actingUser === loggedInUser);
+  const isAdminInSomeoneElseSpace = Boolean(
+    actingUser && !(actingUser === loggedInUser)
+  );
 
   const fetchDashboardData = useCallback(async () => {
     try {

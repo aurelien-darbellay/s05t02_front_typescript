@@ -27,7 +27,9 @@ const AdminDashboard: React.FC = () => {
     try {
       await axios.post(url, { username });
       fetchAdminData();
-    } catch (e) {}
+    } catch (e) {
+      setError((e as Error).message);
+    }
   };
 
   const fetchAdminData = () => {
@@ -38,7 +40,7 @@ const AdminDashboard: React.FC = () => {
         //console.debug('Admin data received:', response.data);
         setData(response.data);
       })
-      .catch((err) => {
+      .catch(() => {
         //console.error('Error fetching admin data:', err);
         setError('Failed to load admin data');
       })

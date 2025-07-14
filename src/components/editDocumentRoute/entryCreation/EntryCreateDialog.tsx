@@ -3,10 +3,9 @@ import {
   EntryFieldConfig,
   EntryContainerTypes,
   EntryListTypes,
-  matchItemsWithList,
 } from '../../../model/EntriesConfig';
 import { TypesConfig } from '../../../model/TypesConfig';
-import { Entry } from '../../../model/EntriesGeneralFeatures';
+import { ContainerEntry, Entry } from '../../../model/EntriesGeneralFeatures';
 import { normalizeEntryData } from './normalizeEntryData';
 import { EntryFieldInput } from '../../../model/mappers/EntryFieldInput';
 import { EntryTypesFormatter } from '../../../model/entryTypesFormatter';
@@ -54,15 +53,17 @@ export default function EntryCreateDialog({
 
   const fields = EntryFieldConfig[selectedType] || [];
 
-  const hasDuplicateRestrictedType =
+  const hasDuplicateRestrictedType = Boolean(
     selectedType &&
-    restrictedTypes.includes(selectedType) &&
-    entries.some((entry) => entry.type === selectedType && !isEditing);
+      restrictedTypes.includes(selectedType) &&
+      entries.some((entry) => entry.type === selectedType && !isEditing)
+  );
 
-  const isItemAndListDontExist =
+  const isItemAndListDontExist = Boolean(
     selectedType &&
-    listTypes.includes(selectedType) &&
-    entries.every((entry) => entry.type != selectedType);
+      listTypes.includes(selectedType) &&
+      entries.every((entry) => entry.type != selectedType)
+  );
 
   //console.log(isItemAndListDontExist);
 
@@ -99,14 +100,30 @@ export default function EntryCreateDialog({
     setIsListItem(false);
   };
 
-  const getEntryPayload = () => ({
-    ...entryData,
-    type: selectedType,
-    displayedType: displayedType,
-    color,
-    position: isEditing ? entryData?.position : position,
-    ...entryValues,
-  });
+  function hasPosition(entry: Entry): entry is ContainerEntry {
+    return 'position' in entry;
+  }
+  function hasColor(entry: Entry): entry is ContainerEntry {
+    return 'color' in entry;
+  }
+
+  const getEntryPayload = () => {
+    const payload: any = {
+      ...entryData,
+      type: selectedType,
+      displayedType: displayedType,
+      color,
+      ...entryValues,
+    };
+
+    if (isEditing && entryData && hasPosition(entryData)) {
+      payload.position = entryData?.position;
+    } else if (!isEditing && EntryContainerTypes.includes(selectedType)) {
+      payload.position = position;
+    }
+
+    return payload;
+  };
 
   const handleSave = () => {
     if (!selectedType) {
@@ -135,16 +152,8 @@ export default function EntryCreateDialog({
       setError("You can't delete an entry you haven't created yet");
       return;
     }
-    const entryToDelete = {
-      ...entryData,
-      type: selectedType,
-      displayedType: displayedType,
-      color,
-      position: isEditing ? entryData?.position : position,
-      ...entryValues,
-    };
     try {
-      onDelete(normalizeEntryData(entryToDelete));
+      onDelete(normalizeEntryData(getEntryPayload()));
       handleClose();
     } catch {
       setError('Failed to delete entry.');
@@ -157,7 +166,7 @@ export default function EntryCreateDialog({
       //console.log(entryData);
       setSelectedType(entryData.type);
       setDisplayedType(entryData.displayedType);
-      setColor(entryData.color);
+      if (hasColor(entryData)) setColor(entryData.color);
       const initValues = Object.fromEntries(
         (EntryFieldConfig[entryData.type] || []).map((field) => [
           field,

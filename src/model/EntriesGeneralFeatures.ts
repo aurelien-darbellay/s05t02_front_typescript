@@ -1,4 +1,5 @@
 import { EntryTypesFormatter } from './entryTypesFormatter';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Entry {
   projected: boolean;
@@ -52,7 +53,7 @@ export class ListEntries implements ContainerEntry {
   public color: string;
   public size: number;
   public header: string;
-  public id: string | null;
+  public id: string;
   public previousEntry: string | null;
   public nextEntry: string | null;
 
@@ -66,8 +67,8 @@ export class ListEntries implements ContainerEntry {
     size: number,
     type?: string,
     id?: string,
-    previous?: string,
-    next?: string
+    previous?: string | null,
+    next?: string | null
   ) {
     this.type = type ? 'LIST_' + type : 'LIST_' + entries[0].type;
     this.displayedType = type
@@ -84,7 +85,7 @@ export class ListEntries implements ContainerEntry {
     this.color = color;
     this.size = size;
     this.header = header;
-    this.id = id ?? null;
+    this.id = id ?? uuidv4();
     this.previousEntry = previous ?? null;
     this.nextEntry = next ?? null;
   }
@@ -98,6 +99,7 @@ export class ListEntries implements ContainerEntry {
       entry.color,
       entry.size,
       EntryTypesFormatter.fromListToItem(entry.type),
+      entry.id,
       entry.previousEntry,
       entry.nextEntry
     );

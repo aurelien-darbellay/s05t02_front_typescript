@@ -5,6 +5,7 @@ import {
   Position,
 } from '../model/EntriesGeneralFeatures';
 import { playDocument } from '../components/canvas/playDocument';
+import { PlaybackController } from '../components/canvas/PlaybackController';
 
 export const EditEntryContext = React.createContext<{
   addOrUpdateEntry: ((entry: Entry, isEditing: boolean) => void) | null;
@@ -34,7 +35,8 @@ export const EditEntryContext = React.createContext<{
     entries: ContainerEntry[],
     setEntries: React.Dispatch<React.SetStateAction<ContainerEntry[]>>,
     setUserUpdate: React.Dispatch<React.SetStateAction<boolean>>,
-    setUserUpdateMessage: React.Dispatch<React.SetStateAction<string>>
+    setUserUpdateMessage: React.Dispatch<React.SetStateAction<string>>,
+    controller: PlaybackController
   ) => Promise<void>;
 }>({
   addOrUpdateEntry: null,

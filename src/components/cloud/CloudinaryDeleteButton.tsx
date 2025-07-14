@@ -4,6 +4,7 @@ import axios from '../../axiosConfig';
 import { ActionButton } from '../../utils/ActionButton';
 import { EditEntryContext } from '../../contexts/EditEntryContext';
 import { normalizeEntryData } from '../editDocumentRoute/entryCreation/normalizeEntryData';
+import { Entry } from '../../model/EntriesGeneralFeatures';
 
 const CloudinaryDeleteButton = ({ entry, size = 1, onClose }) => {
   const {
@@ -24,13 +25,13 @@ const CloudinaryDeleteButton = ({ entry, size = 1, onClose }) => {
         documentCloudMetadata: null,
       };
       if (addOrUpdateEntry)
-        addOrUpdateEntry(normalizeEntryData(updatedEntry), true);
+        addOrUpdateEntry(normalizeEntryData(updatedEntry) as Entry, true);
       exposeError(true);
       setErrorMessage('File sucessfully deleted');
       onClose();
     } catch (e) {
       exposeError(true);
-      setErrorMessage('Error deleting document: ' + e.message);
+      setErrorMessage('Error deleting document: ' + (e as Error).message);
       onClose();
     }
   };

@@ -52,7 +52,7 @@ export default function CloudAccessManager({
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(blobUrl);
-      } catch (error) {
+      } catch {
         //console.error('Download failed:', error);
         alert('Download failed. Check console for details.');
       }

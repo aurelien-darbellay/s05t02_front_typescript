@@ -1,6 +1,4 @@
 import { ContainerEntry } from '../../model/EntriesGeneralFeatures';
-import { EntryListItemTypes, EntryListTypes } from '../../model/EntriesConfig';
-import { EntryTypesFormatter } from '../../model/entryTypesFormatter';
 import { PlaybackController } from './PlaybackController';
 import { getEntryReferenceNumberForPlayback } from './getEntryReferenceNumberForPlayback';
 
@@ -53,7 +51,7 @@ export async function playDocument(
     visited.add(current.id);
 
     if (!current.nextEntry) break;
-    current = entries.find((e) => e.id === current.nextEntry);
+    current = entries.find((e) => e.id === current?.nextEntry);
     if (!current) {
       setUserUpdate(true);
       setUserUpdateMessage('Document graph is broken (missing linked entry).');

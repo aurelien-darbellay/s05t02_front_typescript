@@ -79,7 +79,7 @@ const EditDocumentView: React.FC = () => {
       setUpdateUserMessage(message);
     } catch (error) {
       setUpdateUser(true);
-      setUpdateUserMessage(error.getMessage());
+      setUpdateUserMessage((error as Error).message);
     }
   };
 
@@ -110,7 +110,7 @@ const EditDocumentView: React.FC = () => {
       // Clean up
       document.body.removeChild(link);
       window.URL.revokeObjectURL(urlBlob);
-    } catch (e) {
+    } catch {
       setUpdateUser(true);
       setUpdateUserMessage('Error printing pdf:');
     }

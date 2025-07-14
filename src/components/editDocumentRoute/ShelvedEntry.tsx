@@ -8,7 +8,7 @@ interface ShelvedEntryProps {
   entry: Entry;
 }
 
-const ShelvedEntry: React.FC<ShelvedEntryProps> = ({ entry, editable }) => {
+const ShelvedEntry: React.FC<ShelvedEntryProps> = ({ entry }) => {
   const [isHovered, setIsHovered] = useState(false);
   const title = EntryListTypes.includes(entry.type)
     ? `List: ${entry.displayedType}`

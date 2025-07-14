@@ -31,7 +31,7 @@ export function isTotallyOrdered(entries: ContainerEntry[]): boolean {
       break;
     }
 
-    current = entries.find((e) => e.id === current.nextEntry);
+    current = entries.find((e) => e.id === current?.nextEntry);
 
     if (!current) {
       // Broken link
