@@ -45,7 +45,6 @@ export const Canvas: React.FC<CanvasProps> = ({
     }[]
   >([]);
   const [layoutVersion, setLayoutVersion] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const [selectedConnectionIndex, setSelectedConnectionIndex] = useState<
     number | null
@@ -153,7 +152,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         //pointerEvents: isPlaying ? 'none' : 'auto',
       }}
     >
-      <PlayButton setIsPlaying={setIsPlaying} />
+      <PlayButton setIsPlaying={() => {}} />
       <AddButtonGrid
         entries={entries}
         gridLines={Math.ceil(canvasHeight / 100)}

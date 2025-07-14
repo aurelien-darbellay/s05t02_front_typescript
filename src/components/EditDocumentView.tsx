@@ -11,7 +11,7 @@ import UserTextInputDialog from '../utils/UserTextInputDialog';
 
 const EditDocumentView: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [actingUser, setActingUser] = useState<string | null>(() => {
+  const [actingUser] = useState<string | null>(() => {
     const acting = sessionStorage.getItem('actingUser');
     const real = localStorage.getItem('username');
     if (acting && !(acting == real)) return acting;
@@ -22,7 +22,7 @@ const EditDocumentView: React.FC = () => {
   const { username } = location.state || {};
   const navigate = useNavigate();
   const initialConfig = useTypesConfig();
-  const [config, setConfig] = useState(initialConfig);
+  const [config] = useState(initialConfig);
   const [initialDocData, setInitialDocData] = useState<any>(null);
   const [updatedDocData, setUpdatedDocData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
