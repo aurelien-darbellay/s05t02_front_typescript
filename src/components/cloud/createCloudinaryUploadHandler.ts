@@ -17,6 +17,7 @@ export function createCloudinaryUploadHandler({
     try {
       setUploading(true);
       // 1️⃣ Validate file type
+      console.log(file.type);
       if (
         !(file.type.startsWith('image/') || file.type === 'application/pdf') ||
         (isPicture && !file.type.startsWith('image/'))
