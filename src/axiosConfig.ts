@@ -3,19 +3,18 @@ import { ApiPaths } from './apiPaths';
 import axios from 'axios';
 
 // ─── 1) Standard defaults ───────────────────────────────────────────────────
-axios.defaults.withCredentials    = true;
-axios.defaults.baseURL            = ApiPaths.FRONT_ORIGIN;
-axios.defaults.xsrfCookieName     = 'XSRF-TOKEN';
-axios.defaults.xsrfHeaderName     = 'X-XSRF-TOKEN';
-axios.defaults.timeout            = 10000; // optional
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = ApiPaths.BACK_ORIGIN;
+axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+axios.defaults.timeout = 10000; // optional
 
 const CSRF_ENDPOINT = ApiPaths.CSRF_TOKEN_PATH;
 
-function getCookieValue(name:string|undefined) {
+function getCookieValue(name: string | undefined) {
   const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]+)'));
   return match ? decodeURIComponent(match[2]) : null;
 }
-
 
 axios.interceptors.request.use(
   async (config) => {

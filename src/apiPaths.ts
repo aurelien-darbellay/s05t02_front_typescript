@@ -1,6 +1,6 @@
 export const ApiPaths = {
-  BACK_ORIGIN: 'http://localhost:8080',
-  FRONT_ORIGIN: 'http://localhost:5173',
+  BACK_ORIGIN: import.meta.env.VITE_BACK_ORIGIN,
+  FRONT_ORIGIN: import.meta.env.VITE_FRONT_ORIGIN,
 
   BASE_PATH: '/api',
   PROTECTED_BASE_PATH: '/api/protected',
