@@ -41,7 +41,7 @@ export const normalizeEntryData = (entryData: Record<string, any>) => {
   }
 
   if (normalized.shape === '') {
-    delete normalized.shape;
+    normalized.shape = 'MATCH';
   }
 
   return normalized;
