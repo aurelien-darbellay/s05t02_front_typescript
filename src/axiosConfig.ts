@@ -22,7 +22,9 @@ axios.interceptors.request.use(
     const riskyMethods = ['post', 'put', 'patch', 'delete'];
     const method = (config.method || '').toLowerCase();
 
-    if (riskyMethods.includes(method)) {
+    const isOwnApi = config.url?.startsWith(ApiPaths.BACK_ORIGIN);
+
+    if (riskyMethods.includes(method) && isOwnApi) {
       if (!csrfToken) {
         await refreshCsrfToken();
       }
