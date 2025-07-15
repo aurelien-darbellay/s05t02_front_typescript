@@ -8,12 +8,14 @@ import { PointsToFileInCloud } from '../../model/EntriesGeneralFeatures';
 type CloudAccessManagerProps = {
   entry: PointsToFileInCloud;
   size?: number;
+  isEditing?: boolean;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function CloudAccessManager({
   entry,
   size = 1,
+  isEditing = false,
   setIsEditing,
 }: CloudAccessManagerProps) {
   const [open, setOpen] = useState(false);
@@ -71,7 +73,7 @@ export default function CloudAccessManager({
     }
     window.open(url, '_blank', 'noopener,noreferrer');
   }
-  console.log(isPicture);
+  //console.log(isPicture);
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       {(editable || !isEmptyMeta) && (
@@ -106,6 +108,7 @@ export default function CloudAccessManager({
                     entry={entry}
                     value={textUpload}
                     isPicture={isPicture}
+                    isEditing={isEditing}
                     setIsEditing={setIsEditing}
                     setIsEmptyMeta={setIsEmptyMeta}
                   />

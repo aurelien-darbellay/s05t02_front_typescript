@@ -89,10 +89,10 @@ export async function playDocument(
 
     const delay = Math.max(
       1800,
-      33 * getEntryReferenceNumberForPlayback(entry)
+      33 * getEntryReferenceNumberForPlayback(entry) + 200
     );
 
-    console.log(delay);
+    //console.log(delay);
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
 

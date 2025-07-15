@@ -9,6 +9,7 @@ export function createCloudinaryUploadHandler({
   exposeError,
   setErrorMessage,
   isPicture = false,
+  isEditing = false,
   setIsEditing,
   setIsEmptyMeta,
   setEntryDataInModif,
@@ -19,8 +20,8 @@ export function createCloudinaryUploadHandler({
     try {
       setUploading(true);
       // 1️⃣ Validate file type
-      console.log(file.type);
-      console.log(isPicture);
+      //console.log(file.type);
+      //console.log(isPicture);
       if (
         !(file.type.startsWith('image/') || file.type === 'application/pdf') ||
         (isPicture && !file.type.startsWith('image/'))
@@ -65,7 +66,7 @@ export function createCloudinaryUploadHandler({
       };
 
       //console.log(updatedEntry);
-      addOrUpdateEntry(normalizeEntryData(updatedEntry), true);
+      addOrUpdateEntry(normalizeEntryData(updatedEntry), isEditing);
       setIsEditing(true);
       setIsEmptyMeta(false);
       setEntryDataInModif(updatedEntry);

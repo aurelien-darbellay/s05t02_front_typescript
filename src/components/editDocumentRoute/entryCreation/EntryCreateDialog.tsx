@@ -33,7 +33,7 @@ export default function EntryCreateDialog({
   entryData,
 }: EntryCreateDialogProps) {
   const [isEditing, setIsEditing] = useState(!!entryData);
-  //console.log(isEditing);
+  console.log(isEditing);
   const [selectedType, setSelectedType] = useState<string>('');
   const [displayedType, setDisplayedType] = useState<string>('');
   const [entryValues, setEntryValues] = useState<Record<string, any>>({});
@@ -46,6 +46,7 @@ export default function EntryCreateDialog({
     setIsListItem,
     determineIfList,
     addOrUpdateEntry,
+    setEntryDataInModif,
   } = useContext(EditEntryContext);
   const onSave = addOrUpdateEntry;
   const restrictedTypes = [...EntryContainerTypes];
@@ -245,6 +246,7 @@ export default function EntryCreateDialog({
               entryData={
                 field === 'documentCloudMetadata' ? getEntryPayload() : null
               }
+              isEditing={isEditing}
               setIsEditing={setIsEditing}
             />
           </div>
@@ -281,6 +283,7 @@ export default function EntryCreateDialog({
                   EntryTypesFormatter.fromListToItem(prev)
                 );
                 setIsListItem(true);
+                setEntryDataInModif(null);
                 setIsEditing(false);
               }}
               value="Add Item"

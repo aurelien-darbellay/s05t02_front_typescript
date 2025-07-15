@@ -64,7 +64,7 @@ const removeEntryFromState = (
   entryData: any
 ): ContainerEntry[] => {
   if (EntryContainerTypes.includes(entryData.type))
-    return entries.filter((entry) => entry.type !== entryData.type);
+    return entries.filter((entry) => entry.id !== entryData.id);
   const updatedEntries = entries.map((entry) => {
     if (entry.displayedType === entryData.displayedType) {
       const list = ListEntries.from(entry as ListEntries);

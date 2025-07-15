@@ -10,6 +10,7 @@ export default function CloudinaryUploadButton({
   entry,
   value = 'Add file',
   isPicture,
+  isEditing = false,
   setIsEditing = noopSetEditing,
   setIsEmptyMeta = noopSetEditing,
 }) {
@@ -21,7 +22,7 @@ export default function CloudinaryUploadButton({
     setUpdateUserMessage,
     setEntryDataInModif,
   } = useContext(EditEntryContext);
-  console.log(isPicture);
+  //console.log(isPicture);
   const handleButtonClick = () => {
     if (uploading) return;
     if (fileInputRef.current) {
@@ -35,6 +36,7 @@ export default function CloudinaryUploadButton({
     exposeError: setUpdateUser,
     setErrorMessage: setUpdateUserMessage,
     isPicture,
+    isEditing,
     setIsEditing,
     setIsEmptyMeta,
     setEntryDataInModif,

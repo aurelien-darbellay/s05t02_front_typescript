@@ -11,6 +11,7 @@ interface EntryFieldInputProps {
   onChange: (value: string) => void;
   type: string;
   entryData: Record<string, any> | null;
+  isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -20,6 +21,7 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
   onChange,
   type,
   entryData,
+  isEditing,
   setIsEditing,
 }) => {
   //console.log('Field ', field);
@@ -69,6 +71,7 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
         <CloudAccessManager
           entry={entryData as PointsToFileInCloud}
           size={1.2}
+          isEditing={isEditing}
         />
       )}
 
@@ -77,6 +80,7 @@ export const EntryFieldInput: React.FC<EntryFieldInputProps> = ({
           <CloudAccessManager
             entry={entryData as PointsToFileInCloud}
             size={1.2}
+            isEditing={isEditing}
             setIsEditing={setIsEditing}
           />
         )}

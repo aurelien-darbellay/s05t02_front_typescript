@@ -21,7 +21,7 @@ axios.interceptors.request.use(
   async (config) => {
     const riskyMethods = ['post', 'put', 'patch', 'delete'];
     const method = (config.method || '').toLowerCase();
-    console.log(config.url);
+    //console.log(config.url);
     let requestOrigin = '';
     try {
       const fullUrl = new URL(config.url as string, config.baseURL);
@@ -30,7 +30,7 @@ axios.interceptors.request.use(
       console.warn('Could not parse request URL for CSRF check:', config.url);
     }
     const isOwnApi = requestOrigin === ApiPaths.BACK_ORIGIN;
-    console.log(isOwnApi);
+    //console.log(isOwnApi);
     if (riskyMethods.includes(method) && isOwnApi) {
       if (!csrfToken) {
         await refreshCsrfToken();
