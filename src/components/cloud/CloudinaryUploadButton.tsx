@@ -22,7 +22,7 @@ export default function CloudinaryUploadButton({
     setUpdateUserMessage,
     setEntryDataInModif,
   } = useContext(EditEntryContext);
-  //console.log(isPicture);
+
   const handleButtonClick = () => {
     if (uploading) return;
     if (fileInputRef.current) {
@@ -42,6 +42,23 @@ export default function CloudinaryUploadButton({
     setEntryDataInModif,
   });
 
+  // ✅ NEW wrapped onChange that checks size first
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      // > 10 MB
+      setUpdateUser(true);
+      setUpdateUserMessage('File too big (max 10 MB).');
+      e.target.value = ''; // clear the input so user can re-select
+      return;
+    }
+
+    // Otherwise, pass to existing handler
+    handleFileChange(e, entry);
+  };
+
   return (
     <div>
       <ActionButton
@@ -56,7 +73,7 @@ export default function CloudinaryUploadButton({
         type="file"
         ref={fileInputRef}
         style={{ display: 'none' }}
-        onChange={(e) => handleFileChange(e, entry)}
+        onChange={handleInputChange}
         accept="*/*"
       />
     </div>
