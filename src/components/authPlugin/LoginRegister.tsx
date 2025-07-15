@@ -117,7 +117,7 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
           </div>
         </div>
       )}
-      <style jsx>{`
+      <style>{`
         .dot-flashing {
           position: relative;
           width: 1rem;

@@ -55,7 +55,7 @@ const Logout = ({ authStateSetters, pluginCfg }) => {
         {isLoading ? <span className="dot-flashing"></span> : 'Logout'}
       </button>
 
-      <style jsx>{`
+      <style>{`
         .dot-flashing {
           position: relative;
           width: 1rem;
