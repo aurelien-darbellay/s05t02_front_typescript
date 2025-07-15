@@ -23,10 +23,10 @@ It connects to the [cvFlows API](https://interactive-cv-backend-latest.onrender.
 - React
 - TypeScript
 - React Router
-- Axios or Fetch
-- Tailwind CSS (optional)
-- Vite or Create React App
-- Docker (optional)
+- Axios
+- Tailwind CSS
+- Vite
+- Cloudinary
 
 ---
 
