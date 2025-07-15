@@ -32,11 +32,11 @@ It connects to the [cvFlows API](https://interactive-cv-backend-latest.onrender.
 
 ## 📦 Getting Started
 
-Clone the repository:
-
 ```bash
+Clone the repository:
 git clone https://github.com/aurelien-darbellay/s05t02_front_typescript.git
 cd s05t02_front_typescript
+
 Install dependencies:
 npm install
 
@@ -48,14 +48,14 @@ npm run build
 
 Preview production build:
 npm run preview
-
+```
+---
 ## 🌐 Environment Variables
 Example .env file:
+VITE_BACK_ORIGIN=http://localhost:5173
+VITE_FRONT_ORIGIN=http://localhost:5173
 
-env
-Copiar
-Editar
-VITE_API_BASE_URL=https://interactive-cv-backend-latest.onrender.com
+(in dev profile, vite proxy - so both origin are the same; change for prod profile)
 
 📦 Deployment
 Example (replace with your actual live link):
