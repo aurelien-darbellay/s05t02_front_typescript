@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ApiPaths } from '../../apiPaths';
 import axios from '../../axiosConfig';
 
@@ -11,9 +12,13 @@ const Logout = ({ authStateSetters, pluginCfg }) => {
     setError,
   } = authStateSetters;
   const { right, left, top } = pluginCfg;
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleLogout = async () => {
+    setIsLoading(true);
     try {
-      await axios.post(ApiPaths.LOGOUT_PATH); // Adjust endpoint as needed
+      await axios.post(ApiPaths.LOGOUT_PATH);
       setIsAuthenticated(false);
       setIsVisible(false);
       setUsername('');
@@ -22,12 +27,14 @@ const Logout = ({ authStateSetters, pluginCfg }) => {
       setError(null);
       sessionStorage.removeItem('actingUser');
       localStorage.removeItem('username');
-      window.location.href = '/'; // Redirect after logout
+      window.location.href = '/';
     } catch {
-      //console.error("Logout failed", err);
       setError('Logout failed. Try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
     <div
       style={{
@@ -38,12 +45,35 @@ const Logout = ({ authStateSetters, pluginCfg }) => {
       }}
       className="fixed flex flex-col items-center justify-center"
     >
-      <span
-        className="bg-purple-cool cursor-pointer font-poppins shadow-lg px-4 py-2 rounded-lg text-white hover:bg-pink-cool"
+      <button
+        disabled={isLoading}
         onClick={handleLogout}
+        className={`bg-purple-cool text-white cursor-pointer font-poppins shadow-lg px-4 py-2 rounded-lg hover:bg-pink-cool flex items-center justify-center ${
+          isLoading ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
-        Logout
-      </span>
+        {isLoading ? <span className="dot-flashing"></span> : 'Logout'}
+      </button>
+
+      <style jsx>{`
+        .dot-flashing {
+          position: relative;
+          width: 1rem;
+          height: 1rem;
+          border-radius: 50%;
+          background-color: white;
+          animation: dotFlashing 1s infinite linear alternate;
+        }
+        @keyframes dotFlashing {
+          0% {
+            background-color: white;
+          }
+          50%,
+          100% {
+            background-color: rgba(255, 255, 255, 0.3);
+          }
+        }
+      `}</style>
     </div>
   );
 };

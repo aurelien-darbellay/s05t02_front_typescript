@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { createHandleAuth } from './handleAuth';
 
 const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
@@ -13,6 +14,8 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
   const { right, left, top } = pluginCfg;
   const { isVisible, username, password, password2, isRegister, error } =
     authState;
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAuth = createHandleAuth({
     username,
@@ -31,7 +34,7 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
         left: left ? `${left}px` : 'auto',
         zIndex: 10,
       }}
-      className={`fixed flex flex-col items-center justify-center`}
+      className="fixed flex flex-col items-center justify-center"
     >
       {!isVisible ? (
         <span
@@ -54,8 +57,13 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
           <form
             onSubmit={async (e) => {
-              //console.log('Logging in');
-              await handleAuth(e);
+              e.preventDefault();
+              setIsLoading(true);
+              try {
+                await handleAuth(e);
+              } finally {
+                setIsLoading(false);
+              }
             }}
             className="flex flex-col gap-4 mt-4 mb-4"
           >
@@ -65,6 +73,7 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="p-2 border rounded-lg w-full"
+              disabled={isLoading}
             />
             <input
               type="password"
@@ -72,6 +81,7 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="p-2 border rounded-lg w-full"
+              disabled={isLoading}
             />
             {isRegister && (
               <input
@@ -80,13 +90,23 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
                 className="p-2 border rounded-lg w-full"
+                disabled={isLoading}
               />
             )}
             <button
               type="submit"
-              className="cursor-pointer bg-pink-cool text-center pl-4 pr-4 pt-2 pb-2 rounded-lg hover:bg-purple-cool hover:text-white"
+              disabled={isLoading}
+              className={`cursor-pointer bg-pink-cool text-center pl-4 pr-4 pt-2 pb-2 rounded-lg hover:bg-purple-cool hover:text-white flex items-center justify-center ${
+                isLoading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              {isRegister ? 'Register' : 'Login'}
+              {isLoading ? (
+                <span className="dot-flashing"></span>
+              ) : isRegister ? (
+                'Register'
+              ) : (
+                'Login'
+              )}
             </button>
           </form>
           <div
@@ -97,6 +117,25 @@ const LoginRegister = ({ authStateSetters, authState, pluginCfg }) => {
           </div>
         </div>
       )}
+      <style jsx>{`
+        .dot-flashing {
+          position: relative;
+          width: 1rem;
+          height: 1rem;
+          border-radius: 50%;
+          background-color: white;
+          animation: dotFlashing 1s infinite linear alternate;
+        }
+        @keyframes dotFlashing {
+          0% {
+            background-color: white;
+          }
+          50%,
+          100% {
+            background-color: rgba(255, 255, 255, 0.3);
+          }
+        }
+      `}</style>
     </div>
   );
 };
