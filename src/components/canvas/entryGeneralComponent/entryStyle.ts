@@ -55,7 +55,7 @@ export const getEntryStyle = (
     transform: `scale(${scaleFactor})`,
     transformOrigin: 'top left',
     cursor: 'grab',
-    maxWidth: '20em',
+    maxWidth: '30em',
     transition: `
       padding 300ms ease,
       border-color 300ms ease,
