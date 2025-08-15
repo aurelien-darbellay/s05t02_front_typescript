@@ -43,7 +43,7 @@ export const useGetInputType = () => {
       (type === 'summary' && field === 'text') ||
       (type === 'education' && field === 'comments')
     ) {
-      return { kind: 'textarea', maxLength: 300 };
+      return { kind: 'textarea', maxLength: 450 };
     }
 
     // Specific case for custom Cloudinary metadata object
