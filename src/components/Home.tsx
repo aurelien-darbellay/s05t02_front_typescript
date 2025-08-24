@@ -1,4 +1,8 @@
+import { useTestDialogFromQuery } from './testDialog/useTestDialogFromQuery.js';
+import TestDialog from './testDialog/TestDialog';
+
 const Home = () => {
+  const { open, closeDialog } = useTestDialogFromQuery();
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full  bg-white shadow-lg p-8 text-center">
@@ -8,6 +12,7 @@ const Home = () => {
           dynamic interface
         </h3>
       </div>
+      <TestDialog open={open} onClose={closeDialog} />
     </div>
   );
 };
